@@ -22,19 +22,17 @@ services:
 
 
 # Serviço para o front end
-#  app-client:
-#    build:
-#      context: rebeca_client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
-#      dockerfile: Dockerfile
-#      args:
-#        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api
-#    ports:
-#      - "9090:80" 
-#    restart: always
-#    depends_on:
-#      - app-server
-#    networks:
-#      - frontend  
+    app-client:
+        build:
+            context: rebeca_client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+            dockerfile: Dockerfile
+        volumes:
+          - '.:/app'
+          - '/app/node_modules'
+        ports:
+          - '4201:4200'
+        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
+            - frontend
 
 # Serviço para o banco de dados Oracle
     db:
@@ -45,7 +43,7 @@ services:
             - "27017:27017"
         environment:
             - ORACLE_PWD=Oracle
-        networks:
+        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
             - backend  
         volumes:
             - ./db-data:/var/lib/mysql
@@ -57,7 +55,7 @@ volumes:
         driver: local
         
 
-# Networks to be created to facilitate communication between containers
+# Redes a serem criadas para facilitar a comunicação entre contêineres
 networks:
     backend:
     frontend:    
