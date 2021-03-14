@@ -27,7 +27,7 @@ public class DataSetService {
 	public String getAllJson(String sistema, String modulo, String filtro, String criterios)
 			throws SQLException, IOException {
 
-		StoredProcedureQuery query = (entityManager).createStoredProcedureQuery("corp.prc_recupera_configuracao_serv");
+		StoredProcedureQuery query = (entityManager).createStoredProcedureQuery("REBECA.prc_recupera_configuracao_serv");
 		query.registerStoredProcedureParameter("p_sistema", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_modulo", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_id_filtro",  String.class, ParameterMode.IN);

@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
 @Entity
-@Table(name = "TB_PROJETO", schema = "CORP")
+@Table(name = "TB_PROJETO", schema = "REBECA")
 public class Projeto implements Serializable{
 
 	private static final long serialVersionUID = 1L;

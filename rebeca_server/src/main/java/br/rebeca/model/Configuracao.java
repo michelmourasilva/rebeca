@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
 @Entity
-@Table(name = "TB_CONFIGURACAO_SERVICO", schema = "CORP", catalog = "",uniqueConstraints={
+@Table(name = "TB_CONFIGURACAO_SERVICO", schema = "REBECA", catalog = "",uniqueConstraints={
 	    @UniqueConstraint(columnNames = {"CO_PROJETO", "NO_MODULO","NO_OBJETO_BANCO","NO_PROPRIETARIO_BANCO"} )})
 public class Configuracao implements Serializable{
 
