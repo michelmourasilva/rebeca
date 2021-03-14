@@ -24,7 +24,7 @@ services:
 # Serviço para o front end
     app-client:
         build:
-            context: rebeca_client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+            context: rebeca_front # Use an image built from the specified dockerfile in the `polling-app-client` directory.
             dockerfile: Dockerfile
         volumes:
           - '.:/app'
