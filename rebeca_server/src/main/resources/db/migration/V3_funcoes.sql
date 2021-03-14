@@ -25,7 +25,7 @@ Parâmetros de saida:
 			}
 objetivo: Manter os atributos dos dados censitários.
 	Autor: Michel Moura Silva
-	Criado em: 23/05/2018
+	Criado em: 14/03/2021
 	
 Exemplo de chamada da procedure:
 declare 
@@ -67,7 +67,7 @@ BEGIN
         -- consulta que recupera qual o nome do objecto reponsável por trazer qual objeto que contem as informações do módulo escolhido          
         select 'select * from ' || configuracao.no_proprietario_banco || '.' || configuracao.no_objeto_banco, id_configuracao_servico into v_nome_ref_cursor, v_id_configuracao
         from REBECA.tb_configuracao_servico configuracao 
-        inner join REBECA.TB_projeto projeto on configuracao.co_projeto = projeto.co_projeto
+        inner join REBECA.TB_projeto projeto on configuracao.id_projeto = projeto.id_projeto
         where projeto.no_projeto = v_sistema and configuracao.no_modulo = v_modulo;    
 		-- Verifica se foi passado algum filtro por parâmetro
         if p_id_filtro is not null then      

@@ -27,7 +27,7 @@ public class Projeto implements Serializable{
     
     @Id
     @Basic
-    @Column(name = "CO_PROJETO")
+    @Column(name = "ID_PROJETO")
     @ApiModelProperty(value = "id", hidden  = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getCoProjeto() {

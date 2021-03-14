@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 @Entity
 @Table(name = "TB_CONFIGURACAO_SERVICO", schema = "REBECA", catalog = "",uniqueConstraints={
-	    @UniqueConstraint(columnNames = {"CO_PROJETO", "NO_MODULO","NO_OBJETO_BANCO","NO_PROPRIETARIO_BANCO"} )})
+	    @UniqueConstraint(columnNames = {"ID_PROJETO", "NO_MODULO","NO_OBJETO_BANCO","NO_PROPRIETARIO_BANCO"} )})
 public class Configuracao implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +48,7 @@ public class Configuracao implements Serializable{
     }
 
     @Basic
-    @Column(name = "CO_PROJETO", nullable = false)
+    @Column(name = "ID_PROJETO", nullable = false)
     @ApiModelProperty(value = "coProjeto", required = true)
     public long getCoProjeto() {
         return coProjeto;

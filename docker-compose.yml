@@ -17,8 +17,8 @@ services:
             - db # This service depends on mysql. Start that first.
         environment: # Pass environment variables to the service
             #SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/polls?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-            DATASOURCE_USERNAME: "REBECA"
-            DATASOURCE_PASSWORD: "REBECA_APP"
+            DATASOURCE_USERNAME: REBECA
+            DATASOURCE_PASSWORD: REBECA_APP
             DATASOURCE_HOST: db
         networks: # Networks to join (Services on the same network can communicate with each other using their name)
             - backend
@@ -68,7 +68,7 @@ services:
             - backend  
         volumes:
             - ./db-data:/var/lib/mysql
-            - ./rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d/setup
+            - ./rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d
             
 # Volumes
 volumes:
@@ -79,6 +79,4 @@ volumes:
 # Networks to be created to facilitate communication between containers
 networks:
     backend:
-        driver: bridge
     frontend:    
-        driver: bridge
