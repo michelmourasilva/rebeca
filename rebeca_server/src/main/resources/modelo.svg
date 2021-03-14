@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="153mm" xmlns="http://www.w3.org/2000/svg" height="151mm" version="1.1" viewBox="0 0 581 574" xmlns:xlink="http://www.w3.org/1999/xlink">
+   <polyline fill="none" points="161,460 161,327" stroke="#0080c0" stroke-width="1"/>
+   <polygon fill="#0080c0" points="161,327 164,340 158,340" stroke="#0080c0" stroke-width="1" stroke-linejoin="miter"/>
+   <rect x="5" y="176" fill="#ffffff" width="0" height="0" stroke="none" stroke-width="0"/>
+   <defs>
+      <linearGradient id="Gradient1" x1="0%" x2="100%" y1="0%" y2="100%" gradientUnits="objectBoundingBox">
+         <stop offset="5%" stop-color="#ffffff"/>
+         <stop offset="95%" stop-color="#b2d6fc"/>
+      </linearGradient>
+   </defs>
+   <rect x="5" y="176" fill="url(#Gradient1)" width="312" height="151" stroke="#0080c0" stroke-width="1"/>
+   <text x="161" y="187" fill="#000000" font-size="10" font-family="Arial" text-anchor="middle">TB_CONFIGURACAO_SERVICO</text>
+   <line x1="5" x2="317" y1="193" y2="193" stroke="#0080c0" stroke-width="1"/>
+   <text x="10" y="203" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">ID_CONFIGURACAO_SERVICO</text>
+   <text x="10" y="216" fill="#000000" font-size="10" font-family="Arial">CO_PROJETO</text>
+   <text x="10" y="229" fill="#000000" font-size="10" font-family="Arial">NO_MODULO</text>
+   <text x="10" y="242" fill="#000000" font-size="10" font-family="Arial">DS_MODULO</text>
+   <text x="10" y="255" fill="#000000" font-size="10" font-family="Arial">NO_OBJETO_BANCO</text>
+   <text x="10" y="268" fill="#000000" font-size="10" font-family="Arial">NO_PROPRIETARIO_BANCO</text>
+   <text x="10" y="281" fill="#000000" font-size="10" font-family="Arial">ID_USUARIO_OPERACAO</text>
+   <text x="10" y="294" fill="#000000" font-size="10" font-family="Arial">DT_OPERACAO</text>
+   <text x="10" y="307" fill="#000000" font-size="10" font-family="Arial">NU_OPERACAO</text>
+   <text x="10" y="320" fill="#000000" font-size="10" font-family="Arial">NU_IP_OPERACAO</text>
+   <text x="168" y="203" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">NUMBER(14, 0)</text>
+   <text x="168" y="216" fill="#000000" font-size="10" font-family="Arial">NUMBER(14, 0)</text>
+   <text x="168" y="229" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(20 BYTE)</text>
+   <text x="168" y="242" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(300 BYTE)</text>
+   <text x="168" y="255" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(30 BYTE)</text>
+   <text x="168" y="268" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(30 BYTE)</text>
+   <text x="168" y="281" fill="#000000" font-size="10" font-family="Arial">NUMBER(14)</text>
+   <text x="168" y="294" fill="#000000" font-size="10" font-family="Arial">DATE</text>
+   <text x="168" y="307" fill="#000000" font-size="10" font-family="Arial">NUMBER(5)</text>
+   <text x="168" y="320" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(16)</text>
+   <text x="286" y="203" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">&lt;pk&gt;</text>
+   <text x="286" y="216" fill="#000000" font-size="10" font-family="Arial">&lt;ak&gt;</text>
+   <text x="286" y="229" fill="#000000" font-size="10" font-family="Arial">&lt;ak&gt;</text>
+   <text x="286" y="255" fill="#000000" font-size="10" font-family="Arial">&lt;ak&gt;</text>
+   <text x="286" y="268" fill="#000000" font-size="10" font-family="Arial">&lt;ak&gt;</text>
+   <rect x="2" y="460" fill="#ffffff" width="0" height="0" stroke="none" stroke-width="0"/>
+   <defs>
+      <linearGradient id="Gradient2" x1="0%" x2="100%" y1="0%" y2="100%" gradientUnits="objectBoundingBox">
+         <stop offset="5%" stop-color="#ffffff"/>
+         <stop offset="95%" stop-color="#b2d6fc"/>
+      </linearGradient>
+   </defs>
+   <rect x="2" y="460" fill="url(#Gradient2)" width="319" height="112" stroke="#0080c0" stroke-width="1"/>
+   <text x="161" y="471" fill="#000000" font-size="10" font-family="Arial" text-anchor="middle">TB_FILTRO_SERVICO</text>
+   <line x1="2" x2="321" y1="477" y2="477" stroke="#0080c0" stroke-width="1"/>
+   <text x="7" y="487" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">ID_FILTRO_SERVICO</text>
+   <text x="7" y="500" fill="#000000" font-size="10" font-family="Arial">CD_CONDICAO</text>
+   <text x="7" y="513" fill="#000000" font-size="10" font-family="Arial">ID_CONFIGURACAO_SERVICO</text>
+   <text x="7" y="526" fill="#000000" font-size="10" font-family="Arial">ID_USUARIO_OPERACAO</text>
+   <text x="7" y="539" fill="#000000" font-size="10" font-family="Arial">DT_OPERACAO</text>
+   <text x="7" y="552" fill="#000000" font-size="10" font-family="Arial">NU_OPERACAO</text>
+   <text x="7" y="565" fill="#000000" font-size="10" font-family="Arial">NU_IP_OPERACAO</text>
+   <text x="165" y="487" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">NUMBER(14, 0)</text>
+   <text x="165" y="500" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(4000 BYTE)</text>
+   <text x="165" y="513" fill="#000000" font-size="10" font-family="Arial">NUMBER(14, 0)</text>
+   <text x="165" y="526" fill="#000000" font-size="10" font-family="Arial">NUMBER(14)</text>
+   <text x="165" y="539" fill="#000000" font-size="10" font-family="Arial">DATE</text>
+   <text x="165" y="552" fill="#000000" font-size="10" font-family="Arial">NUMBER(5)</text>
+   <text x="165" y="565" fill="#000000" font-size="10" font-family="Arial">VARCHAR2(16)</text>
+   <text x="289" y="487" fill="#000000" font-size="10" font-family="Arial" text-decoration="underline">&lt;pk&gt;</text>
+   <text x="289" y="513" fill="#000000" font-size="10" font-family="Arial">&lt;fk&gt;</text>
+   <rect x="13" y="2" fill="#ffffff" width="0" height="0" stroke="none" stroke-width="0"/>
+   <defs>
+      <linearGradient id="Gradient3" x1="0%" x2="100%" y1="0%" y2="100%" gradientUnits="objectBoundingBox">
+         <stop offset="5%" stop-color="#ffffff"/>
+         <stop offset="95%" stop-color="#b2d6fc"/>
+      </linearGradient>
+   </defs>
+   <rect x="13" y="2" fill="url(#Gradient3)" width="270" height="125" stroke="#0080c0" stroke-width="1"/>
+   <text x="148" y="13" fill="#000000" font-size="10" font-family="Arial" text-anchor="middle">TH_FILTRO_SERVICO</text>
+   <line x1="13" x2="283" y1="19" y2="19" stroke="#0080c0" stroke-width="1"/>
+   <text x="18" y="29" fill="#000000" font-size="10" font-family="Arial">ID_FILTRO_SERVICO</text>
+   <text x="18" y="42" fill="#000000" font-size="10" font-family="Arial">CD_CONDICAO</text>
+   <text x="18" y="55" fill="#000000" font-size="10" font-family="Arial">ID_CONFIGURACAO_SERVICO</text>
+   <text x="18" y="68" fill="#000000" font-size="10" font-family="Arial">ID_USUARIO_OPERACAO</text>
+   <text x="18" y="81" fill="#000000" font-size="10" font-family="Arial">DT_OPERACAO</text>
+   <text x="18" y="94" fill="#000000" font-size="10" font-family="Arial">NU_OPERACAO</text>
+   <text x="18" y="107" fill="#000000" font-size="10" font-family="Arial">NU_IP_OPERACAO</text>
+   <text x="18" y="120" fill="#000000" font-size="10" font-family="Arial">TP_OPERACAO</text>
+   <text x="176" y="29" fill="#000000" font-size="10" font-family="Arial">number(14, 0)</text>
+   <text x="176" y="42" fill="#000000" font-size="10" font-family="Arial">varchar2(4000 byte)</text>
+   <text x="176" y="55" fill="#000000" font-size="10" font-family="Arial">number(14, 0)</text>
+   <text x="176" y="68" fill="#000000" font-size="10" font-family="Arial">number(14)</text>
+   <text x="176" y="81" fill="#000000" font-size="10" font-family="Arial">date</text>
+   <text x="176" y="94" fill="#000000" font-size="10" font-family="Arial">number(5)</text>
+   <text x="176" y="107" fill="#000000" font-size="10" font-family="Arial">varchar2(16)</text>
+   <text x="176" y="120" fill="#000000" font-size="10" font-family="Arial">char(1)</text>
+   <rect x="316" y="2" fill="#ffffff" width="0" height="0" stroke="none" stroke-width="0"/>
+   <defs>
+      <linearGradient id="Gradient4" x1="0%" x2="100%" y1="0%" y2="100%" gradientUnits="objectBoundingBox">
+         <stop offset="5%" stop-color="#ffffff"/>
+         <stop offset="95%" stop-color="#b2d6fc"/>
+      </linearGradient>
+   </defs>
+   <rect x="316" y="2" fill="url(#Gradient4)" width="263" height="164" stroke="#0080c0" stroke-width="1"/>
+   <text x="447" y="13" fill="#000000" font-size="10" font-family="Arial" text-anchor="middle">TH_CONFIGURACAO_SERVICO</text>
+   <line x1="316" x2="579" y1="19" y2="19" stroke="#0080c0" stroke-width="1"/>
+   <text x="321" y="29" fill="#000000" font-size="10" font-family="Arial">ID_CONFIGURACAO_SERVICO</text>
+   <text x="321" y="42" fill="#000000" font-size="10" font-family="Arial">CO_PROJETO</text>
+   <text x="321" y="55" fill="#000000" font-size="10" font-family="Arial">NO_MODULO</text>
+   <text x="321" y="68" fill="#000000" font-size="10" font-family="Arial">DS_MODULO</text>
+   <text x="321" y="81" fill="#000000" font-size="10" font-family="Arial">NO_OBJETO_BANCO</text>
+   <text x="321" y="94" fill="#000000" font-size="10" font-family="Arial">NO_PROPRIETARIO_BANCO</text>
+   <text x="321" y="107" fill="#000000" font-size="10" font-family="Arial">ID_USUARIO_OPERACAO</text>
+   <text x="321" y="120" fill="#000000" font-size="10" font-family="Arial">DT_OPERACAO</text>
+   <text x="321" y="133" fill="#000000" font-size="10" font-family="Arial">NU_OPERACAO</text>
+   <text x="321" y="146" fill="#000000" font-size="10" font-family="Arial">NU_IP_OPERACAO</text>
+   <text x="321" y="159" fill="#000000" font-size="10" font-family="Arial">TP_OPERACAO</text>
+   <text x="479" y="29" fill="#000000" font-size="10" font-family="Arial">number(14, 0)</text>
+   <text x="479" y="42" fill="#000000" font-size="10" font-family="Arial">number(14, 0)</text>
+   <text x="479" y="55" fill="#000000" font-size="10" font-family="Arial">varchar2(20 byte)</text>
+   <text x="479" y="68" fill="#000000" font-size="10" font-family="Arial">varchar2(300 byte)</text>
+   <text x="479" y="81" fill="#000000" font-size="10" font-family="Arial">varchar2(30 byte)</text>
+   <text x="479" y="94" fill="#000000" font-size="10" font-family="Arial">varchar2(30 byte)</text>
+   <text x="479" y="107" fill="#000000" font-size="10" font-family="Arial">number(14)</text>
+   <text x="479" y="120" fill="#000000" font-size="10" font-family="Arial">date</text>
+   <text x="479" y="133" fill="#000000" font-size="10" font-family="Arial">number(5)</text>
+   <text x="479" y="146" fill="#000000" font-size="10" font-family="Arial">varchar2(16)</text>
+   <text x="479" y="159" fill="#000000" font-size="10" font-family="Arial">char(1)</text>
+</svg>
