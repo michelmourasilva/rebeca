@@ -1,34 +1,35 @@
-#### Stage 1: Build the application
+#### Estágio 1 - Faz o build da aplicação
 FROM openjdk:8-jdk-alpine as build
 
-# Set the current working directory inside the image
+# Define o diretório de trabalho atual dentro da imagem
 WORKDIR /app
 
-# Copy maven executable to the image
+# Copia o executável do maven para a imagem
 COPY mvnw .
 COPY .mvn .mvn
 
-# Copy the pom.xml file
+# Copie o arquivo pom.xml
 COPY pom.xml .
 
-# Build all the dependencies in preparation to go offline. 
-# This is a separate step so the dependencies will be cached unless 
-# the pom.xml file has changed.
+
+# Cria todas as dependências em preparação para ficar offline.
+# Esta é uma etapa separada, então as dependências serão armazenadas em cache, a menos que
+# o arquivo pom.xml seja alterado.
 RUN ./mvnw dependency:go-offline -B
 
-# Copy the project source
+# Copie a fonte do projeto
 COPY src src
 
-# Package the application
+# Empacota a aplicação
 RUN ./mvnw package -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-#### Stage 2: A minimal docker image with command to run the app 
+#### Estágio 2: uma imagem mínima do docker com comando para executar o aplicativo
 FROM openjdk:8-jre-alpine
 
 ARG DEPENDENCY=/app/target/dependency
 
-# Copy project dependencies from the build stage
+# Copia as dependências do projeto do estágio de construção
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app

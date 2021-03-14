@@ -1,63 +1,44 @@
-# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
-# # https://github.com/callicoder/spring-security-react-ant-design-polls-app
 version: '3.7'
 
-# Define services
+# Definindo os serviços
 services:
-  # App backend service
+  # Serviço para o backend
     app-server:
-    # Configuration for building the docker image for the backend service
         build:
-            context: rebeca_server # Use an image built from the specified dockerfile in the `polling-app-server` directory.
+            context: rebeca_server # Imagem criada pelo Dockerfile que está na raiz do projeto 
             dockerfile: Dockerfile
         ports:
-            - "8082:8081" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+            - "8082:8081" 
         restart: always
         depends_on: 
-            - db # This service depends on mysql. Start that first.
-        environment: # Pass environment variables to the service
-            #SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/polls?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+            - db # Banco de dados Oracle
+        environment: 
             DATASOURCE_USERNAME: REBECA
             DATASOURCE_PASSWORD: REBECA_APP
             DATASOURCE_HOST: db
-        networks: # Networks to join (Services on the same network can communicate with each other using their name)
+        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
             - backend
             - frontend
 
 
-#  # Frontend Service 
+# Serviço para o front end
 #  app-client:
 #    build:
-#      context: polling-app-client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+#      context: rebeca_client # Use an image built from the specified dockerfile in the `polling-app-client` directory.
 #      dockerfile: Dockerfile
 #      args:
 #        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api
 #    ports:
-#      - "9090:80" # Forward the exposed port 80 on the container to port 80 on the host machine
+#      - "9090:80" 
 #    restart: always
 #    depends_on:
 #      - app-server
 #    networks:
 #      - frontend  
 
-  # Database Service (Mysql)
-#  db:
-#    image: mysql:5.7
-#    ports:
-#      - "3306:3306"
-#    restart: always
-#    environment:
-#      MYSQL_DATABASE: polls
-#      MYSQL_USER: callicoder
-#      MYSQL_PASSWORD: callicoder
-#      MYSQL_ROOT_PASSWORD: root
-#    volumes:
-#      - db-data:/var/lib/mysql
-#    networks:
-#      - backend  
-
+# Serviço para o banco de dados Oracle
     db:
-        image: truevoly/oracle-12c
+        image: truevoly/oracle-12c #Baseado na imagem https://github.com/MaksymBilenko/docker-oracle-12c
         ports: 
             - "8080:8080"
             - "1521:1521"
@@ -68,7 +49,7 @@ services:
             - backend  
         volumes:
             - ./db-data:/var/lib/mysql
-            - ./rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d
+            - ./rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d # recupera todos os scripts que deverão ser executados logo no inicio do serviço
             
 # Volumes
 volumes:
