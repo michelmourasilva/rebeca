@@ -1,8 +1,8 @@
-create or replace procedure REBECA.prc_recupera_configuracao_serv(p_sistema in varchar2, p_modulo in varchar2, p_id_filtro in numeric, p_criterio_pesquisa in varchar2, p_json_string out clob) is       
+create or replace procedure REBECA.prc_recupera_configuracao_serv(p_projeto in varchar2, p_modulo in varchar2, p_id_filtro in numeric, p_criterio_pesquisa in varchar2, p_json_string out clob) is       
 /*
 Procedimento armazenado que recupera uma configuração feita para um serviço rest. 
 Parâmetros de entrada:
-			p_sistema = Nome do sistema que consta na tabela REBECA.tb_sistema. O código deste sistema deverá está na configuração da tabela REBECA.tb_configuracao_servico
+			p_projeto = Nome do sistema que consta na tabela REBECA.tb_projeto. O código deste sistema deverá está na configuração da tabela REBECA.tb_configuracao_servico
 			p_modulo = Nome do modulo que identifica o objeto do banco através da URI. Este nome deverá está na configuração da tabela REBECA.tb_configuracao_servico
 			p_id_filtro = Número do fitro que está mapeado na tabela REBECA.tb_filtro_servico
 			p_criterio_pesquisa = Valores que servirão de bind para o critério configurado na tabela REBECA.tb_filtro_servico. Devem seguir a ordem que consta no filtro. Ex: para o bind das variáveis :1 e :2 deve existir dois valores correspondentes a ordem das variáveis. 
@@ -42,7 +42,7 @@ Demanda 	Data     		Responsável	    Descricao
 xxxx		20/08/2018		Michel Moura	Criação da procedure 
 --------------------------------------------------------------------
 */
-        v_sistema                    varchar2(30):= p_sistema;                         -- Variável que receberá o parâmetro p_sistema
+        v_projeto                    varchar2(30):= p_projeto;                         -- Variável que receberá o parâmetro p_projeto
         v_modulo                     varchar2(30):= p_modulo;                          -- Variável que receberá o parâmetro p_modulo
         v_id_filtro                  numeric(14)   := p_id_filtro;                     -- Indicador de qual filtro deverá ser utilizado juntamente com a consulta principal
         v_criterio_pesquisa	         varchar2(4000):= p_criterio_pesquisa;	           -- Conteúdo que juntamente com o filtro irá restringir o resultado da consulta principal
@@ -68,7 +68,7 @@ BEGIN
         select 'select * from ' || configuracao.no_proprietario_banco || '.' || configuracao.no_objeto_banco, id_configuracao_servico into v_nome_ref_cursor, v_id_configuracao
         from REBECA.tb_configuracao_servico configuracao 
         inner join REBECA.TB_projeto projeto on configuracao.id_projeto = projeto.id_projeto
-        where projeto.no_projeto = v_sistema and configuracao.no_modulo = v_modulo;    
+        where projeto.no_projeto = v_projeto and configuracao.no_modulo = v_modulo;    
 		-- Verifica se foi passado algum filtro por parâmetro
         if p_id_filtro is not null then      
           -- recupera qual são os filtros que serão usados

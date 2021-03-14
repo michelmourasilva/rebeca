@@ -31,6 +31,32 @@ Todo o ambiente foi dockerizado portanto basta executar o comando:
 ## Banco de dados
 Acessos ao SGBD e aos seus serviços de gerenciamento e monitoramento:
 - SGBD:  Oracle Standard Edition 12c Release 2
+
+```mermaid
+    erDiagram
+        TB_CONFIGURACAO_SERVICO }O--|{ TB_PROJETO : ""
+        TB_CONFIGURACAO_SERVICO {
+            number ID_CONFIGURACAO_SERVICO
+            number ID_PROJETO
+            varchar NO_MODULO
+            varchar DS_MODULO
+            varchar NO_PROPRIETARIO_BANCO
+            varchar NO_OBJETO_BANCO
+    
+        }
+        TB_PROJETO 
+        TB_PROJETO {
+            number ID_PROJETO
+            varchar NO_PROJETO
+            varchar DS_PROJETO
+        }
+        TB_FILTRO_SERVICO ||--O{ TB_CONFIGURACAO_SERVICO : ""
+        TB_FILTRO_SERVICO { 
+            number ID_FILTRO_SERVICO
+            varchar CD_CONDICAO
+            number ID_CONFIGURACAO_SERVICO
+        }
+```
 ### Conexão para os usuários sys e system
 	- Hostname: localhost
 	- Porta: 1521

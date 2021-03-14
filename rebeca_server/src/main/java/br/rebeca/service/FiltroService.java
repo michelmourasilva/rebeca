@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import br.rebeca.model.Filtro;
 import br.rebeca.repository.FiltroRepository;
+import br.rebeca.service.exceptions.DataIntegrityException;
 import br.rebeca.service.exceptions.ObjectNotFoundException;
 
 @Service
@@ -28,6 +30,26 @@ public class FiltroService {
 	public Filtro find(Long id) {
 		Optional<Filtro> obj = repo.findById(id);
 		return obj.orElseThrow(()-> new ObjectNotFoundException("Objeto não encontrado! Id:" + id + ", Tipo: " + Filtro.class.getName()));
+	}
+	
+
+	public Filtro insert(Filtro obj) {
+		obj.setIdFiltro(0);
+		return repo.save(obj);
+	}
+
+	public Filtro update(Filtro obj) {
+		find(obj.getIdFiltro());
+		return repo.save(obj);
+	}
+
+	public void delete(Long id) {
+		find(id);
+		try {
+			repo.deleteById(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Nao é possível excluir um registro com filhos.");
+		}
 	}
 	
 

@@ -1,14 +1,19 @@
 package br.rebeca.resource;
 
 
+import java.net.URI;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.rebeca.model.Filtro;
 import br.rebeca.service.FiltroService;
@@ -36,5 +41,38 @@ public class FiltroResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+    
+    @ApiOperation(value = "Insere um filtro")
+   	@RequestMapping(method = RequestMethod.POST)
+   	public ResponseEntity<Void> insert(@Valid @RequestBody Filtro obj) {
+   		obj = service.insert(obj);
+   		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdFiltro())
+   				.toUri();
+   		return ResponseEntity.created(uri).build();
+   	}
+
+    @ApiOperation(value = "Atualiza um filtro")
+   	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+   	public ResponseEntity<Void> update(@Valid @RequestBody Filtro obj, @PathVariable("id") Long id) {
+       	
+       	Filtro dbobj = service.find(id);
+       	
+       	dbobj.setcdCondicao(obj.getcdCondicao());
+   		
+   		service.update(dbobj);
+   		return ResponseEntity.noContent().build();
+   	}
+
+       @ApiOperation(value = "Deleta um filtro")
+   	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   	public ResponseEntity<Void> delete(@PathVariable Long id) {
+       	
+   		service.delete(id);
+   		return ResponseEntity.noContent().build();
+   	}
+           
+    
+    
+    
 	
 }

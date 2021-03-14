@@ -25,10 +25,10 @@ public class DataSetResource {
 	
 
     @ApiOperation(value = "Retorna os dados a partir de uma configuração, sistema e módulo. Pode também ser incluso alguns critérios pré definidos.")
-	@RequestMapping(value = {"/all/{sistema}/{modulo}","/all/{sistema}/{modulo}/{filtro}/{criterios}"}, method = RequestMethod.GET)
-	public @JsonRawValue @JsonValue @ResponseBody String getTudo(@PathVariable String sistema,
+	@RequestMapping(value = {"/{projeto}/{modulo}","/{projeto}/{modulo}/{filtro}/{criterios}"}, method = RequestMethod.GET)
+	public @JsonRawValue @JsonValue @ResponseBody String getTudo(@PathVariable String projeto,
 			@PathVariable String modulo, @PathVariable(value="filtro", required=false) String filtros, @PathVariable(value="criterios", required=false) String criterios) throws SQLException, IOException {
-		return service.getAllJson(sistema, modulo,filtros,criterios );
+		return service.getAllJson(projeto, modulo,filtros,criterios );
 	}
 	
 }
