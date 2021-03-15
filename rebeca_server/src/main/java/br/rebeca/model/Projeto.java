@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class Projeto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-    private long coProjeto;
+    private long idProjeto;
     private String noProjeto;
     private String dsProjeto;
  
@@ -30,12 +30,12 @@ public class Projeto implements Serializable{
     @Column(name = "ID_PROJETO")
     @ApiModelProperty(value = "id", hidden  = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getCoProjeto() {
-        return coProjeto;
+    public long getIdProjeto() {
+        return idProjeto;
     }
 
-    public void setCoProjeto(long coProjeto) {
-        this.coProjeto = coProjeto;
+    public void setIdProjeto(long idProjeto) {
+        this.idProjeto = idProjeto;
     }
 
     @Basic
@@ -66,7 +66,7 @@ public class Projeto implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Projeto projeto = (Projeto) o;
-        return coProjeto == projeto.coProjeto &&
+        return idProjeto  == projeto.idProjeto &&
                 Objects.equals(noProjeto, projeto.noProjeto) &&
                 Objects.equals(dsProjeto, projeto.dsProjeto);
     }
@@ -74,7 +74,7 @@ public class Projeto implements Serializable{
     @Override
     public int hashCode() {
 
-        return Objects.hash(coProjeto, noProjeto, dsProjeto);
+        return Objects.hash(idProjeto , noProjeto, dsProjeto);
     }
 
 

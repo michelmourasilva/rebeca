@@ -34,12 +34,12 @@ public class ProjetoService {
 	
 	
 	public Projeto insert(Projeto obj) {
-		obj.setCoProjeto(0);
+		obj.setIdProjeto(0);
 		return repo.save(obj);
 	}
 
 	public Projeto update(Projeto obj) {
-		find(obj.getCoProjeto());
+		find(obj.getIdProjeto());
 		return repo.save(obj);
 	}
 

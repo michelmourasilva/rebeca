@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -24,7 +22,7 @@ public class Filtro implements Serializable{
     private String cdCondicao;
     
 
-    private Configuracao configuracao;
+    private long idConfiguracaoServico;
 
     @Id
     @Column(name = "ID_FILTRO_SERVICO")
@@ -34,19 +32,26 @@ public class Filtro implements Serializable{
         return idFiltro;
     }
 
-    public Filtro(long idFiltro, String cdCondicao, Configuracao configuracao) {
-		super();
-		this.idFiltro = idFiltro;
-		this.cdCondicao = cdCondicao;
-		this.configuracao = configuracao;
-	}
+    
+    @Basic
+    @Column(name = "ID_CONFIGURACAO_SERVICO", nullable = false)
+    @ApiModelProperty(value = "idConfiguracaoServico", required = true)
+    public long getIdConfiguracaoServico() {
+        return idConfiguracaoServico;
+    }
+
+    public void setidConfiguracaoServico(long idConfiguracaoServico) {
+        this.idConfiguracaoServico = idConfiguracaoServico;
+    }
+    
 
 	public void setIdFiltro(long idFiltro) {
         this.idFiltro = idFiltro;
     }
 
     @Basic
-    @Column(name = "CD_CONDICAO")
+    @Column(name = "CD_CONDICAO", nullable = false)
+    @ApiModelProperty(value = "cdCondicao", required = true)
     public String getcdCondicao() {
         return cdCondicao;
     }
@@ -63,16 +68,6 @@ public class Filtro implements Serializable{
 		return result;
 	}
 
-	@ManyToOne(targetEntity = Configuracao.class)
-	@JoinColumn(name="ID_CONFIGURACAO_SERVICO")
-	public Configuracao getConfiguracao() {
-		return configuracao;
-	}
-
-	public void setConfiguracao(Configuracao configuracao) {
-		this.configuracao = configuracao;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

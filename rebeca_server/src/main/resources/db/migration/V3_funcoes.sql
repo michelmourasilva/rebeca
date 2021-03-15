@@ -2,7 +2,7 @@ create or replace procedure REBECA.prc_recupera_configuracao_serv(p_projeto in v
 /*
 Procedimento armazenado que recupera uma configuração feita para um serviço rest. 
 Parâmetros de entrada:
-			p_projeto = Nome do sistema que consta na tabela REBECA.tb_projeto. O código deste sistema deverá está na configuração da tabela REBECA.tb_configuracao_servico
+			p_projeto = Nome do projeto que consta na tabela REBECA.tb_projeto. O código deste projeto deverá está na configuração da tabela REBECA.tb_configuracao_servico
 			p_modulo = Nome do modulo que identifica o objeto do banco através da URI. Este nome deverá está na configuração da tabela REBECA.tb_configuracao_servico
 			p_id_filtro = Número do fitro que está mapeado na tabela REBECA.tb_filtro_servico
 			p_criterio_pesquisa = Valores que servirão de bind para o critério configurado na tabela REBECA.tb_filtro_servico. Devem seguir a ordem que consta no filtro. Ex: para o bind das variáveis :1 e :2 deve existir dois valores correspondentes a ordem das variáveis. 
@@ -23,7 +23,7 @@ Parâmetros de saida:
 					}
 				]
 			}
-objetivo: Manter os atributos dos dados censitários.
+objetivo: Criar de forma parametrizada uma forma de dispobilização de dados em REST.
 	Autor: Michel Moura Silva
 	Criado em: 14/03/2021
 	
@@ -31,15 +31,15 @@ Exemplo de chamada da procedure:
 declare 
 		v_output clob;
 	begin
-		rebeca.prc_recupera_configuracao_serv('CENSO_SUPERIOR', 'IES', 1, 'ESCOLA1,ESCOLA2', v_output);
+		rebeca.prc_recupera_configuracao_serv('PROJETO_1', 'ASSUNTO', 1, 'VALORFILTRO2,VALORFILTRO1', v_output);
 		dbms_output.put_line(v_output);
 	end;
 
 Changelog:
 --------------------------------------------------------------------
-Demanda 	Data     		Responsável	    Descricao
+Data     		Responsável	    Descricao
 --------------------------------------------------------------------
-xxxx		20/08/2018		Michel Moura	Criação da procedure 
+14/03/2021	Michel Moura	Criação da procedure 
 --------------------------------------------------------------------
 */
         v_projeto                    varchar2(30):= p_projeto;                         -- Variável que receberá o parâmetro p_projeto
@@ -118,7 +118,7 @@ BEGIN
                 dbms_lob.writeappend(v_cabecalho_metadados 		-- localizador do lob interno a ser gravado.
                                     ,length(v_coluna_conteudo)	-- número de caracteres que será gravado
                                     ,v_coluna_conteudo);		-- buffer de entrada para a gravação
-      -- define uma coluna a ser selecionada no cursor fornecido
+        -- define uma coluna a ser selecionada no cursor fornecido
         dbms_sql.define_column(
 				v_numero_cursor, -- número do id do cursor para as colunas que estão sendo descritas
 				i, 				 -- posição relativa da coluna na linha que está sendo definida, onde a primeira coluna em uma instrução tem posição 1
@@ -128,7 +128,7 @@ BEGIN
         -- substituição necessária para que a string Json esteja correta e inicialize o próximo nó que são os de dados.
 		v_cabecalho_metadados := rtrim(v_cabecalho_metadados ,',') || '],"dados":';    
 		-- Abrir novamente o ref cursor principal com todo o conteúdo do objeto selecionado
-		--open v_ref_cursor_principal for v_nome_ref_cursor;                 
+		-- open v_ref_cursor_principal for v_nome_ref_cursor;                 
         -- Montage do conteúdo com os dados em formato Json
         v_dados_conteudo := v_dados_conteudo || '[';    
         WHILE DBMS_SQL.FETCH_ROWS(v_numero_cursor) > 0 LOOP                        

@@ -3,6 +3,8 @@ package br.rebeca.resource;
 import java.net.URI;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +35,7 @@ public class ConfiguracaoResource {
 
     @ApiOperation(value = "Insere uma configuração.")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Configuracao obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody Configuracao obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdConfiguracao())
 				.toUri();
@@ -47,7 +49,7 @@ public class ConfiguracaoResource {
     	Configuracao dbobj = service.find(id);
     	
     	dbobj.setDsModulo(obj.getDsModulo());
-    	dbobj.setCoProjeto(obj.getCoProjeto());
+    	dbobj.setIdProjeto(obj.getIdProjeto());
     	dbobj.setNoModulo(obj.getNoModulo());
     	dbobj.setNoObjetoBanco(obj.getNoObjetoBanco());
     	dbobj.setNoProprietarioBanco(obj.getNoProprietarioBanco());

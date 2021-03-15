@@ -1,7 +1,7 @@
 # Projeto Rebeca
 
 O Nome **Rebeca** significa "união", "ligação", "aquela que une" ou "mulher com uma beleza que cativa (ou prende) os homens". O nome Rebeca vem do hebraico Ribhqah, que literalmente significa "união", "ligação", "aquela que une".
-O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco de dados Oracle em Jso
+O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco de dados Oracle em Json e disponibilizados em formato REST.
 
 
 # Arquivos

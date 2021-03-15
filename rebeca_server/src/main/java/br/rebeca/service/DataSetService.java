@@ -28,12 +28,12 @@ public class DataSetService {
 			throws SQLException, IOException {
 
 		StoredProcedureQuery query = (entityManager).createStoredProcedureQuery("REBECA.prc_recupera_configuracao_serv");
-		query.registerStoredProcedureParameter("p_sistema", String.class, ParameterMode.IN);
+		query.registerStoredProcedureParameter("p_projeto", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_modulo", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_id_filtro",  String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_criterio_pesquisa", String.class, ParameterMode.IN);
 		query.registerStoredProcedureParameter("p_json_string", Clob.class, ParameterMode.OUT);
-		query.setParameter("p_sistema", sistema.toUpperCase());
+		query.setParameter("p_projeto", sistema.toUpperCase());
 		query.setParameter("p_modulo", modulo.toUpperCase());
 
 		query.setParameter("p_id_filtro", (filtro != null ? filtro : "") );

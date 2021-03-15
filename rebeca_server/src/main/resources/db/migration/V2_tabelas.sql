@@ -102,3 +102,24 @@ comment on column REBECA.TB_FILTRO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identific
 
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON REBECA.TB_FILTRO_SERVICO TO REBECA;
+
+
+CREATE OR REPLACE VIEW REBECA.VW_END_POINT
+AS
+ SELECT 
+    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/'  ENDPOINT
+FROM 
+ REBECA.TB_CONFIGURACAO_SERVICO SERVICO
+ INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
+UNION ALL 
+ SELECT 
+    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico || '/{'|| FILTRO.CD_CONDICAO||'}'  ENDPOINT
+FROM 
+ REBECA.TB_CONFIGURACAO_SERVICO SERVICO
+ INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
+ INNER JOIN REBECA.TB_FILTRO_SERVICO FILTRO ON SERVICO.ID_CONFIGURACAO_SERVICO = filtro.ID_CONFIGURACAO_SERVICO
+
+
+GRANT SELECT ON REBECA.VW_END_POINT TO REBECA;
+
+COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO';

@@ -23,43 +23,44 @@ import br.rebeca.service.exceptions.ObjectNotFoundException;
 public class ConfiguracaoService {
 
 	@Autowired
-	private ConfiguracaoRepository repo;
+	private ConfiguracaoRepository configuracaoRepository;
+
 
 	@PersistenceContext
 	EntityManager entityManager;
 
 	public Configuracao find(Long id) {
-		Optional<Configuracao> obj = repo.findById(id);
+		Optional<Configuracao> obj = configuracaoRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id:" + id + ", Tipo: " + Configuracao.class.getName()));
 	}
 
 	public Configuracao insert(Configuracao obj) {
 		obj.setIdConfiguracao(0);
-		return repo.save(obj);
+		return configuracaoRepository.save(obj);
 	}
 
 	public Configuracao update(Configuracao obj) {
 		find(obj.getIdConfiguracao());
-		return repo.save(obj);
+		return configuracaoRepository.save(obj);
 	}
 
 	public void delete(Long id) {
 		find(id);
 		try {
-			repo.deleteById(id);
+			configuracaoRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Nao é possível excluir um registro com filhos.");
 		}
 	}
 
 	public List<Configuracao> findAll() {
-		return repo.findAll();
+		return configuracaoRepository.findAll();
 	}
 
 	public Page<Configuracao> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);
+		return configuracaoRepository.findAll(pageRequest);
 	}
 
 
