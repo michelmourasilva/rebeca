@@ -6,7 +6,7 @@ O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco d
 
 # Arquivos
 
-O projeto está dividido em duas pastas para tratar cada serviço separadamente. Uma para o front-end que está desenvolvido (rebeca_front)  em Angular e outra para o back-end  (rebeca_server) que está desenvolvido em Java utilizando framework Spring juntamente com alguns procedimentos diretamente no banco de dados Oracle.
+O projeto está dividido em duas pastas para tratar cada serviço separadamente. Uma para o front-end (rebeca_front) que está desenvolvido em Angular e outra para o back-end (rebeca_server) que está desenvolvido em Java utilizando framework Spring.
 
 # Instalação do ambiente de desenvolvimento
 
