@@ -22,10 +22,10 @@ Todo o ambiente foi dockerizado portanto basta executar o comando:
 
 - Swagger: http://localhost:8082/swagger-ui.html
 - EndPoints:
-		- **configuracao-resource**: Configuração que indicará quais tabelas/views/materialized views terão seus dados disponibilizados. Também será informado quais filtros serão obrigatórios e aplicados em cada consulta. 
-		- **data-set-resource**:  Apresenta o dado de um objeto que foi configurado para ser apresentado. 
-		- **filtro-resource**:  Filtros que serão aplicados nos datasets. Um filtro sempre necessita dos critérios que serão aplicados. Ex: Em um data set que apresenta os Estados brasileiros pode existir um filtro com a Unidade Federativa, portanto essa UF deverá ser informada no endpoint
-		- **projeto-resource:** Mantêm os projetos que terão os dados disponibilizados
+	- **configuracao-resource**: Configuração que indicará quais tabelas/views/materialized views terão seus dados disponibilizados. Também será informado quais filtros serão obrigatórios e aplicados em cada consulta. 
+	- **data-set-resource**:  Apresenta o dado de um objeto que foi configurado para ser apresentado. 
+	- **filtro-resource**:  Filtros que serão aplicados nos datasets. Um filtro sempre necessita dos critérios que serão aplicados. Ex: Em um data set que apresenta os Estados brasileiros pode existir um filtro com a Unidade Federativa, portanto essa UF deverá ser informada no endpoint
+	- **projeto-resource:** Mantêm os projetos que terão os dados disponibilizados
 			
 
 ## Banco de dados
