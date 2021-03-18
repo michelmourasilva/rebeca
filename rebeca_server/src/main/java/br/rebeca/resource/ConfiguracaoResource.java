@@ -49,7 +49,7 @@ public class ConfiguracaoResource {
     	Configuracao dbobj = service.find(id);
     	
     	dbobj.setDsModulo(obj.getDsModulo());
-    	dbobj.setIdProjeto(obj.getIdProjeto());
+    	dbobj.setProjeto(obj.getProjeto());
     	dbobj.setNoModulo(obj.getNoModulo());
     	dbobj.setNoObjetoBanco(obj.getNoObjetoBanco());
     	dbobj.setNoProprietarioBanco(obj.getNoProprietarioBanco());

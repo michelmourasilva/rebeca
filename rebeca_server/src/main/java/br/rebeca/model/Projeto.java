@@ -1,15 +1,19 @@
 package br.rebeca.model;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,62 +24,98 @@ import io.swagger.annotations.ApiModelProperty;
 public class Projeto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-    private long idProjeto;
+    
+
+	private long idProjeto;
     private String noProjeto;
     private String dsProjeto;
- 
+
+    private Set<Configuracao> configuracoes;
     
-    @Id
+    
+    public Projeto() {
+    	super();
+    }
+    
+
+	public Projeto(long idProjeto, String noProjeto, String dsProjeto) {
+		super();
+		this.idProjeto = idProjeto;
+		this.noProjeto = noProjeto;
+		this.dsProjeto = dsProjeto;
+	}
+
+
+	@Id
     @Basic
     @Column(name = "ID_PROJETO")
     @ApiModelProperty(value = "id", hidden  = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getIdProjeto() {
-        return idProjeto;
-    }
+	public long getIdProjeto() {
+		return idProjeto;
+	}
 
-    public void setIdProjeto(long idProjeto) {
-        this.idProjeto = idProjeto;
-    }
+	public void setIdProjeto(long idProjeto) {
+		this.idProjeto = idProjeto;
+	}
 
     @Basic
     @ApiModelProperty(value = "noProjeto", required = true)
     @Column(name = "NO_PROJETO", nullable = false, unique = true)
-    public String getNoProjeto() {
-        return noProjeto;
-    }
+	public String getNoProjeto() {
+		return noProjeto;
+	}
 
-    public void setNoProjeto(String noProjeto) {
-        this.noProjeto = noProjeto;
-    }
+	public void setNoProjeto(String noProjeto) {
+		this.noProjeto = noProjeto;
+	}
 
     @Basic
     @ApiModelProperty(value = "dsProjeto", required = true)
     @Column(name = "DS_PROJETO", nullable = false)
-    public String getDsProjeto() {
-        return dsProjeto;
-    }
+	public String getDsProjeto() {
+		return dsProjeto;
+	}
 
-    public void setDsProjeto(String dsProjeto) {
-        this.dsProjeto = dsProjeto;
-    }
+	public void setDsProjeto(String dsProjeto) {
+		this.dsProjeto = dsProjeto;
+	}
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Projeto projeto = (Projeto) o;
-        return idProjeto  == projeto.idProjeto &&
-                Objects.equals(noProjeto, projeto.noProjeto) &&
-                Objects.equals(dsProjeto, projeto.dsProjeto);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(idProjeto , noProjeto, dsProjeto);
-    }
+    @OneToMany(mappedBy="projeto", fetch = FetchType.LAZY)
+	public Set<Configuracao> getConfiguracoes() {
+		return configuracoes;
+	}
 
 
+	public void setConfiguracoes(Set<Configuracao> configuracoes) {
+		this.configuracoes = configuracoes;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (idProjeto ^ (idProjeto >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Projeto other = (Projeto) obj;
+		if (idProjeto != other.idProjeto)
+			return false;
+		return true;
+	}
+
+    
+    
+
+    
+    
 }

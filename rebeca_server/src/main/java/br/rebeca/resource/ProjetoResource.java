@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.rebeca.dto.ProjetoDTO;
 import br.rebeca.model.Projeto;
 import br.rebeca.service.ProjetoService;
 import io.swagger.annotations.ApiOperation;
@@ -36,8 +37,11 @@ public class ProjetoResource {
     
     @ApiOperation(value = "Insere um projeto")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Projeto obj) {
-		obj = service.insert(obj);
+	public ResponseEntity<Void> insert(@Valid @RequestBody ProjetoDTO objDto) {
+    	
+    	Projeto obj = service.fromDTO(objDto);
+    	obj = service.insert(obj);
+    	
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdProjeto())
 				.toUri();
 		return ResponseEntity.created(uri).build();
@@ -45,14 +49,12 @@ public class ProjetoResource {
 
     @ApiOperation(value = "Atualiza um projeto")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody Projeto obj, @PathVariable("id") Long id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody ProjetoDTO objDto, @PathVariable("id") Long id) {
     	
-    	Projeto dbobj = service.find(id);
-    	
-    	dbobj.setDsProjeto(obj.getDsProjeto());
-    	dbobj.setNoProjeto(obj.getNoProjeto());
-		
-		service.update(dbobj);
+    	Projeto obj = service.fromDTO(objDto);
+    	obj.setIdProjeto(id);
+    
+		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 

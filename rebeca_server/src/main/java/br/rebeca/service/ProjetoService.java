@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.rebeca.dto.ProjetoDTO;
 import br.rebeca.model.Projeto;
 import br.rebeca.repository.ProjetoRepository;
 import br.rebeca.service.exceptions.DataIntegrityException;
@@ -61,6 +62,10 @@ public class ProjetoService {
 		return repo.findAll(pageRequest);
 	}
 
+	
+	public Projeto fromDTO(ProjetoDTO objDto) {
+		return new Projeto(objDto.getIdProjeto(), objDto.getNoProjeto(), objDto.getDsProjeto());
+	}
 	
 
 }
