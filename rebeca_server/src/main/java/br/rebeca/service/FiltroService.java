@@ -69,8 +69,10 @@ public class FiltroService {
 		Configuracao confObj = new Configuracao();
 		confObj.setIdConfiguracao(objDto.getIdConfiguracao());
 	
-		//return new Filtro(objDto.getNoAtributo(), confObj, TipoFiltro.toEnum(objDto.getTipoFiltro()));
-		return new Filtro(objDto.getNoAtributo(), confObj);
+		//objDto.setIdFiltro(objDto.getIdFiltro());
+		
+		return new Filtro(objDto.getNoAtributo(), confObj, objDto.getTipoFiltro() );
+		
 	}
 	
 

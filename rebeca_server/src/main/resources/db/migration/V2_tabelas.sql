@@ -10,6 +10,16 @@ CREATE TABLE REBECA.TB_PROJETO
   ENABLE 
 );
 
+
+COMMENT ON TABLE REBECA.TB_PROJETO IS 'Projeto que disponbilizará dados em formato Rest para o Rebeca';
+
+comment on column REBECA.TB_CONFIGURACAO_SERVICO.ID_PROJETO IS 'Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.';
+
+comment on column REBECA.TB_CONFIGURACAO_SERVICO.NO_PROJETO IS 'Nome único do projeto que irá disponibilizar dados para o Rebeca';
+
+comment on column REBECA.TB_CONFIGURACAO_SERVICO.DS_PROJETO IS 'Breve descrição do projeto.';
+
+
 ALTER TABLE REBECA.TB_PROJETO
 ADD CONSTRAINT UK_PROJETO_01 UNIQUE 
 (
@@ -57,7 +67,7 @@ COMMENT ON TABLE REBECA.TB_CONFIGURACAO_SERVICO IS 'A Representational State Tra
 O REST ignora os detalhes da implementação de componente e a sintaxe de protocolo com o objetivo de focar nos papéis dos componentes, nas restrições sobre sua interação com outros componentes e na sua interpretação de elementos de dados significantes.
 Esta entidade irá auxiliar na configuração do serviço rest e a camada de acesso aos dados, fazendo com que o serviço seja acessado dinamicamente tendo como base a configuração definida pela administração de dados.';
 
-comment on column REBECA.TB_CONFIGURACAO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identificador gerado automaticamente pela sequence seq_configuracao_servico. Auxilia na identificação da configuração do serviço REST.';
+comment on column REBECA.TB_CONFIGURACAO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identificador gerado  automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.';
 
 comment on column REBECA.TB_CONFIGURACAO_SERVICO.ID_PROJETO IS 'Código do projeto ';
 
@@ -93,60 +103,78 @@ ENABLE;
 
 COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'Cada configuração poderá utilizar mais de uma condição de filtro juntamente com um objecto específico do banco. ';
 
-comment on column REBECA.TB_FILTRO_SERVICO.ID_FILTRO_SERVICO IS 'Identificador automatico gerado pela sequence seq_filtro_servico. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST';
+comment on column REBECA.TB_FILTRO_SERVICO.ID_FILTRO_SERVICO IS 'Identificador gerado automaticamente pelo Oracle. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST';
 
 
 comment on column TB_FILTRO_SERVICO.TP_CONDICAO is 'Tipo de operacao que podera ser aplicada em um campo especifico do objeto
 Valores possiveis:
-IGUAL(1, "= :1"),
-DIFERENTE(2, "!= :1"),
-MAIOR(3, "> :1"),
-MENOR(4, "< :1"),
-MAIOROUIGUAL(5, ">= :1"),
-MENOROUIGUAL(6, "<= :1"),
-IN(7, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
+IGUAL(0, "= :1"),
+DIFERENTE(1, "!= :1"),
+MAIOR(2, "> :1"),
+MENOR(3, "< :1"),
+MAIOROUIGUAL(4, ">= :1"),
+MENOROUIGUAL(5, "<= :1"),
+IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
 Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle.
-Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo'
+Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo';
 
 comment on column REBECA.TB_FILTRO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identificador gerado automaticamente pela sequence seq_configuracao_servico. Auxilia na identificação da configuração do serviço REST.';
 
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON REBECA.TB_FILTRO_SERVICO TO REBECA;
 
-
 CREATE OR REPLACE VIEW REBECA.VW_END_POINT
 AS
 WITH CTE_TIPOFILTRO AS (
-SELECT 1 ID_TIPO_FILTRO, '= :1' FROM DUAL
+SELECT 0 ID_TIPO_FILTRO, '= :?' DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 2 ID_TIPO_FILTRO, '!= :1' FROM DUAL
+SELECT 1 ID_TIPO_FILTRO, '!= :?'  DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 3 ID_TIPO_FILTRO, '> :1' FROM DUAL
+SELECT 2 ID_TIPO_FILTRO, '> :?'  DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 4 ID_TIPO_FILTRO, '< :1' FROM DUAL
+SELECT 3 ID_TIPO_FILTRO, '< :?'  DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 5 ID_TIPO_FILTRO, '>= :1' FROM DUAL
+SELECT 4 ID_TIPO_FILTRO, '>= :?'  DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 6 ID_TIPO_FILTRO, '<= :1' FROM DUAL
+SELECT 5 ID_TIPO_FILTRO, '<= :?'  DS_TIPO_FILTRO FROM DUAL
 UNION ALL
-SELECT 7 ID_TIPO_FILTRO, '( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))' FROM DUAL
+SELECT 6 ID_TIPO_FILTRO, '( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:?))))' FROM DUAL
 
 )
-
- SELECT 
-    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/'  ENDPOINT, NULL OBSERVACAO
-FROM 
+select sum(nvl(Null,1)) over (order by origem.END_POINT ROWS UNBOUNDED PRECEDING) ID , origem.* from (
+ SELECT
+    '/dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/'  END_POINT, NULL ATRIBUTO_FILTRO, PROJETO.NO_PROJETO, SERVICO.NO_MODULO, SERVICO.DS_MODULO
+FROM
  REBECA.TB_CONFIGURACAO_SERVICO SERVICO
  INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
-UNION ALL 
- SELECT 
-    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico || '/'|| filtro.ID_FILTRO_SERVICO  ENDPOINT, 'FILTRO: ' || filtro.NO_ATRIBUTO 
-FROM 
+UNION ALL
+ SELECT
+    '/dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico || '/?' END_POINT, filtro.NO_ATRIBUTO ||' '||TIPOFILTRO.DS_TIPO_FILTRO, PROJETO.NO_PROJETO, SERVICO.NO_MODULO, SERVICO.DS_MODULO
+FROM
  REBECA.TB_CONFIGURACAO_SERVICO SERVICO
  INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
  INNER JOIN REBECA.TB_FILTRO_SERVICO FILTRO ON SERVICO.ID_CONFIGURACAO_SERVICO = filtro.ID_CONFIGURACAO_SERVICO
- INNER JOIN CTE_TIPOFILTRO TIPOFILTRO ON FILTRO.TP_FILTRO = TIPOFILTRO.ID_TIPO_FILTRO;
- 
+ INNER JOIN CTE_TIPOFILTRO TIPOFILTRO ON FILTRO.TP_CONDICAO = TIPOFILTRO.ID_TIPO_FILTRO
+) origem
+;
 GRANT SELECT ON REBECA.VW_END_POINT TO REBECA;
 
 COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO';
+
+
+comment on column REBECA.TB_FILTRO_SERVICO.ID IS 'Identificador gerado automaticamente somente para referência da linha. ';
+
+comment on column REBECA.TB_FILTRO_SERVICO.END_POINT IS 'Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas.';
+
+comment on column REBECA.TB_FILTRO_SERVICO.ATRIBUTO_FILTRO IS 'Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo "?" apresentado no campo END_POINT. ';
+
+comment on column REBECA.TB_FILTRO_SERVICO.NO_PROJETO IS 'Nome do projeto que está disponibilizando os dados. ';
+
+comment on column REBECA.TB_FILTRO_SERVICO.NO_MODULO IS 'Nome do módulo deste sistema.';
+
+comment on column REBECA.TB_FILTRO_SERVICO.DS_MODULO IS 'Breve descrição do módulo de um sistema. ';
+
+
+
+
+

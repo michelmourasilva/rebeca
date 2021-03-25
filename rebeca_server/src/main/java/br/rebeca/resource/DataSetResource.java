@@ -14,10 +14,12 @@ import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import br.rebeca.service.DataSetService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/dataset")
+@Api(value="Conjunto de dados", description="Conjunto de dados de um determinado projeto", tags="Conjunto de dados")
 public class DataSetResource {
 
 	@Autowired

@@ -19,10 +19,12 @@ import br.rebeca.dto.filtroDTO;
 import br.rebeca.model.Configuracao;
 import br.rebeca.model.Filtro;
 import br.rebeca.service.FiltroService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/filtros")
+@Api(value="Filtros", description="Operações referente aos filtros de um endpoint", tags="Filtros")
 public class FiltroResource {
 
 	@Autowired

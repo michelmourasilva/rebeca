@@ -18,10 +18,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.rebeca.dto.ProjetoDTO;
 import br.rebeca.model.Projeto;
 import br.rebeca.service.ProjetoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/projetos", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(value="Projetos", description="Operações referente aos projetos que irão disponibilizar seus dados", tags="Projetos")
 public class ProjetoResource {
 
 	@Autowired

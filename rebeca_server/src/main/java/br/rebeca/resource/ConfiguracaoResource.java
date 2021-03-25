@@ -19,10 +19,12 @@ import br.rebeca.dto.ConfiguracaoDTO;
 import br.rebeca.model.Configuracao;
 import br.rebeca.model.Projeto;
 import br.rebeca.service.ConfiguracaoService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/configuracoes", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/configuracoes", produces = MediaType.APPLICATION_JSON_VALUE) 
+@Api(value="configurações", description="Operações referente as configurações dos endpoints", tags="Configurações")
 public class ConfiguracaoResource {
 
 	@Autowired

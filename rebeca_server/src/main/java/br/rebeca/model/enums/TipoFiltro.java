@@ -2,13 +2,13 @@ package br.rebeca.model.enums;
 
 public enum TipoFiltro {
 	
-	IGUAL(1, "= :1"),
-	DIFERENTE(2, "!= :1"),
-	MAIOR(3, "> :1"),
-	MENOR(4, "< :1"),
-	MAIOROUIGUAL(5, ">= :1"),
-	MENOROUIGUAL(6, "<= :1"),
-	IN(7, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
+	IGUAL(0, "= :1"),
+	DIFERENTE(1, "!= :1"),
+	MAIOR(2, "> :1"),
+	MENOR(3, "< :1"),
+	MAIOROUIGUAL(4, ">= :1"),
+	MENOROUIGUAL(5, "<= :1"),
+	IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
 	
 	private int codTipo;
 	private String descTipo;

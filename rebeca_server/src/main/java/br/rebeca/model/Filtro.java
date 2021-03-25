@@ -14,6 +14,8 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.rebeca.model.enums.TipoFiltro;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 
 
@@ -26,7 +28,7 @@ public class Filtro implements Serializable{
     private String noAtributo;
     
     private Configuracao configuracaoservico;
-    //private Integer tipo;
+    private Integer tipofiltro;
 
 
     @Id
@@ -64,13 +66,17 @@ public class Filtro implements Serializable{
     	configuracaoservico = vconfiguracaoservico;
     }
 
-    //public TipoFiltro getTipoFiltro() {
-    //	return TipoFiltro.toEnum(tipo);
-    //}
     
-    //public void setTipoFiltro(TipoFiltro tipo) {
-    //	this.tipo = tipo.getCodTipo();
-    //}
+    @Basic
+    @Column(name = "TP_CONDICAO", nullable = false)
+    @ApiModelProperty(value = "tpCondicao", required = true)
+    public TipoFiltro getTipoFiltro() {
+    	return TipoFiltro.toEnum(tipofiltro);
+    }
+    
+    public void setTipoFiltro(TipoFiltro tipofiltro) {
+    	this.tipofiltro = tipofiltro.getCodTipo();
+    }
     
     
     public Filtro() {
@@ -78,12 +84,12 @@ public class Filtro implements Serializable{
     }
 
         
-	//public Filtro(String noAtributo, Configuracao configuracaoservico, TipoFiltro tipo) {
-	public Filtro(String noAtributo, Configuracao configuracaoservico) {
+	public Filtro(String noAtributo, Configuracao configuracaoservico, TipoFiltro tipofiltro) {
+	//public Filtro(String noAtributo, Configuracao configuracaoservico) {
 		super();
 		this.noAtributo = noAtributo;
 		this.configuracaoservico = configuracaoservico;
-		//this.tipo = (tipo==null) ? null : tipo.getCodTipo();
+		this.tipofiltro = (tipofiltro==null) ? null : tipofiltro.getCodTipo();
 	}
 
 
