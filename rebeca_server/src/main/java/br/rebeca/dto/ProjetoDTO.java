@@ -2,6 +2,12 @@ package br.rebeca.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.rebeca.model.Projeto;
 
 
@@ -9,17 +15,22 @@ public class ProjetoDTO implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-
 	private long idProjeto;
 
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(max=30, message="O tamanho deve ser até 30 caracteres")
 	private String noProjeto;
     
+
+    @NotEmpty(message="Preenchimento obrigatório.")
+    @Length(max=300, message="O tamanho deve ser até 300 caracteres")
     private String dsProjeto;
     
     public ProjetoDTO() {
     	super();
     }
 
+    @JsonIgnore
 	public long getIdProjeto() {
 		return idProjeto;
 	}

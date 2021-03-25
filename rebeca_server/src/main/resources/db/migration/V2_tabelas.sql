@@ -75,7 +75,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON REBECA.TB_CONFIGURACAO_SERVICO  TO REBEC
 CREATE TABLE REBECA.TB_FILTRO_SERVICO 
 (
   ID_FILTRO_SERVICO NUMBER(14, 0) GENERATED ALWAYS AS IDENTITY NOT NULL 
-, CD_CONDICAO VARCHAR2(4000 BYTE) NOT NULL 
+, NO_ATRIBUTO             VARCHAR2(30) not null,NOT NULL 
 , ID_CONFIGURACAO_SERVICO NUMBER(14, 0) NOT NULL 
 , CONSTRAINT PK_FILTRO_SERVICO PRIMARY KEY  (ID_FILTRO_SERVICO )ENABLE 
 );
@@ -95,8 +95,18 @@ COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'Cada configuração poderá utiliz
 
 comment on column REBECA.TB_FILTRO_SERVICO.ID_FILTRO_SERVICO IS 'Identificador automatico gerado pela sequence seq_filtro_servico. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST';
 
-comment on column REBECA.TB_FILTRO_SERVICO.CD_CONDICAO IS 'Condição que será utilizada pela configuração do serviço REST. Os valores que serão subistituidos deverão seguir o padrão de binds de aplicação, isto é, utilizando dois pontos e um número que representa a ordem da troca do bind.
-Ex: co_ies = :1 and id_ies = :2. No caso de instruções que utilizam a condição IN o valor deste campo deve utilizar a função REBECA.fnc_string_virgula_tabela. Ex: CO_IES in ( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))));';
+
+comment on column TB_FILTRO_SERVICO.TP_CONDICAO is 'Tipo de operacao que podera ser aplicada em um campo especifico do objeto
+Valores possiveis:
+IGUAL(1, "= :1"),
+DIFERENTE(2, "!= :1"),
+MAIOR(3, "> :1"),
+MENOR(4, "< :1"),
+MAIOROUIGUAL(5, ">= :1"),
+MENOROUIGUAL(6, "<= :1"),
+IN(7, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
+Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle.
+Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo'
 
 comment on column REBECA.TB_FILTRO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identificador gerado automaticamente pela sequence seq_configuracao_servico. Auxilia na identificação da configuração do serviço REST.';
 
@@ -106,20 +116,37 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON REBECA.TB_FILTRO_SERVICO TO REBECA;
 
 CREATE OR REPLACE VIEW REBECA.VW_END_POINT
 AS
+WITH CTE_TIPOFILTRO AS (
+SELECT 1 ID_TIPO_FILTRO, '= :1' FROM DUAL
+UNION ALL
+SELECT 2 ID_TIPO_FILTRO, '!= :1' FROM DUAL
+UNION ALL
+SELECT 3 ID_TIPO_FILTRO, '> :1' FROM DUAL
+UNION ALL
+SELECT 4 ID_TIPO_FILTRO, '< :1' FROM DUAL
+UNION ALL
+SELECT 5 ID_TIPO_FILTRO, '>= :1' FROM DUAL
+UNION ALL
+SELECT 6 ID_TIPO_FILTRO, '<= :1' FROM DUAL
+UNION ALL
+SELECT 7 ID_TIPO_FILTRO, '( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))' FROM DUAL
+
+)
+
  SELECT 
-    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/'  ENDPOINT
+    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/'  ENDPOINT, NULL OBSERVACAO
 FROM 
  REBECA.TB_CONFIGURACAO_SERVICO SERVICO
  INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
 UNION ALL 
  SELECT 
-    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico || '/{'|| FILTRO.CD_CONDICAO||'}'  ENDPOINT
+    'dataset/'|| PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico || '/'|| filtro.ID_FILTRO_SERVICO  ENDPOINT, 'FILTRO: ' || filtro.NO_ATRIBUTO 
 FROM 
  REBECA.TB_CONFIGURACAO_SERVICO SERVICO
  INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
  INNER JOIN REBECA.TB_FILTRO_SERVICO FILTRO ON SERVICO.ID_CONFIGURACAO_SERVICO = filtro.ID_CONFIGURACAO_SERVICO
-
-
+ INNER JOIN CTE_TIPOFILTRO TIPOFILTRO ON FILTRO.TP_FILTRO = TIPOFILTRO.ID_TIPO_FILTRO;
+ 
 GRANT SELECT ON REBECA.VW_END_POINT TO REBECA;
 
 COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO';

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.rebeca.dto.filtroDTO;
+import br.rebeca.model.Configuracao;
 import br.rebeca.model.Filtro;
 import br.rebeca.service.FiltroService;
 import io.swagger.annotations.ApiOperation;
@@ -44,22 +46,35 @@ public class FiltroResource {
     
     @ApiOperation(value = "Insere um filtro")
    	@RequestMapping(method = RequestMethod.POST)
-   	public ResponseEntity<Void> insert(@Valid @RequestBody Filtro obj) {
+   	public ResponseEntity<Void> insert(@Valid @RequestBody filtroDTO objDto) {
+    	
+    	
+    	Configuracao configuracao = new Configuracao();
+    	
+    	configuracao.setIdConfiguracao(objDto.getIdConfiguracao());
+    	
+    	Filtro obj = service.fromDTO(objDto);
+    	
    		obj = service.insert(obj);
    		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdFiltro())
    				.toUri();
    		return ResponseEntity.created(uri).build();
    	}
 
-    @ApiOperation(value = "Atualiza um filtro")
+    @ApiOperation(value = "Atualiza um filtro.")
    	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-   	public ResponseEntity<Void> update(@Valid @RequestBody Filtro obj, @PathVariable("id") Long id) {
+   	public ResponseEntity<Void> update(@Valid @RequestBody filtroDTO objDto, @PathVariable("id") Long id) {
        	
-       	Filtro dbobj = service.find(id);
-       	
-       	dbobj.setcdCondicao(obj.getcdCondicao());
+
+    	Filtro obj = service.fromDTO(objDto);
+    	obj.setIdFiltro(id);
+    	
+    	Configuracao configuracao = new Configuracao();
+    	configuracao.setIdConfiguracao(objDto.getIdConfiguracao());
+    	
+    	obj.setNoAtributo(obj.getNoAtributo());
    		
-   		service.update(dbobj);
+   		service.update(obj);
    		return ResponseEntity.noContent().build();
    	}
 

@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -20,7 +21,8 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
 @Entity
-@Table(name = "TB_PROJETO", schema = "REBECA")
+@Table(name = "TB_PROJETO", schema = "REBECA", uniqueConstraints={
+	    @UniqueConstraint(columnNames = {"NO_PROJETO"} )})
 public class Projeto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -49,7 +51,7 @@ public class Projeto implements Serializable{
 	@Id
     @Basic
     @Column(name = "ID_PROJETO")
-    @ApiModelProperty(value = "id", hidden  = true)
+    @ApiModelProperty(value = "id", hidden  = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public long getIdProjeto() {
 		return idProjeto;
@@ -81,6 +83,7 @@ public class Projeto implements Serializable{
 		this.dsProjeto = dsProjeto;
 	}
 
+	@JsonIgnore
     @OneToMany(mappedBy="projeto", fetch = FetchType.LAZY)
 	public Set<Configuracao> getConfiguracoes() {
 		return configuracoes;

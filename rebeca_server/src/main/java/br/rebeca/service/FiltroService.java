@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.rebeca.dto.filtroDTO;
+import br.rebeca.model.Configuracao;
 import br.rebeca.model.Filtro;
 import br.rebeca.repository.FiltroRepository;
 import br.rebeca.service.exceptions.DataIntegrityException;
@@ -23,6 +25,7 @@ public class FiltroService {
 
 	@Autowired
 	private FiltroRepository repo;
+	
 
 	@PersistenceContext
 	EntityManager entityManager;
@@ -62,6 +65,13 @@ public class FiltroService {
 		return repo.findAll(pageRequest);
 	}
 
+	public Filtro fromDTO(filtroDTO objDto) {
+		Configuracao confObj = new Configuracao();
+		confObj.setIdConfiguracao(objDto.getIdConfiguracao());
+	
+		//return new Filtro(objDto.getNoAtributo(), confObj, TipoFiltro.toEnum(objDto.getTipoFiltro()));
+		return new Filtro(objDto.getNoAtributo(), confObj);
+	}
 	
 
 }

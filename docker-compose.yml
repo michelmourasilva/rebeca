@@ -16,6 +16,7 @@ services:
             DATASOURCE_USERNAME: REBECA
             DATASOURCE_PASSWORD: REBECA_APP
             DATASOURCE_HOST: db
+        # entrypoint: ["./wait-for-it.sh","db:8080","--timeout=0","--strict", "--", "java", "-jar","app.jar" ]
         networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
             - backend
             - frontend

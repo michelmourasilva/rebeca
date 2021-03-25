@@ -13,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import br.rebeca.dto.ConfiguracaoDTO;
 import br.rebeca.model.Configuracao;
+import br.rebeca.model.Projeto;
 import br.rebeca.repository.ConfiguracaoRepository;
 import br.rebeca.service.exceptions.DataIntegrityException;
 import br.rebeca.service.exceptions.ObjectNotFoundException;
@@ -24,7 +26,6 @@ public class ConfiguracaoService {
 
 	@Autowired
 	private ConfiguracaoRepository configuracaoRepository;
-
 
 	@PersistenceContext
 	EntityManager entityManager;
@@ -63,6 +64,11 @@ public class ConfiguracaoService {
 		return configuracaoRepository.findAll(pageRequest);
 	}
 
+	public Configuracao fromDTO(ConfiguracaoDTO objDto) {
+		Projeto prjObj = new Projeto();
+				prjObj.setIdProjeto(objDto.getIdProjeto());
+		return new Configuracao(objDto.getNoModulo(), objDto.getDsModulo(), objDto.getNoObjetoBanco(), objDto.getNoProprietarioBanco(), prjObj);
+	}
 
 
 }

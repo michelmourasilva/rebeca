@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModelProperty;
 
 
@@ -21,13 +23,15 @@ public class Filtro implements Serializable{
 
 	private static final long serialVersionUID = 1L;
     private long idFiltro;
-    private String cdCondicao;
+    private String noAtributo;
+    
     private Configuracao configuracaoservico;
+    //private Integer tipo;
 
 
     @Id
     @Column(name = "ID_FILTRO_SERVICO")
-    @ApiModelProperty(value = "id", hidden  = true)
+    @ApiModelProperty(value = "id", hidden  = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getIdFiltro() {
         return idFiltro;
@@ -39,16 +43,17 @@ public class Filtro implements Serializable{
     }
 
     @Basic
-    @Column(name = "CD_CONDICAO", nullable = false)
-    @ApiModelProperty(value = "cdCondicao", required = true)
-    public String getcdCondicao() {
-        return cdCondicao;
+    @Column(name = "NO_ATRIBUTO", nullable = false)
+    @ApiModelProperty(value = "noAtributo", required = true)
+    public String getNoAtributo() {
+        return noAtributo;
     }
 
-    public void setcdCondicao(String cdCondicao) {
-        this.cdCondicao = cdCondicao;
+    public void setNoAtributo(String noAtributo) {
+        this.noAtributo = noAtributo;
     }
     
+    @JsonIgnore
     @ManyToOne(optional=false)
     @JoinColumn(name="ID_CONFIGURACAO_SERVICO", nullable=false)
     public Configuracao getconfiguracaoservico() {
@@ -59,11 +64,29 @@ public class Filtro implements Serializable{
     	configuracaoservico = vconfiguracaoservico;
     }
 
+    //public TipoFiltro getTipoFiltro() {
+    //	return TipoFiltro.toEnum(tipo);
+    //}
+    
+    //public void setTipoFiltro(TipoFiltro tipo) {
+    //	this.tipo = tipo.getCodTipo();
+    //}
+    
+    
     public Filtro() {
         super();
     }
 
-    
+        
+	//public Filtro(String noAtributo, Configuracao configuracaoservico, TipoFiltro tipo) {
+	public Filtro(String noAtributo, Configuracao configuracaoservico) {
+		super();
+		this.noAtributo = noAtributo;
+		this.configuracaoservico = configuracaoservico;
+		//this.tipo = (tipo==null) ? null : tipo.getCodTipo();
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

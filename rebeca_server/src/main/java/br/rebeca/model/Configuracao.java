@@ -46,10 +46,20 @@ public class Configuracao implements Serializable{
     	super();
     }
     
+	public Configuracao(String noModulo, String dsModulo, String noObjetoBanco, String noProprietarioBanco,
+			Projeto projeto) {
+		super();
+		this.noModulo = noModulo;
+		this.dsModulo = dsModulo;
+		this.noObjetoBanco = noObjetoBanco;
+		this.noProprietarioBanco = noProprietarioBanco;
+		this.projeto = projeto;
 
-    @Id
+	}
+
+	@Id
     @Column(name = "ID_CONFIGURACAO_SERVICO", unique=true, nullable=false, precision=14)
-    @ApiModelProperty(value = "id", hidden=true)
+    @ApiModelProperty(value = "id", hidden=false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public long getIdConfiguracao() {
 		return idConfiguracao;
@@ -104,6 +114,7 @@ public class Configuracao implements Serializable{
 		this.noProprietarioBanco = noProprietarioBanco;
 	}
 
+	
     @ManyToOne(optional=false)
     @JoinColumn(name="ID_PROJETO", nullable=false)
 	public Projeto getProjeto() {
@@ -123,6 +134,7 @@ public class Configuracao implements Serializable{
         filtros = vfiltros;
     }
 	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

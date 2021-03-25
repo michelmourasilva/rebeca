@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.rebeca.dto.ConfiguracaoDTO;
 import br.rebeca.model.Configuracao;
+import br.rebeca.model.Projeto;
 import br.rebeca.service.ConfiguracaoService;
 import io.swagger.annotations.ApiOperation;
 
@@ -35,8 +37,16 @@ public class ConfiguracaoResource {
 
     @ApiOperation(value = "Insere uma configuração.")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody Configuracao obj) {
-		obj = service.insert(obj);
+	public ResponseEntity<Void> insert(@Valid @RequestBody ConfiguracaoDTO objDto) {
+    	
+    	Projeto projeto = new Projeto();
+    	
+    	projeto.setIdProjeto(objDto.getIdProjeto());
+    	
+    	Configuracao obj = service.fromDTO(objDto);
+    	
+    	obj = service.insert(obj);
+    	
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdConfiguracao())
 				.toUri();
 		return ResponseEntity.created(uri).build();
@@ -44,18 +54,21 @@ public class ConfiguracaoResource {
 
     @ApiOperation(value = "Atualiza uma configuração. ")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Configuracao obj, @PathVariable Long id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody ConfiguracaoDTO objDto, @PathVariable("id") Long id) {
     	
-    	Configuracao dbobj = service.find(id);
+    	Configuracao obj = service.fromDTO(objDto);
+    	obj.setIdConfiguracao(id);
+
+    	Projeto projeto = new Projeto();
+    	projeto.setIdProjeto(objDto.getIdProjeto());
     	
-    	dbobj.setDsModulo(obj.getDsModulo());
-    	dbobj.setProjeto(obj.getProjeto());
-    	dbobj.setNoModulo(obj.getNoModulo());
-    	dbobj.setNoObjetoBanco(obj.getNoObjetoBanco());
-    	dbobj.setNoProprietarioBanco(obj.getNoProprietarioBanco());
+    	obj.setDsModulo(obj.getDsModulo());
+
+    	obj.setNoModulo(obj.getNoModulo());
+    	obj.setNoObjetoBanco(obj.getNoObjetoBanco());
+    	obj.setNoProprietarioBanco(obj.getNoProprietarioBanco());
     	
-		obj.setIdConfiguracao(id);
-		service.update(dbobj);
+		service.update(obj);
 		return ResponseEntity.noContent().build();
 	}
 
