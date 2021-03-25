@@ -53,7 +53,8 @@ Acessos ao SGBD e aos seus serviços de gerenciamento e monitoramento:
         TB_FILTRO_SERVICO ||--O{ TB_CONFIGURACAO_SERVICO : ""
         TB_FILTRO_SERVICO { 
             number ID_FILTRO_SERVICO
-            varchar CD_CONDICAO
+            varchar NO_ATRIBUTO
+            number TP_CONDICAO
             number ID_CONFIGURACAO_SERVICO
         }
 ```
