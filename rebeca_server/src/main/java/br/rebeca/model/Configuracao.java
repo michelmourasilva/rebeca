@@ -32,7 +32,7 @@ public class Configuracao implements Serializable{
 	/** Primary key. */
     protected static final String PK = "idConfiguracao";
 	
-
+    @ApiModelProperty(notes = "The database generated product ID")
 	private long idConfiguracao;
     private String noModulo;
     private String dsModulo;
