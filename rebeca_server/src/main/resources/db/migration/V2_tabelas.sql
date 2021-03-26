@@ -70,9 +70,7 @@ MAIOR(2, "> :1"),
 MENOR(3, "< :1"),
 MAIOROUIGUAL(4, ">= :1"),
 MENOROUIGUAL(5, "<= :1"),
-IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");
-Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle.
-Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo';
+IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))");';
 
 comment on column REBECA.TB_FILTRO_SERVICO.ID_CONFIGURACAO_SERVICO IS 'Identificador gerado automaticamente pela sequence seq_configuracao_servico. Auxilia na identificação da configuração do serviço REST.';
 

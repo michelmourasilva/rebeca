@@ -4,9 +4,16 @@
 O Nome **Rebeca** significa "união", "ligação", "aquela que une" ou "mulher com uma beleza que cativa (ou prende) os homens". O nome Rebeca vem do hebraico Ribhqah, que literalmente significa "união", "ligação", "aquela que une".
 O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco de dados Oracle em Json e disponibilizados em formato REST.
 
-O projeto foi feito utilizando linguagem de programação Java com o framework Spring Boot.
+![Exemplo de uso através do JupyterLab](/rebeca_server/src/main/resources/imagens/Jupyter.png)
 
-# Requisitos para produção
+
+## Linguagens, frameworks ou outras tecnlogias e serviços
+
+- Java
+- Spring 
+- Banco de dados Oracle
+
+## Requisitos para produção
 - Oracle com mínimo a versão 12c.
 - Ambiente que satisfaça os requisitos para [implementação de um aplicativo utilizando SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html). 
 
@@ -23,7 +30,7 @@ Todo o ambiente foi dockerizado portanto basta executar o comando:
 
 ### Back-end
 
-![EndPoints](/src/main/resources/imagens/Endpoints.png)
+![EndPoints](/rebeca_server/src/main/resources/imagens/Endpoints.png)
 
 - Swagger: http://localhost:8082/swagger-ui.html
 - EndPoints:
@@ -117,6 +124,7 @@ Visão que auxilia na conversão do enumerador que combina o operador de compara
 ### Scripts da estrutura inicial
 Dentro da pasta /src/main/resources estão todos os scripts .sql utilizados no projeto. Está incluso a criação do usuário REBECA e seus objetos (tabelas, views, funções, procedures e permissões ).
 Foi incluso também um schema (CO), que contém algumas tabelas e views para serem utilizadas para demonstração já que possui alguns dados interessantes para serem manipualdos. 
+![Banco de amostra](/rebeca_server/src/main/resources/imagens/BancoSample.png)
 ## Dados de conexão para os serviços inclusos no Docker-compose
 
 ### Conexão para os usuários sys e system
@@ -147,28 +155,38 @@ Administrador->>+Rebeca: Cadastra a configuração de um projeto
 
 Administrador-->+Rebeca: Cadastra filtros para uma configuração
 
+Usuário-->+Rebeca: Lista endpoints disponíveis
+
 Usuário->>+Rebeca: Consulta dados
 ```
 * * * 
 Após o sistema e banco de dados disponíveis, para o cadastro de exemplos basta chamar os comandos abaixo. Lembrando que existe o schema com dados disponíveis para teste (CO) que se econtra já carregados no banco Oracle do ambiente de desenvolvimento, porém para saber toda estrutura deste schema será necessário acessá-lo diretamente no banco para visualizar sua estrutura. 
 ### Cadastrar projeto
-POST
-ou
-curl -X POST "http://localhost:8081/projetos" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"dsProjeto\": \"PROJETO DE APRESENTAÇÃO\", \"noProjeto\": \"TESTE\"}"
+![Cadastrar Projeto](/rebeca_server/src/main/resources/imagens/PostProjeto.png)
+### Listar projetos
+![Listar Projetos](/rebeca_server/src/main/resources/imagens/Get_projeto.png)
+* * *
 ### Cadastrar configuração
-curl -X POST "http://localhost:8081/configuracoes" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"dsModulo\": \"Módulo de teste\", \"idProjeto\": 1, \"noModulo\": \"TESTE\", \"noObjetoBanco\": \"CUSTOMERS\", \"noProprietarioBanco\": \"CO\"}"
+![Cadastrar configuração](/rebeca_server/src/main/resources/imagens/POSTConfiguracao.png)
+### listar configurações (Sem filtros)
+![Listar configurações (Sem filtros)](/rebeca_server/src/main/resources/imagens/GetConfiguracao.png)
+* * *
 ### Cadastrar filtro
-curl -X POST "http://localhost:8081/filtros" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"idConfiguracao\": 1, \"noAtributo\": \"FULL_NAME\", \"tipoFiltro\": \"IGUAL\"}"
-### Acessar endpoint disponíveis para consumir os dados
-Ao acessar http://localhost:8081/endpoints, será retornado 2 registros dentro de um Json.
-```yaml
-  [{  "endPoint":  "/dataset/PEDIDOS/TESTE/",  "atributoFiltro":  null,  "noProjeto":  "PEDIDOS",  "noModulo":  "TESTE",  "dsModulo":  "Módulo de teste"  },  {  "endPoint":  "/dataset/PEDIDOS/TESTE/1/?",  "atributoFiltro":  "FULL_NAME = :?",  "noProjeto":  "PEDIDOS",  "noModulo":  "TESTE",  "dsModulo":  "Módulo de teste"  }]
-  ```
- Um dataset pode ser acessado de duas formas:
+![Cadastrar filtro](/rebeca_server/src/main/resources/imagens/PostFiltro.png)
+### listar configurações (Com filtros)
+![Listar configurações (Com filtros)](/rebeca_server/src/main/resources/imagens/GetConfiguracaoPostFiltro.png)
+* * *
+### Listar EndPoints
+![Listar configurações (Com filtros)](/rebeca_server/src/main/resources/imagens/GetEndPoints.png)
+* * *
+Um dataset pode ser acessado de duas formas:
  - A primeira forma não utiliza nenhum filtro, portanto será apresentado toda os dados desse objeto que foi mapeado na configuração.
-	 - http://localhost:8081/dataset/PEDIDOS/TESTE/
- - A segunda forma, utilizando o filtro cadastrado (FULL_NAME = ?), ao passar um nome específico será apresentado os dados filtrados por esse campo.
-	 - http://localhost:8081/dataset/PEDIDOS/TESTE/4/Tammy%20Bryant
+	 - http://localhost:8081/dataset/TESTE/ENTREGA
+![Apresentar dados(Sem filtro)](/rebeca_server/src/main/resources/imagens/GetData.png)
+
+ - A segunda forma, utilizando o filtro cadastrado (SHIPMENT_STATUS = ?), ao passar uma das classes possívels (DELIVERED, SHIPPED) será apresentado os dados filtrados por esse campo.
+	 - http://localhost:8081/dataset/TESTE/ENTREGA/1/DELIVERED
+![Apresentar dados(Com filtro)](/rebeca_server/src/main/resources/imagens/GetDataFiltro.png)
 
 ## To-Do
 - Front-end
