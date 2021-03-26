@@ -12,7 +12,6 @@ import org.hibernate.annotations.Immutable;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,11 +27,15 @@ public class EndPoint implements Serializable{
 	@Id
 	@Column(name="ID")
 	private long rowid;
-
+	@ApiModelProperty(notes = "Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas.")
 	private String endPoint;
+	@ApiModelProperty(notes = "Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo “?” apresentado no campo END_POINT.")
 	private String atributoFiltro;
+	@ApiModelProperty(notes = "Nome do projeto que está disponibilizando os dados.")
 	private String noProjeto;
+	@ApiModelProperty(notes = "Nome do módulo deste sistema.")
 	private String noModulo;
+	@ApiModelProperty(notes = "Breve descrição do módulo de um sistema.")
 	private String dsModulo;
 	
     @Basic

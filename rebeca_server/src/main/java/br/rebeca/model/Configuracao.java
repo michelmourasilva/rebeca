@@ -32,12 +32,17 @@ public class Configuracao implements Serializable{
 	/** Primary key. */
     protected static final String PK = "idConfiguracao";
 	
-    @ApiModelProperty(notes = "The database generated product ID")
+    @ApiModelProperty(notes = "Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.")
 	private long idConfiguracao;
+    @ApiModelProperty(notes = "Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido.")
     private String noModulo;
+    @ApiModelProperty(notes = "Breve descrição do módulo que está sendo acessado.")
     private String dsModulo;
+    @ApiModelProperty(notes = "Nome físico do objeto dentro do banco de dados.")
     private String noObjetoBanco;
+    @ApiModelProperty(notes = "Nome do owner do objeto dentro do banco de dados.")
     private String noProprietarioBanco;
+    
     private Projeto projeto;
     private Set<Filtro> filtros;
     

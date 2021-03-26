@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.rebeca.model.Configuracao;
+import io.swagger.annotations.ApiModelProperty;
 
 public class ConfiguracaoDTO implements Serializable{
 
@@ -16,24 +17,27 @@ public class ConfiguracaoDTO implements Serializable{
 	
 	private long idConfiguracao;
 	
-    @NotEmpty(message="Preenchimento obrigatório.")
-    @Length(max=17, message="Campo tipo número que deve ter até 14 dígitos.")
+
 	private long idProjeto;
     
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=20, message="O tamanho deve ser até 20 caracteres")
+    @ApiModelProperty(notes = "Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido.")
 	private String noModulo;
     
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=300, message="O tamanho deve ser até 300 caracteres")
+    @ApiModelProperty(notes = "Breve descrição do módulo que está sendo acessado.")
 	private String dsModulo;
     
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=30, message="O tamanho deve ser até 30 caracteres")
+    @ApiModelProperty(notes = "Nome do owner do objeto dentro do banco de dados.")
 	private String noProprietarioBanco;
     
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=30, message="O tamanho deve ser até 30 caracteres")
+    @ApiModelProperty(notes = "Nome físico do objeto dentro do banco de dados.")
 	private String noObjetoBanco;
 	
 	@JsonIgnore

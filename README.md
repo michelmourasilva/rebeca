@@ -4,6 +4,8 @@
 O Nome **Rebeca** significa "união", "ligação", "aquela que une" ou "mulher com uma beleza que cativa (ou prende) os homens". O nome Rebeca vem do hebraico Ribhqah, que literalmente significa "união", "ligação", "aquela que une".
 O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco de dados Oracle em Json e disponibilizados em formato REST.
 
+O projeto foi feito utilizando linguagem de programação Java com o framework Spring Boot.
+
 # Requisitos para produção
 - Oracle com mínimo a versão 12c.
 - Ambiente que satisfaça os requisitos para [implementação de um aplicativo utilizando SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html). 
@@ -11,19 +13,13 @@ O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco d
 # Requisitos para ambiente de desenvolvimento
 - Docker
 
-# Arquivos
-
-O projeto está dividido em duas pastas para tratar cada serviço separadamente. Uma para o front-end (rebeca_front) que está desenvolvido em Angular e outra para o back-end (rebeca_server) que está desenvolvido em Java utilizando framework Spring.
-
 # Instalação do ambiente de desenvolvimento
 
 Todo o ambiente foi dockerizado portanto basta executar o comando:
 
-    docker-compose up 
+    docker-compose up --force-recreate --build
 
 ## Serviços disponíveis
-
-### Front-end
 
 ### Back-end
 
@@ -81,7 +77,7 @@ A Representational State Transfer (REST), em português Transferência de Estado
 | --- | --- |
 | ID_CONFIGURACAO_SERVICO | Identificador gerado  automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.|
 | ID_PROJETO | Código do projeto |
- | NO_MODULO | Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido.) |
+ | NO_MODULO | Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido. |
 | DS_MODULO | Breve descrição do módulo que está sendo acessado. |
 | NO_OBJETO_BANCO | Nome físico do objeto dentro do banco de dados. |
 | NO_PROPRIETARIO_BANCO | Nome do owner do objeto dentro do banco de dados |
@@ -92,8 +88,9 @@ Cada configuração poderá utilizar mais de uma condição de filtro juntamente
 Campo | Descrição |
 | --- | --- |
  ID_FILTRO_SERVICO | Identificador gerado automaticamente pelo Oracle. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST|
+ | NO_ATRIBUTO | Nome do atributo que será utilizado como filtro
 | TP_CONDICAO | Tipo de operacao que podera ser aplicada em um campo especifico do objeto. Valores possiveis: IGUAL(0, "= :1"), DIFERENTE(1, "!= :1"), MAIOR(2, "> :1"),MENOR(3, "< :1"), MAIOROUIGUAL(4, ">= :1"), MENOROUIGUAL(5, "<= :1"), IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))"); Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle. Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo |
-| ID_CONFIGURACAO_SERVICO | Identificador gerado automaticamente pela sequence seq_configuracao_servico. Auxilia na identificação da configuração do serviço REST. |
+| ID_CONFIGURACAO_SERVICO | Auxilia na identificação da configuração do serviço REST. |
 * * * 
 #### VW_END_POINT
 End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO |
@@ -106,7 +103,17 @@ End points da API gerados a partir das configurações feitas para o projeto. Ob
 | NO_PROJETO | Nome do projeto que está disponibilizando os dados. |
 | NO_MODULO | Nome do módulo deste sistema.|
  | DS_MODULO | Breve descrição do módulo de um sistema. |
+ #### VW_TIPO_FILTRO
+Visão que auxilia na conversão do enumerador que combina o operador de comparação (=, <, >, <=, >=, !=, IN)
 
+| Campo | Descrição |
+| --- | --- |
+ | ID | Identificador gerado automaticamente somente para referência da linha |
+ | END_POINT | Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas |
+
+## Scripts da estrutura inicial
+Dentro da pasta /src/main/resources estão todos os scripts .sql utilizados no projeto. Está incluso a criação do usuário REBECA e seus objetos (tabelas, views, funções, procedures e permissões ).
+Foi incluso também um schema (CO), que contém algumas tabelas e views para serem utilizadas para demonstração já que possui alguns dados interessantes para serem manipualdos. 
 ## Dados de conexão para os serviços inclusos no Docker-compose
 
 ### Conexão para os usuários sys e system
@@ -124,3 +131,36 @@ End points da API gerados a partir das configurações feitas para o projeto. Ob
 	- user: sys
 	- password: oracle
 	- connect as sysdba: true
+
+## Testes
+Existe um fluxo que deve ser seguido para que os dados possam ser apresentados de forma correta. 
+Abaixo está o diagrama de sequência que auxilia no entendimento deste fluxo:
+```
+sequenceDiagram
+
+Administrador->>+Rebeca: Cadastra projeto
+
+Administrador->>+Rebeca: Cadastra a configuração de um projeto
+
+Administrador-->+Rebeca: Cadastra filtros para uma configuração
+
+Usuário->>+Rebeca: Consulta dados
+```
+* * * 
+Após o sistema e banco de dados disponíveis, para o cadastro de exemplos basta chamar os comandos abaixo. Lembrando que existe o schema com dados disponíveis para teste (CO) que se econtra já carregados no banco Oracle do ambiente de desenvolvimento, porém para saber toda estrutura deste schema será necessário acessá-lo diretamente no banco para visualizar sua estrutura. 
+### Cadastrar projeto
+curl -X POST "http://localhost:8081/projetos" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"dsProjeto\": \"Projeto de teste\", \"noProjeto\": \"TESTE\"}"
+### Cadastrar configuração
+curl -X POST "http://localhost:8081/configuracoes" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"dsModulo\": \"Módulo de teste\", \"idProjeto\": 1, \"noModulo\": \"TESTE\", \"noObjetoBanco\": \"CUSTOMERS\", \"noProprietarioBanco\": \"CO\"}"
+### Cadastrar filtro
+curl -X POST "http://localhost:8081/filtros" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"idConfiguracao\": 1, \"noAtributo\": \"FULL_NAME\", \"tipoFiltro\": \"IGUAL\"}"
+### Acessar endpoint disponíveis para consumir os dados
+Ao acessar http://localhost:8081/endpoints, será retornado 2 registros dentro de um Json.
+```yaml
+  [{  "endPoint":  "/dataset/PEDIDOS/TESTE/",  "atributoFiltro":  null,  "noProjeto":  "PEDIDOS",  "noModulo":  "TESTE",  "dsModulo":  "Módulo de teste"  },  {  "endPoint":  "/dataset/PEDIDOS/TESTE/1/?",  "atributoFiltro":  "FULL_NAME = :?",  "noProjeto":  "PEDIDOS",  "noModulo":  "TESTE",  "dsModulo":  "Módulo de teste"  }]
+  ```
+ Um dataset pode ser acessado de duas formas:
+ - A primeira forma não utiliza nenhum filtro, portanto será apresentado toda os dados desse objeto que foi mapeado na configuração.
+	 - http://localhost:8081/dataset/PEDIDOS/TESTE/
+ - A segunda forma, utilizando o filtro cadastrado (FULL_NAME = ?), ao passar um nome específico será apresentado os dados filtrados por esse campo.
+	 - http://localhost:8081/dataset/PEDIDOS/TESTE/4/Tammy%20Bryant

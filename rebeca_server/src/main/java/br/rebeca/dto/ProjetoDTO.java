@@ -9,21 +9,24 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.rebeca.model.Projeto;
+import io.swagger.annotations.ApiModelProperty; 
 
-
-public class ProjetoDTO implements Serializable{
+public class ProjetoDTO  implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
+
+
 	private long idProjeto;
 
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=30, message="O tamanho deve ser até 30 caracteres")
+    @ApiModelProperty(notes = "Nome único do projeto que irá disponibilizar dados para o Rebeca")
 	private String noProjeto;
     
 
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=300, message="O tamanho deve ser até 300 caracteres")
+    @ApiModelProperty(notes = "Breve descrição do projeto.")
     private String dsProjeto;
     
     public ProjetoDTO() {

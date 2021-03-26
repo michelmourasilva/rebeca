@@ -27,9 +27,11 @@ public class Projeto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
     
-
+    @ApiModelProperty(notes = "Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.")
 	private long idProjeto;
+    @ApiModelProperty(notes = "Nome único do projeto que irá disponibilizar dados para o Rebeca")
     private String noProjeto;
+    @ApiModelProperty(notes = "Breve descrição do projeto.")
     private String dsProjeto;
 
     private Set<Configuracao> configuracoes;
