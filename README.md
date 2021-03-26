@@ -5,7 +5,7 @@ O Nome **Rebeca** significa "união", "ligação", "aquela que une" ou "mulher c
 O objetivo deste projeto é apresentar os dados de qualquer tabela de um banco de dados Oracle em Json e disponibilizados em formato REST.
 
 ![Exemplo de uso através do JupyterLab](/rebeca_server/src/main/resources/imagens/Jupyter.png)
-
+Exemplo da recuperação e uso ( utilizando JupiterLab) de dados via API REST. 
 
 ## Linguagens, frameworks ou outras tecnlogias e serviços
 
