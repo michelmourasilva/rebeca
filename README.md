@@ -9,16 +9,15 @@ Exemplo da recuperação e uso ( utilizando JupiterLab) de dados via API REST.
 
 ## Linguagens, frameworks ou outras tecnlogias e serviços
 
-- Java
-- Spring 
-- Banco de dados Oracle
+Rebeca utilizou para o back-end a linguagem de programação Java juntamente com o framework Spring Boot. Esse framework oferece diversos módulos que podem ser utilizados de acordo com as necessidades do projeto, como módulos voltados para desenvolvimento Web, persistência, acesso remoto e programação orientada a aspectos.
+	Inicialmente Rebeca utiliza o banco de dados Oracle para recuperar os metadados de um sistema e transformar os dados em Json, sendo recuperado pela camada de back-end e a partir das configurações definidas pelo administrador, disponibiliza em um terminal(endpoint) gerado em tempo de execução.
 
 ## Requisitos para produção
 - Oracle com mínimo a versão 12c.
 - Ambiente que satisfaça os requisitos para [implementação de um aplicativo utilizando SpringBoot](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html). 
 
 ## Requisitos para ambiente de desenvolvimento
-- Docker
+Para poder construir o aplicativo, empacotá-lo junto com suas dependências em um contêiner e, em seguida poder enviar para ser executado em outras máquinas foi utilizado o Docker, que é uma plataforma de contêiner de software.  
 
 ## Instalação do ambiente de desenvolvimento
 
@@ -74,7 +73,7 @@ Acessos ao SGBD e aos seus serviços de gerenciamento e monitoramento:
 
 #### Entidades
 ##### TB_PROJETO
-Projeto que disponbilizará dados em formato Rest para o Rebeca.
+Projeto que disponibilizará dados em formato Rest para o Rebeca.
 |Campo | Descrição |
 | --- | --- |
 | ID_PROJETO | Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST. |
@@ -93,7 +92,7 @@ A Representational State Transfer (REST), em português Transferência de Estado
 | NO_PROPRIETARIO_BANCO | Nome do owner do objeto dentro do banco de dados |
 * * * 
 ##### TB_FILTRO_SERVICO 
-Cada configuração poderá utilizar mais de uma condição de filtro juntamente com um objecto 
+Cada configuração poderá utilizar mais de uma condição de filtro juntamente com um objeto 
 
 Campo | Descrição |
 | --- | --- |
@@ -160,7 +159,7 @@ Usuário-->+Rebeca: Lista endpoints disponíveis
 Usuário->>+Rebeca: Consulta dados
 ```
 * * * 
-Após o sistema e banco de dados disponíveis, para o cadastro de exemplos basta chamar os comandos abaixo. Lembrando que existe o schema com dados disponíveis para teste (CO) que se econtra já carregados no banco Oracle do ambiente de desenvolvimento, porém para saber toda estrutura deste schema será necessário acessá-lo diretamente no banco para visualizar sua estrutura. 
+Após o sistema e banco de dados disponíveis, para o cadastro de exemplos basta chamar os comandos abaixo. Lembrando que existe o schema com dados disponíveis para teste (CO) que se encontra já carregados no banco Oracle do ambiente de desenvolvimento, porém para saber toda estrutura deste schema será necessário acessá-lo diretamente no banco para visualizar sua estrutura. 
 ### Cadastrar projeto
 ![Cadastrar Projeto](/rebeca_server/src/main/resources/imagens/PostProjeto.png)
 ### Listar projetos
@@ -192,3 +191,4 @@ Um dataset pode ser acessado de duas formas:
 - Front-end
 - Segurança
 - Por para outros bancos relacionais e nosql
+
