@@ -29,13 +29,13 @@ COPY . /app
 ############
 
 # Imagem base do nginx
-FROM nginx:1.16.0-alpine
+# FROM nginx:1.16.0-alpine
 
 # copiar o artefato de build
-COPY --from=build /app/dist /usr/share/nginx/html
+# COPY --from=build /app/dist /usr/share/nginx/html
 
 # expose port 80
-EXPOSE 80
+# EXPOSE 80
 
 # run nginx
-CMD ["nginx", "-g", "daemon off;"]
+# CMD ["nginx", "-g", "daemon off;"]

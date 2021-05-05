@@ -2,7 +2,9 @@ CREATE TABLE REBECA.TB_PROJETO
 (
     ID_PROJETO NUMBER(14, 0) GENERATED ALWAYS AS IDENTITY NOT NULL,
     NO_PROJETO VARCHAR2(30 BYTE)                          NOT NULL,
-    DS_PROJETO VARCHAR2(300 BYTE)                         NOT NULL,
+    DS_PROJETO VARCHAR2(4000 BYTE)                         NOT NULL,
+    TX_URL VARCHAR2(4000 BYTE)   				NULL
+    TX_CAMINHO_IMAGEM VARCHAR2(4000 BYTE)    		NULL
     CONSTRAINT PK_PROJETO PRIMARY KEY(ID_PROJETO) ENABLE
 );
 
@@ -10,6 +12,8 @@ COMMENT ON TABLE REBECA.TB_PROJETO IS 'Projeto que disponbilizará dados em form
 comment on column REBECA.TB_PROJETO.ID_PROJETO IS 'Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.';
 comment on column REBECA.TB_PROJETO.NO_PROJETO IS 'Nome único do projeto que irá disponibilizar dados para o Rebeca';
 comment on column REBECA.TB_PROJETO.DS_PROJETO IS 'Breve descrição do projeto.';
+comment on column REBECA.TB_PROJETO.TX_URL IS 'URL que pode ser apresentada nos cards do projeto';
+comment on column REBECA.TB_PROJETO.TX_CAMINHO_IMAGEM IS 'Caminho de qualquer imagem que pode ser apresentada nos cards do projeto.';
 
 ALTER TABLE REBECA.TB_PROJETO
     ADD CONSTRAINT UK_PROJETO_01 UNIQUE ( NO_PROJETO ) ENABLE;

@@ -64,7 +64,7 @@ public class ProjetoService {
 
 	
 	public Projeto fromDTO(ProjetoDTO objDto) {
-		return new Projeto(objDto.getIdProjeto(), objDto.getNoProjeto(), objDto.getDsProjeto());
+		return new Projeto(objDto.getIdProjeto(), objDto.getNoProjeto(), objDto.getDsProjeto(), objDto.getTxtURL(), objDto.getTxtCaminhoImagem());
 	}
 	
 

@@ -33,7 +33,11 @@ public class Projeto implements Serializable{
     private String noProjeto;
     @ApiModelProperty(notes = "Breve descrição do projeto.")
     private String dsProjeto;
-
+    @ApiModelProperty(notes = "URL que poderá ser usada para encaminhar para links externos referente ao projeto.")
+    private String txtURL;
+    @ApiModelProperty(notes = "Imagem que será apresentada no card principal do projeto.")
+    private String txtCaminhoImagem;
+    
     private Set<Configuracao> configuracoes;
     
     
@@ -42,11 +46,13 @@ public class Projeto implements Serializable{
     }
     
 
-	public Projeto(long idProjeto, String noProjeto, String dsProjeto) {
+	public Projeto(long idProjeto, String noProjeto, String dsProjeto, String txtURL, String txtCaminhoImagem) {
 		super();
 		this.idProjeto = idProjeto;
 		this.noProjeto = noProjeto;
 		this.dsProjeto = dsProjeto;
+		this.txtURL = txtURL;
+		this.txtCaminhoImagem = txtCaminhoImagem;
 	}
 
 
@@ -85,12 +91,34 @@ public class Projeto implements Serializable{
 		this.dsProjeto = dsProjeto;
 	}
 
+	
+    @Basic
+    @ApiModelProperty(value = "txtURL", required = true)
+    @Column(name = "TX_URL", nullable = true)
+	public String getTxtURL() {
+		return txtURL;
+	}
+
+	public void setTxtURL(String txtURL) {
+		this.txtURL = txtURL;
+	}
+	
+    @Basic
+    @ApiModelProperty(value = "txtCaminhoImagem", required = true)
+    @Column(name = "TX_CAMINHO_IMAGEM", nullable = true)
+	public String getTxtCaminhoImagem() {
+		return txtCaminhoImagem;
+	}
+
+	public void setTxtCaminhoImagem(String txtCaminhoImagem) {
+		this.txtCaminhoImagem = txtCaminhoImagem;
+	}
+	
 	@JsonIgnore
     @OneToMany(mappedBy="projeto", fetch = FetchType.LAZY)
 	public Set<Configuracao> getConfiguracoes() {
 		return configuracoes;
 	}
-
 
 	public void setConfiguracoes(Set<Configuracao> configuracoes) {
 		this.configuracoes = configuracoes;

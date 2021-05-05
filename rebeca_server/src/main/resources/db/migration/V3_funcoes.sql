@@ -187,6 +187,8 @@ BEGIN
                     DBMS_SQL.COLUMN_VALUE(v_numero_cursor, i, v_valor_campo);
                     IF (v_tabela_descricao_colunas(i).col_type not in (2, 8)) then
                         v_valor_campo := '"' || nvl(replace(replace(v_valor_campo, '"', ''), ':', ''), null) || '"';
+                    elsif (v_tabela_descricao_colunas(i).col_type in (2, 8)) then
+                        v_valor_campo :=  nvl(replace(replace(replace(v_valor_campo,',','.'), '"', ''), ':', ''), null) ;
                     end if;
                     v_dados_conteudo := v_dados_conteudo || '"' ||
                                         replace(initcap(v_tabela_descricao_colunas(i).col_name), '_', '') || '": ' ||

@@ -1,13 +1,17 @@
 package br.rebeca.resource;
 
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +24,7 @@ import br.rebeca.model.Projeto;
 import br.rebeca.service.ProjetoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping(value = "/projetos", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,12 +74,26 @@ public class ProjetoResource {
 	}
     
     
+    /*
     @ApiOperation(value = "Retorna uma lista de projetos")
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Projeto>> findAll() {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> findAll() {
 		List<Projeto> list = service.findAll();
-		return ResponseEntity.ok().body(list);
+		
+		Map<String, Object> response = new HashMap<>();
+	      response.put("content", list);
+	      return new ResponseEntity<>(response, HttpStatus.OK);
+
 	}
+	*/
+    
+    @ApiOperation(value = "Retorna uma lista de projetos")
+  	@RequestMapping(method = RequestMethod.GET)
+  	public ResponseEntity<List<Projeto>> findAll() {
+  		List<Projeto> list = service.findAll();
+  		return ResponseEntity.ok().body(list);
+  	}
+    
 
 
 	

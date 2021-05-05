@@ -1,67 +1,56 @@
 version: '2.1'
-
-# Definindo os serviços
 services:
-  # Serviço para o backend
-    app-server:
-        build:
-            context: rebeca_server # Imagem criada pelo Dockerfile que está na raiz do projeto 
-            dockerfile: Dockerfile
-        ports:
-            - "8082:8081" 
-        restart: always
-        depends_on: 
-            db: 
-              condition: service_healthy
-        environment: 
-            DATASOURCE_USERNAME: REBECA
-            DATASOURCE_PASSWORD: REBECA_APP
-            DATASOURCE_HOST: db
-            PROFILE: prd
-        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
-            - backend
-            - frontend
-# Serviço para o front end
-#    app-client:
-#        build:
-#            context: rebeca_front # Use an image built from the specified dockerfile in the `polling-app-client` directory.
-#            dockerfile: Dockerfile
-#        volumes:
-#          - '.:/app'
-#          - '/app/node_modules'
-#        ports:
-#          - '4201:4200'
-#        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
-#            - frontend
-# Serviço para o banco de dados Oracle
-    db:
-        image: truevoly/oracle-12c #Baseado na imagem https://github.com/MaksymBilenko/docker-oracle-12c
-        ports: 
-            - "8080:8080"
-            - "1521:1521"
-            - "27017:27017"
-        environment:
-            - ORACLE_PWD=Oracle
-            - ORACLE_ALLOW_REMOTE=true
-        networks: # Redes entre os serviços (os serviços na mesma rede podem se comunicar uns com os outros usando seu nome)
-            - backend  
-        healthcheck:
-          test: [ "CMD-SHELL", "if [ \"`echo \\\"SELECT ACCOUNT_STATUS FROM DBA_USERS WHERE USERNAME = 'ANONYMOUS' AND ACCOUNT_STATUS = 'EXPIRED';\\\"|/u01/app/oracle/product/12.1.0/xe/bin/sqlplus -S sys/oracle as sysdba|grep ACCOUNT_STATUS`\" = \"ACCOUNT_STATUS\" ];then true;else false;fi"]
-           # docker inspect --format "{{json .State.Health }}"  myproject_db_1
-          #test: echo "select * from v\$database;" | sqlplus -S system/oracle as sysdba || exit 1
-          timeout: 3s
-          interval: 30s
-          retries: 30
-        volumes:
-            - ./db-data:/var/lib/mysql
-            - ./rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d # recupera todos os scripts que deverão ser executados logo no inicio do serviço  
-# Volumes
+  app-server:
+    build:
+      context: rebeca_server
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATASOURCE_USERNAME: REBECA
+      DATASOURCE_PASSWORD: REBECA_APP
+      DATASOURCE_HOST: db
+      PROFILE: prd
+    networks:
+      - backend
+      - frontend
+  db:
+    image: truevoly/oracle-12c
+    ports:
+      - '8082:8080'
+      - '1521:1521'
+      - '27017:27017'
+    environment:
+      - ORACLE_PWD=Oracle
+      - ORACLE_ALLOW_REMOTE=true
+    networks:
+      - backend
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          if [ "`echo \"SELECT ACCOUNT_STATUS FROM DBA_USERS WHERE USERNAME = 'ANONYMOUS' AND ACCOUNT_STATUS = 'EXPIRED';\"|/u01/app/oracle/product/12.1.0/xe/bin/sqlplus -S sys/oracle as sysdba|grep ACCOUNT_STATUS`" = "ACCOUNT_STATUS"
+          ];then true;else false;fi
+      timeout: 3s
+      interval: 30s
+      retries: 30
+    volumes:
+      - './db-data:/var/lib/mysql'
+      - './rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d'
+#  angular:
+#    build:
+#      context: rebeca_front
+#      dockerfile: Dockerfile
+#    ports:
+#      - '8080:8080'
+      
 volumes:
-    db-data: 
-        driver: local
-        
-
-# Redes a serem criadas para facilitar a comunicação entre contêineres
+  db-data:
+    driver: local
 networks:
-    backend:
-    frontend:    
+  backend: null
+  frontend: null

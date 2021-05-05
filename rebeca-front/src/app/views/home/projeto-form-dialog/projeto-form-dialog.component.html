@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>Novo Projeto</h1>
+<div mat-dialog-content>
+  <form class="example-form" [formGroup]="projetoForm">
+    <mat-form-field class="example-full-width"  color="primary">
+      <mat-label>Nome do projeto</mat-label>
+      <input matInput placeholder="" formControlName="noProjeto" name="noProjeto" >
+
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Descrićão do projeto</mat-label>
+      <textarea matInput  placeholder="" formControlName="dsProjeto" name="dsProjeto" style="line-height: 100px !important"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>URL externo</mat-label>
+      <input matInput  placeholder="" formControlName="txtURL" name="txtURL">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Caminho para imagem</mat-label>
+      <input matInput  placeholder="" formControlName="txtCaminho" name="txtCaminho">
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="primary"  (click)="createProjeto()">Adicionar projeto</button>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+</div>

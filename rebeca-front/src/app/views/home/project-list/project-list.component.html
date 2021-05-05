@@ -1,0 +1,35 @@
+<div fxLayout="row wrap" fxLayoutGap="start center" style="padding: 2%;">
+  <ng-container  *ngFor="let item of projetoLista" style="margin: 0.5%;">
+    <mat-card class="mat-card-projeto" fxFlex="0 1 calc(33.3% - 11px)"
+              fxFlex.lt-md="0 1 calc(50% - 11px)"
+              fxFlex.lt-sm="100%">
+      <mat-card-title class="mat-card-title-projeto">
+          <div class="row">
+            <p>
+              <span style="font-size:1.5rem;" fxFlex="70" fxLayoutAlign="start center"> {{item.noProjeto}}</span>
+              <span fxFlex></span>
+
+              <span fxFlex="25" fxLayoutAlign="end center"><button mat-icon-button aria-label="Configuraćões"><a href="{{item.txtURL}}" target="_blank"><mat-icon >link</mat-icon></a></button></span>
+            </p>
+          </div>
+
+      </mat-card-title>
+      <mat-card-content>
+        <p>
+          <!--<span>{{ item.dsProjeto | slice: 0: 120 }} ...</span>-->
+          <span>{{ item.dsProjeto }}</span>
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="row" >
+          <p>
+            <span fxFlex="33" fxLayoutAlign="center bottom"><button mat-icon-button aria-label="Configuraćões"><mat-icon >settings</mat-icon></button></span>
+            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Visualizar projeto" (click)="openProjeto(item.idProjeto, 'view')"><mat-icon >search</mat-icon></button></span>
+            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Editar projeto" (click)="openProjeto(item.idProjeto, 'update')"><mat-icon >edit</mat-icon></button></span>
+            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Deletar projeto" color="warn"><mat-icon >delete</mat-icon></button></span>
+          </p>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </ng-container>
+</div>

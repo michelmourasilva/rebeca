@@ -25,9 +25,19 @@ public class ProjetoDTO  implements Serializable{
     
 
     @NotEmpty(message="Preenchimento obrigatório.")
-    @Length(max=300, message="O tamanho deve ser até 300 caracteres")
+    @Length(max=4000, message="O tamanho deve ser até 4000 caracteres")
     @ApiModelProperty(notes = "Breve descrição do projeto.")
     private String dsProjeto;
+    
+
+    @Length(max=4000, message="O tamanho deve ser até 4000 caracteres")
+    @ApiModelProperty(notes = "URL que poderá ser usada para encaminhar para links externos referente ao projeto.")
+    private String txtURL;
+    
+    @Length(max=4000, message="O tamanho deve ser até 4000 caracteres")
+    @ApiModelProperty(notes = "Imagem que será apresentada no card principal do projeto.")
+    private String txtCaminhoImagem;
+    
     
     public ProjetoDTO() {
     	super();
@@ -58,11 +68,29 @@ public class ProjetoDTO  implements Serializable{
 		this.dsProjeto = dsProjeto;
 	}
 
-	
+
+	public String getTxtURL() {
+		return txtURL;
+	}
+
+	public void setTxtURL(String txtURL) {
+		this.txtURL = txtURL;
+	}
+
+	public String getTxtCaminhoImagem() {
+		return txtCaminhoImagem;
+	}
+
+	public void setTxtCaminhoImagem(String txtCaminhoImagem) {
+		this.txtCaminhoImagem = txtCaminhoImagem;
+	}
+
 	public ProjetoDTO(Projeto obj) {
 		idProjeto = obj.getIdProjeto();
 		noProjeto = obj.getDsProjeto();
 		dsProjeto = obj.getNoProjeto();
+		txtURL = obj.getTxtURL();
+		txtCaminhoImagem = obj.getTxtCaminhoImagem();
 	}
 	
 }
