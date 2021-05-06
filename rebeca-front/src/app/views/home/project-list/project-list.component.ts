@@ -3,6 +3,7 @@ import {ProjetoService} from '../../../shared/service/projeto.service';
 import {ProjetoModel} from '../../../shared/model/projeto.model';
 import {ProjetoFormDialogComponent} from '../projeto-form-dialog/projeto-form-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
+import {any} from 'codelyzer/util/function';
 
 @Component({
   selector: 'app-project-list',
@@ -33,6 +34,13 @@ export class ProjectListComponent implements OnInit {
       }
     );
   }
+
+  deleteProjeto(idProjeto: number): void {
+    console.log('deletando projeto', idProjeto) ;
+    this.projetoService.deleteProjeto(idProjeto);
+    window.location.reload();
+  }
+
 
   openProjeto(idProjeto: number, tipo: string): void {
     const dialogRef = this.dialog.open(ProjetoFormDialogComponent, {

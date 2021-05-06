@@ -27,51 +27,49 @@ export class ProjetoFormDialogComponent implements OnInit {
       noProjeto: [null, [Validators.required]],
       dsProjeto: [null, [Validators.required, Validators.maxLength(4000)]],
       txtURL: [''],
-      txtCaminho: ['']
+      txtCaminho: [null]
     });
-    this.carregardados();
+    this.carregarDados();
   }
 
   // tslint:disable-next-line:typedef
-  carregardados(){
-    if (this.data.tipo === 'update'){
+  carregarDados(){
+    if (this.data.tipo === 'update' || this.data.tipo === 'view'){
       this.rest.getProjeto(this.data.idProjeto).subscribe(res => {
         console.log('entrou na atualizaćão');
         console.log(res);
 
         this.projetoForm.patchValue({
-          noProjeto: [res.noProjeto],
-          dsProjeto: [res.dsProjeto],
-          txtURL: [res.txtURL],
-          txtCaminho: [res.txtCaminho]
+          noProjeto: res.noProjeto,
+          dsProjeto: res.dsProjeto,
+          txtURL: res.txtURL,
+          txtCaminho: ''
         });
       });
     }
   }
 
   // tslint:disable-next-line:typedef
-  createProjeto(){
+  mantemProjeto(){
    if (this.projetoForm.valid) {
-    this.rest.postProjetos(this.projetoForm.value).subscribe(result => {});
-    this.dialogRef.close();
-    this.projetoForm.reset();
-    window.location.reload();
+     if (this.data.tipo === 'update'){
+       console.log(this.projetoForm.value);
+       this.rest.updateProjeto(this.data.idProjeto, this.projetoForm.value);
+       console.log('Atualizando projeto');
+     } else  if (this.data.tipo === 'new'){
+      this.rest.postProjeto(this.projetoForm.value);
+      console.log('Cadastrando projeto');
+     }
+     this.dialogRef.close();
+     this.projetoForm.reset();
+     window.location.reload();
    }
   }
-
-  // tslint:disable-next-line:typedef
-  updateProjeto(){
-    if (this.projetoForm.valid) {
-      this.rest.updateProjeto(this.data.idProjeto, this.projetoForm.value).subscribe(result => {});
-      this.dialogRef.close();
-      this.projetoForm.reset();
-      window.location.reload();
-    }
-  }
-
   cancelar(): void {
     this.dialogRef.close();
     this.projetoForm.reset();
   }
+
+
 
 }

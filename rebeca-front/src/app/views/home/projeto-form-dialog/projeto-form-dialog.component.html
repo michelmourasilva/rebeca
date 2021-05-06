@@ -9,22 +9,31 @@
 
     <mat-form-field class="example-full-width">
       <mat-label>Descrićão do projeto</mat-label>
-      <textarea matInput  placeholder="" formControlName="dsProjeto" name="dsProjeto" style="line-height: 100px !important"></textarea>
+      <textarea matInput  placeholder="" formControlName="dsProjeto" name="dsProjeto" style="height: 10em; padding-top:0px !important"></textarea>
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-      <mat-label>URL externo</mat-label>
+      <mat-label>URL externa</mat-label>
       <input matInput  placeholder="" formControlName="txtURL" name="txtURL">
     </mat-form-field>
 
-    <mat-form-field class="example-full-width">
-      <mat-label>Caminho para imagem</mat-label>
-      <input matInput  placeholder="" formControlName="txtCaminho" name="txtCaminho">
-    </mat-form-field>
 
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-raised-button color="primary"  (click)="createProjeto()">Adicionar projeto</button>
-  <button mat-button (click)="cancelar()">Cancelar</button>
+  <ng-container *ngIf="data.tipo === 'update'">
+    <div ><button mat-raised-button color="primary"  (click)="mantemProjeto()">Atualizar projeto</button> </div>
+    <button mat-button (click)="cancelar()">Cancelar</button>
+  </ng-container>
+  <ng-container *ngIf="data.tipo === 'new'">
+    <div ><button mat-raised-button color="primary"  (click)="mantemProjeto()">Cadastra projeto</button> </div>
+    <button mat-button (click)="cancelar()">Cancelar</button>
+  </ng-container>
+
+  <ng-container *ngIf="data.tipo === 'view'">
+    <div ><button mat-raised-button color="primary"  (click)="cancelar()">Fechar</button> </div>
+  </ng-container>
+
+
+
 </div>

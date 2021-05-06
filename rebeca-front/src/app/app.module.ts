@@ -20,6 +20,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { ConfiguracaoFormDialogComponent } from './views/home/configuracao-form-dialog/configuracao-form-dialog.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -8,4 +8,6 @@
   width: 100%;
 }
 
-
+.file-input {
+  display: none;
+}

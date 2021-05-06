@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {ProjetoFormDialogComponent} from './projeto-form-dialog/projeto-form-dialog.component';
+import { HttpClient } from '@angular/common/http';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-home',
@@ -9,14 +12,24 @@ import {ProjetoFormDialogComponent} from './projeto-form-dialog/projeto-form-dia
 })
 export class HomeComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private sanitizer: DomSanitizer, private http: HttpClient) {}
+  logoHtml: SafeHtml;
 
   ngOnInit(): void {
+    this.http.get('/assets/images/Rebeca.svg', { responseType: 'text' })
+      .subscribe(logo => {
+        console.log(logo);
+        this.logoHtml = this.sanitizer.bypassSecurityTrustHtml(logo);
+      });
   }
 
   addProjeto(): void {
+    const tipo = 'new';
+    const idProjeto = 0;
+
     const dialogRef = this.dialog.open(ProjetoFormDialogComponent, {
-      minWidth: '400px'
+      minWidth: '400px',
+      data: {idProjeto, tipo}
     });
 
     dialogRef.afterClosed().subscribe(result => {
