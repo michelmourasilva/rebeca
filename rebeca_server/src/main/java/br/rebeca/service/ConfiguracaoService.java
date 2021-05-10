@@ -70,5 +70,9 @@ public class ConfiguracaoService {
 		return new Configuracao(objDto.getNoModulo(), objDto.getDsModulo(), objDto.getNoObjetoBanco(), objDto.getNoProprietarioBanco(), prjObj);
 	}
 
-
+	
+	public List<Configuracao> findAllByProjetoIdProjeto(Long idProjeto) {
+		return configuracaoRepository.findAllByProjetoIdProjeto(idProjeto);
+	}
+	
 }

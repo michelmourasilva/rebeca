@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ProjetoService} from '../../../shared/service/projeto.service';
 import {ProjetoModel} from '../../../shared/model/projeto.model';
 import {ProjetoFormDialogComponent} from '../projeto-form-dialog/projeto-form-dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {any} from 'codelyzer/util/function';
+import {ConfiguracaoFormDialogComponent} from '../configuracao-form-dialog/configuracao-form-dialog.component';
+import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
 
 @Component({
   selector: 'app-project-list',
@@ -35,17 +37,35 @@ export class ProjectListComponent implements OnInit {
     );
   }
 
-  deleteProjeto(idProjeto: number): void {
+  deleteProjeto(idProjeto: number, noProjeto: string, tipo: string): void {
+
+    const dialogRef = this.dialog.open(MensagemDialogComponent, {
+      panelClass: 'popup',
+      minWidth: '200px',
+      minHeight: '200px',
+      data: {idProjeto, noProjeto, tipo}
+    });
     console.log('deletando projeto', idProjeto) ;
-    this.projetoService.deleteProjeto(idProjeto);
-    window.location.reload();
   }
 
+  openConfiguracao(idProjeto: number, noProjeto: string): void {
+  const dialogRef = this.dialog.open(ConfiguracaoFormDialogComponent, {
+    panelClass: 'popup',
+    minWidth: '1500px',
+    minHeight: '600px',
+    data: {idProjeto, noProjeto}
+  });
 
-  openProjeto(idProjeto: number, tipo: string): void {
+  dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openProjeto(idProjeto: number, tipo: string, noProjeto: string): void {
     const dialogRef = this.dialog.open(ProjetoFormDialogComponent, {
+      panelClass: 'popup',
       minWidth: '400px',
-      data: {idProjeto, tipo}
+      data: {idProjeto, tipo, noProjeto}
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -1,5 +1,13 @@
-<h1 mat-dialog-title>Novo Projeto</h1>
-<div mat-dialog-content>
+<mat-toolbar *ngIf="data.tipo === 'update'">
+  <span>Atualizar projeto {{data.noProjeto}}</span>
+</mat-toolbar>
+<mat-toolbar *ngIf="data.tipo === 'new'">
+  <span>Novo Projeto</span>
+</mat-toolbar>
+<mat-toolbar *ngIf="data.tipo === 'view'">
+  <span>Projeto {{data.noProjeto}}</span>
+</mat-toolbar>
+<div mat-dialog-content >
   <form class="example-form" [formGroup]="projetoForm">
     <mat-form-field class="example-full-width"  color="primary">
       <mat-label>Nome do projeto</mat-label>
@@ -20,13 +28,13 @@
 
   </form>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions  align="end">
   <ng-container *ngIf="data.tipo === 'update'">
     <div ><button mat-raised-button color="primary"  (click)="mantemProjeto()">Atualizar projeto</button> </div>
     <button mat-button (click)="cancelar()">Cancelar</button>
   </ng-container>
   <ng-container *ngIf="data.tipo === 'new'">
-    <div ><button mat-raised-button color="primary"  (click)="mantemProjeto()">Cadastra projeto</button> </div>
+    <div ><button mat-raised-button color="primary"  (click)="mantemProjeto()">Cadastrar projeto</button> </div>
     <button mat-button (click)="cancelar()">Cancelar</button>
   </ng-container>
 

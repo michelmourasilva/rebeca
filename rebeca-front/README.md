@@ -1,6 +1,6 @@
 https://stackblitz.com/edit/material2-rc0-c1mb7x?file=app%2Fapp.component.html
 https://coryrylan.com/blog/angular-form-builder-and-validation-management
-
+https://medium.com/@tomastrajan/the-complete-guide-to-angular-material-themes-4d165a9d24d1
 # RebecaFront
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.11.

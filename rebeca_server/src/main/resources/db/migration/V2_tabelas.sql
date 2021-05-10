@@ -139,3 +139,25 @@ comment on column REBECA.VW_END_POINT.NO_PROJETO IS 'Nome do projeto que está d
 comment on column REBECA.VW_END_POINT.NO_MODULO IS 'Nome do módulo deste sistema.';
 comment on column REBECA.VW_END_POINT.DS_MODULO IS 'Breve descrição do módulo de um sistema. ';
 
+create or replace view REBECA.VW_OBJETOS_DISPONIVEIS
+as
+select colunas.column_id ID_COLUNA,
+       colunas.table_name NO_OBJETO,
+       colunas.column_name NO_COLUNA,
+       colunas.data_type TP_COLUNA,
+       colunas.data_length NU_TAMANHO_COLUNA,
+       colunas.data_precision NU_PRECISAO_COLUNA,
+       decode(colunas.nullable,'N','N','Y','S') TP_NULO
+from sys.all_tab_columns colunas
+inner join sys.all_views views on colunas.owner = views.owner
+                              and colunas.table_name = views.view_name
+where views.owner = 'REBECA'
+and table_name not in ('VW_OBJETOS_DISPONIVEIS', 'VW_TIPO_FILTRO', 'VW_END_POINT')
+order by colunas.owner, colunas.table_name, colunas.column_id;
+
+GRANT SELECT ON REBECA.VW_OBJETOS_DISPONIVEIS TO REBECA;
+
+COMMENT ON TABLE REBECA.VW_OBJETOS_DISPONIVEIS IS 'Objetos disponíveis para serem utilizados e apresentados como endPoint. Está sendo utilizado os proprios objetos que apresentam as coleções e objetos do Oracle';
+
+
+

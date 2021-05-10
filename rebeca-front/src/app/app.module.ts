@@ -19,7 +19,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { ConfiguracaoFormDialogComponent } from './views/home/configuracao-form-dialog/configuracao-form-dialog.component';
-
+import {MatListModule} from '@angular/material/list';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
+import { MensagemDialogComponent } from './views/home/mensagem-dialog/mensagem-dialog.component';
+import {MatStepperModule} from '@angular/material/stepper';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,8 @@ import { ConfiguracaoFormDialogComponent } from './views/home/configuracao-form-
     HomeComponent,
     ProjectListComponent,
     ProjetoFormDialogComponent,
-    ConfiguracaoFormDialogComponent
+    ConfiguracaoFormDialogComponent,
+    MensagemDialogComponent
   ],
     imports: [
         HttpClientModule,
@@ -44,7 +50,12 @@ import { ConfiguracaoFormDialogComponent } from './views/home/configuracao-form-
       FormsModule,
       ReactiveFormsModule,
       MatFormFieldModule,
-      MatInputModule
+      MatInputModule,
+      MatListModule,
+      MatGridListModule,
+      MatSelectModule,
+      MatStepperModule,
+      MatExpansionModule
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -29,6 +29,7 @@ export class HomeComponent implements OnInit {
 
     const dialogRef = this.dialog.open(ProjetoFormDialogComponent, {
       minWidth: '400px',
+      panelClass: 'popup',
       data: {idProjeto, tipo}
     });
 

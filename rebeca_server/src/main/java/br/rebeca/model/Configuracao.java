@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -119,7 +121,7 @@ public class Configuracao implements Serializable{
 		this.noProprietarioBanco = noProprietarioBanco;
 	}
 
-	
+	@JsonIgnore
     @ManyToOne(optional=false)
     @JoinColumn(name="ID_PROJETO", nullable=false)
 	public Projeto getProjeto() {

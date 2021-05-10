@@ -88,6 +88,13 @@ public class ConfiguracaoResource {
 		return ResponseEntity.ok().body(list);
 	}
 
+    
+    @ApiOperation(value = "Recupera todas as configurações de um projeto.")
+	@RequestMapping(value = "/projeto/{idProjeto}", method = RequestMethod.GET)
+	public ResponseEntity<List<Configuracao>> findAllByProjetoIdProjeto(@PathVariable Long idProjeto) {
+    	List<Configuracao> list = service.findAllByProjetoIdProjeto(idProjeto);
+		return ResponseEntity.ok().body(list);
+	}
 
 
 }

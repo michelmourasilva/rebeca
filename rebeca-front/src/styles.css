@@ -2,5 +2,11 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
-html, body { height: 100%; }
+html, body { height: 100%; background-color: #fafafa}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.popup .mat-dialog-container {
+  padding: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}

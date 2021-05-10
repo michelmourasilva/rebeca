@@ -11,3 +11,20 @@
 .file-input {
   display: none;
 }
+
+
+.mat-dialog-content{
+  margin-top: 30px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+
+.mat-dialog-actions {
+  margin-right: 30px;
+  margin-bottom: 10px;
+}
+
+.mat-toolbar {
+  background-color: #c5cae9 ;
+}

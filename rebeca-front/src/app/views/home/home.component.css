@@ -6,10 +6,17 @@
 }
 
 .fixedElement {
-  background-color: #c0c0c0;
+  background-color: #f6f6f6;
   position:fixed;
   top:0;
   z-index:100;
   width:100px;
   height: 100px
+}
+
+.mat-toolbar {
+  background-color: #3f51b5;
+  color: white;
+  position: relative;
+  z-index: 0;
 }

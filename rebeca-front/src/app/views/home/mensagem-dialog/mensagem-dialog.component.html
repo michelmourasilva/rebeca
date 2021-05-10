@@ -1,0 +1,18 @@
+<mat-toolbar *ngIf="data.tipo === 'delete'" style="background-color: #f3453cff; color: white" >
+  <span>Exclusão de projeto</span>
+</mat-toolbar>
+<mat-toolbar *ngIf="data.tipo === 'delete_sucesso'" style="background-color: yellow">
+  <span>Exclusão do projeto {{data.noProjeto}}.</span>
+</mat-toolbar>
+<mat-toolbar-row *ngIf="data.tipo === 'delete_sucesso'" >
+  Projeto {{data.noProjeto}} excluído com sucesso.
+</mat-toolbar-row>
+<mat-toolbar-row *ngIf="data.tipo === 'delete'">
+  Deseja excluir o projeto {{data.noProjeto}} ?
+</mat-toolbar-row>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="warn" mat-dialog-close tabindex="-1" (click)="deletaProjeto(data.idProjeto, data.noProjeto)" *ngIf="data.tipo === 'delete'">Confirma</button>
+  <button mat-button mat-dialog-close *ngIf="data.tipo !== 'delete_sucesso'">Cancel</button>
+  <button mat-button mat-dialog-close *ngIf="data.tipo === 'delete_sucesso'" (click)="fechar()">Fechar</button>
+</mat-dialog-actions>
+
