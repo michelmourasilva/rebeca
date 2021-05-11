@@ -1,9 +1,13 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
 import {ProjetoService} from '../../../shared/service/projeto.service';
 import {ColecaoObjetoService} from '../../../shared/service/colecaoObjeto.service';
 import {ConfiguracaoService} from '../../../shared/service/configuracao.service';
+import {PageEvent} from '@angular/material/paginator';
+import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
+import {ColecaoAtributosService} from '../../../shared/service/colecaoAtributos.service';
+import {MatAccordion} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-configuracao-form-dialog',
@@ -11,22 +15,45 @@ import {ConfiguracaoService} from '../../../shared/service/configuracao.service'
   styleUrls: ['./configuracao-form-dialog.component.css']
 })
 export class ConfiguracaoFormDialogComponent implements OnInit {
+
   isLinear = false;
   firstFormGroup: FormGroup;
-  secondFormGroup: FormGroup;
+
   panelOpenState = false;
   colecaoObjetoLista: any = [];
-  configuracoesLista: any = [];
 
+  configuracoesLista: any = [];
+  configuracoesListaTemp: any = [];
+  @ViewChild('configuracoesLista') public acordion: MatAccordion;
+
+  resultado: any = [];
+
+  length: number;
+  pageSize = 8;
+  pageSizeOptions: number[] = [1, 2, 5, 8];
+  pageEvent: PageEvent;
+
+  secondFormGroup: FormGroup;
+
+  atributos: any = [];
+
+  // tslint:disable-next-line:typedef
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
   constructor(
     public colecaoObjetoService: ColecaoObjetoService,
     public configuracaoService: ConfiguracaoService,
+    public colecaoAtributoService: ColecaoAtributosService,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private rest: ConfiguracaoService,
+    public dialog: MatDialog,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {
 
+  }
 
   ngOnInit(): void {
 
@@ -38,53 +65,129 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
       idProjeto: new FormControl(this.data.idProjeto)
     });
     this.secondFormGroup = this.fb.group({
-      secondCtrl: ['', Validators.required]
+      Tags: this.fb.array([])
     });
     this.getColecaoObjeto();
     this.getConfiguracoesbyProjeto(this.data.idProjeto);
+
+  }
+
+  // tslint:disable-next-line:typedef
+  getColecaoAtributo(noObjeto: string){
+    this.colecaoAtributoService.getColecaoAtributos(noObjeto).subscribe(
+      data => {
+        this.atributos = data;
+      }
+    );
   }
 
   // tslint:disable-next-line:typedef
   getColecaoObjeto(){
     this.colecaoObjetoService.getColecaoObjeto().subscribe(
       data => {
-        // console.log(typeof data);
-        // console.log(typeof this.projetoLista.length);
-        // console.log(this.projetoLista.length);
         this.colecaoObjetoLista = data;
       }
     );
   }
 
   // tslint:disable-next-line:typedef
+  getData( event?: PageEvent) {
+    console.log(event);
+    this.configuracoesLista = this.resultado.slice(event.pageIndex * event.pageSize,
+      event.pageIndex * event.pageSize + event.pageSize);
+    console.log(this.configuracoesLista);
+    return event;
+  }
+
+  // tslint:disable-next-line:typedef
   getConfiguracoesbyProjeto(idProjeto: number){
     this.configuracaoService.getConfiguracaobyProjeto(idProjeto).subscribe(
       data => {
-          this.configuracoesLista = data;
+        console.log('executando getConfiguracoesProjeto');
+        console.log(data);
+        this.resultado = data;
+        this.length = this.resultado.length;
+        this.configuracoesLista = this.resultado.slice(0, this.pageSize);
       }
     );
   }
   // tslint:disable-next-line:typedef
-  mantemConfiguracao(){
-    console.log(this.firstFormGroup);
+  mantemConfiguracao(idProjeto: number){
     if (this.firstFormGroup.valid) {
-        this.rest.postConfiguracao(this.firstFormGroup.value);
 
-        this.configuracoesLista.push(
-        {
-          'noModulo': this.firstFormGroup.value.noModulo,
-          'dsModulo':  this.firstFormGroup.value.dsModulo,
-          'noObjetoBanco':  this.firstFormGroup.value.noObjetoBanco,
-        }
-      );
-        this.configuracoesLista.sort();
-        console.log('Cadastrando projeto');
-      // this.dialogRef.close();
-        this.firstFormGroup.reset();
-        this.secondFormGroup.reset();
-        this.cd.detectChanges();
+      this.firstFormGroup.patchValue({
+        idProjeto,
+        noProprietarioBanco: 'REBECA'
+      });
+
+      this.configuracaoService.postConfiguracao(this.firstFormGroup.value).subscribe(
+          () => {
+            console.log('Configuração cadastrada')         ;
+
+            // tslint:disable-next-line:no-shadowed-variable
+            let i = this.configuracoesLista.length;
+            // tslint:disable-next-line:forin
+            while (i--){
+              this.configuracoesLista.splice(i, 1);
+            }
+            this.getConfiguracoesbyProjeto(idProjeto);
+            this.cd.detectChanges();
+          }
+        );
+      this.firstFormGroup.reset();
+      this.secondFormGroup.reset();
     }
   }
+
+  // tslint:disable-next-line:typedef
+  atualizar() {
+    console.log('atualizando');
+  }
+
+  // tslint:disable-next-line:typedef
+  deletar(idConfiguracao: number, noConfiguracao: string, tipo: string){
+    console.log(idConfiguracao, noConfiguracao, tipo);
+    const dialogRef = this.dialog.open(MensagemDialogComponent, {
+      panelClass: 'popup',
+      minWidth: '200px',
+      minHeight: '200px',
+      data: {idConfiguracao, noConfiguracao, tipo}
+    });
+    console.log('deletando configuracao', idConfiguracao) ;
+
+    dialogRef.afterClosed().subscribe(() => {
+
+      // tslint:disable-next-line:no-shadowed-variable
+      let i = this.configuracoesLista.length;
+      // tslint:disable-next-line:forin
+      while (i--){
+        this.configuracoesLista.splice(i, 1);
+      }
+      this.getConfiguracoesbyProjeto(this.data.idProjeto);
+      this.cd.detectChanges();
+    });
+  }
+
+  // tslint:disable-next-line:typedef
+  get tagsArr() {
+    return this.secondFormGroup.get('Tags') as FormArray;
+  }
+
+  // tslint:disable-next-line:typedef
+  onSelect(tag: any) {
+    this.tagsArr.push(
+      this.fb.group({
+        noColuna: tag.noColuna
+      })
+    );
+    this.atributos.splice(this.atributos.indexOf(tag), 1);
+  }
+
+  onRemove(index, tag): void {
+    this.tagsArr.removeAt(index);
+    this.atributos.push(tag.value);
+  }
+
 
 
 }

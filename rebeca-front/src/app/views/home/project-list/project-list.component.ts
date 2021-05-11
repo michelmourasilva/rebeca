@@ -6,6 +6,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {any} from 'codelyzer/util/function';
 import {ConfiguracaoFormDialogComponent} from '../configuracao-form-dialog/configuracao-form-dialog.component';
 import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
+import {EndpointDialogComponent} from '../endpoint-dialog/endpoint-dialog.component';
 
 @Component({
   selector: 'app-project-list',
@@ -70,6 +71,19 @@ export class ProjectListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+    });
+  }
+
+  openURL(url): void{
+    window.open(url);
+  }
+
+  openEndpoints(idProjeto: number,  noProjeto: string): void {
+    const dialogRef = this.dialog.open(EndpointDialogComponent, {
+      panelClass: 'popup',
+      minWidth: '800px',
+      minHeight: '400px',
+      data: {idProjeto, noProjeto}
     });
   }
 }

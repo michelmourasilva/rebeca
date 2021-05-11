@@ -2,14 +2,15 @@
   <ng-container  *ngFor="let item of projetoLista" style="margin: 0.5%;">
     <mat-card class="mat-card-projeto" fxFlex="0 1 calc(33.3% - 11px)"
               fxFlex.lt-md="0 1 calc(50% - 11px)"
-              fxFlex.lt-sm="100%">
+              fxFlex.lt-sm="100%" style="border-radius: 2em;">
       <mat-card-title class="mat-card-title-projeto" >
 
           <div class="row">
             <p>
               <span style="font-size:1.5rem;" fxFlex="70" fxLayoutAlign="start center" style="padding-top: 15px;color: white"> {{item.noProjeto}}</span>
               <span fxFlex></span>
-              <span fxFlex="25" fxLayoutAlign="end center" style="padding-top: 20px;"><button mat-icon-button aria-label="Configuraćões"><a href="{{item.txtURL}}" target="_blank"><mat-icon style="color: white">link</mat-icon></a></button></span>
+              <span fxLayoutAlign="end center" style="padding-top: 20px;"><button mat-icon-button aria-label="Configurações" (click)="openURL(item.txtURL)"><mat-icon style="color: white">link</mat-icon></button></span>
+              <span fxLayoutAlign="end center" style="padding-top: 20px;"><button mat-icon-button aria-label="EndPoints" (click)="openEndpoints(item.idProjeto, item.noProjeto)" ><mat-icon style="color: white">language</mat-icon></button></span>
             </p>
           </div>
 
@@ -23,10 +24,10 @@
       <mat-card-actions >
         <div class="row" >
           <p>
-            <span fxFlex="33" fxLayoutAlign="center bottom"><button mat-icon-button aria-label="Configuraćões" (click)="openConfiguracao(item.idProjeto, item.noProjeto)"><mat-icon >settings</mat-icon></button></span>
-            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Visualizar projeto" (click)="openProjeto(item.idProjeto, 'view', item.noProjeto)"><mat-icon >search</mat-icon></button></span>
+            <span fxFlex="33" fxLayoutAlign="center bottom"><button mat-icon-button aria-label="Configurações" (click)="openConfiguracao(item.idProjeto, item.noProjeto)"><mat-icon >settings</mat-icon></button></span>
+            <!--<span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Visualizar projeto" (click)="openProjeto(item.idProjeto, 'view', item.noProjeto)"><mat-icon >search</mat-icon></button></span>-->
             <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Editar projeto" (click)="openProjeto(item.idProjeto, 'update', item.noProjeto)"><mat-icon >edit</mat-icon></button></span>
-            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Deletar projeto" color="warn" (click)="deleteProjeto(item.idProjeto,item.noProjeto, 'delete')"><mat-icon >delete</mat-icon></button></span>
+            <span fxFlex="33" fxLayoutAlign="center center"><button mat-icon-button aria-label="Deletar projeto" color="warn" (click)="deleteProjeto(item.idProjeto,item.noProjeto, 'delete_projeto')"><mat-icon >delete</mat-icon></button></span>
           </p>
         </div>
       </mat-card-actions>

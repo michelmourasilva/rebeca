@@ -26,5 +26,10 @@ public class EndPointService {
 	}
 
 
+	public List<EndPoint> findAllByNoProjeto(String noProjeto) {
+		return endPointRepository.findAllByNoProjeto(noProjeto);
+	}
+	
+
 
 }

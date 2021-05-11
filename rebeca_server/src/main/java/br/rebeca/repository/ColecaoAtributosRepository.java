@@ -16,4 +16,6 @@ public interface ColecaoAtributosRepository extends JpaRepository<ColecaoAtribut
 	@Query("SELECT DISTINCT noObjeto FROM ColecaoAtributos")
 	List<String> listallObjetos();
 	
+	
+	
 }

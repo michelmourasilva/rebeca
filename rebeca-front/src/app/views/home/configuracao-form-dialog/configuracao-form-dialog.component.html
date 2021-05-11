@@ -13,15 +13,15 @@
           <ng-template matStepLabel>Dados básicos</ng-template>
           <mat-form-field class="example-full-width"  color="primary">
             <mat-label>Nome do módulo</mat-label>
-            <input matInput placeholder="" formControlName="noModulo" name="noModulo" >
+            <input matInput placeholder="" formControlName="noModulo" name="noModulo"  oninput="this.value = this.value.toUpperCase()">
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <mat-label>Descrićão do módulo</mat-label>
+            <mat-label>Descrição do módulo</mat-label>
             <textarea matInput  placeholder="" formControlName="dsModulo" name="dsModulo" style="height: 5em; padding-top:0px !important"></textarea>
           </mat-form-field>
           <mat-form-field class="example-full-width">
             <mat-label>Objeto</mat-label>
-            <mat-select formControlName="noObjetoBanco" name="noObjetoBanco">
+            <mat-select formControlName="noObjetoBanco" #noObjetoBanco name="noObjetoBanco" (valueChange)="getColecaoAtributo(noObjetoBanco.value)">
               <mat-option *ngFor="let item of colecaoObjetoLista" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -30,11 +30,30 @@
       <mat-step [stepControl]="secondFormGroup">
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Filtros ou conjunto de dados</ng-template>
-          <mat-form-field>
-            <mat-label>Address</mat-label>
-            <input matInput formControlName="secondCtrl" placeholder="Ex. 1 Main St, New York, NY"
-                   required>
+
+          <mat-form-field class="example-full-width" >
+            <mat-chip-list #chipList formArrayName="Tags">
+              <mat-chip *ngFor="let tag of tagsArr.controls; let i = index" [removable]="true" (removed)="onRemove(i, tag)" [formGroupName]="i">
+                {{tag.get('noColuna').value}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <!-- Use below if only having single formcontrol -->
+              <!-- <mat-chip *ngFor="let tag of tagsArr.controls; let i = index" [removable]="true" (removed)="onRemove(i)">
+                {{tag.value}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip> -->
+            </mat-chip-list>
           </mat-form-field>
+
+
+          <mat-chip-list>
+            <mat-chip *ngFor="let tag of atributos"  (click)="onSelect(tag)">
+              {{tag.noColuna}}
+            </mat-chip>
+          </mat-chip-list>
+
+          <pre>{{secondFormGroup.value | json}}</pre>
+
           <div>
             <button mat-button matStepperPrevious>Voltar</button>
             <button mat-button matStepperNext>Próximo</button>
@@ -45,7 +64,7 @@
         <ng-template matStepLabel>Finalizar</ng-template>
         <div style="padding-top: 20px; horiz-align: right; width: 100%">
 
-          <button mat-raised-button color="primary" (click)="mantemConfiguracao()">Criar configuraćão</button>
+          <button mat-raised-button color="primary" (click)="mantemConfiguracao(data.idProjeto)">Criar configuração</button>
           <button mat-button matStepperPrevious>Voltar</button>
         </div>
       </mat-step>
@@ -53,20 +72,22 @@
   </div>
   <div style="width: 47%; float:right; padding-top: 10px">
     <mat-toolbar>
-      <span>Configuraćões</span>
+      <span>Configurações</span>
     </mat-toolbar>
     <mat-accordion>
-      <mat-expansion-panel hideToggle *ngFor="let item of configuracoesLista">
+      <mat-expansion-panel hideToggle *ngFor="let item of configuracoesLista" #configuracoesLista>
         <mat-expansion-panel-header style="padding-right: 2px;">
-          <button mat-button><mat-icon >edit</mat-icon></button>
-          <button mat-button color="warn"><mat-icon >delete</mat-icon></button>
+          <button mat-button (click)="atualizar();$event.stopPropagation()"><mat-icon >edit</mat-icon></button>
+          <button mat-button (click)="deletar(item.idConfiguracao, item.noModulo, 'delete_configuracao');$event.stopPropagation()" color="warn"><mat-icon >delete</mat-icon></button>
           <mat-panel-title>{{item.noModulo}}</mat-panel-title>
-          <mat-panel-description>{{item.noObjetoBanco}}</mat-panel-description>
+          <mat-panel-description>{{item.dsModulo}}</mat-panel-description>
         </mat-expansion-panel-header>
-        <p>{{item.dsModulo}}</p>
+        <p>Objeto: {{item.noObjetoBanco}}</p>
       </mat-expansion-panel>
 
     </mat-accordion>
+    <mat-paginator #paginator [length]="length" [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions" (page)="pageEvent=this.getData($event)" showFirstLastButtons></mat-paginator>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

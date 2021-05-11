@@ -35,7 +35,15 @@ export class ConfiguracaoService {
 
   public postConfiguracao(configuracao: any): Observable<ConfiguracaoModel>{
     // @ts-ignore
-    return this.httpClient.post<any>(this.apiUrl, configuracao, this.httpOptions).subscribe(() => console.log('Configuraćão cadastrada'));
+    return this.httpClient.post<any>(this.apiUrl, configuracao, this.httpOptions);
+  }
+
+  public deleteConfiguracao(idConfiguracao: number): Observable<ConfiguracaoModel>{
+    // tslint:disable-next-line:variable-name
+    const _url = `${this.apiUrl}${idConfiguracao}`;
+    console.log(_url, idConfiguracao);
+    // @ts-ignore
+    return this.httpClient.delete(_url, this.httpOptions).subscribe(() => console.log('Configuracao deletada'));
   }
 
   // tslint:disable-next-line:typedef

@@ -41,7 +41,7 @@ public class Configuracao implements Serializable{
     @ApiModelProperty(notes = "Breve descrição do módulo que está sendo acessado.")
     private String dsModulo;
     @ApiModelProperty(notes = "Nome físico do objeto dentro do banco de dados.")
-    private String noObjetoBanco;
+    private String noObjetoBanco = "REBECA";
     @ApiModelProperty(notes = "Nome do owner do objeto dentro do banco de dados.")
     private String noProprietarioBanco;
     

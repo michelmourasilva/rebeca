@@ -2,9 +2,11 @@ package br.rebeca.resource;
 
 import java.util.List;
 
+import org.hibernate.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +30,14 @@ public class  EndPointResource {
 		List<EndPoint> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
-	
+
+    @ApiOperation(value = "Retorna a lista dos endpoints disponíveis para uso por projeto.")
+	@RequestMapping(value = "/{noProjeto}",method = RequestMethod.GET)
+	public ResponseEntity<List<EndPoint>> findAllByNoProjeto(@PathVariable String noProjeto) {
+		List<EndPoint> list = service.findAllByNoProjeto(noProjeto);
+		return ResponseEntity.ok().body(list);
+	}
+    
+    
+    
 }

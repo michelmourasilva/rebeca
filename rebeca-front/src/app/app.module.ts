@@ -25,6 +25,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MensagemDialogComponent } from './views/home/mensagem-dialog/mensagem-dialog.component';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatSliderModule } from '@angular/material/slider';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { EndpointDialogComponent } from './views/home/endpoint-dialog/endpoint-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ProjectListComponent,
     ProjetoFormDialogComponent,
     ConfiguracaoFormDialogComponent,
-    MensagemDialogComponent
+    MensagemDialogComponent,
+    EndpointDialogComponent
   ],
     imports: [
         HttpClientModule,
@@ -55,7 +59,9 @@ import {MatExpansionModule} from '@angular/material/expansion';
       MatGridListModule,
       MatSelectModule,
       MatStepperModule,
-      MatExpansionModule
+      MatExpansionModule,
+      MatSliderModule,
+      MatPaginatorModule
     ],
   providers: [],
   bootstrap: [AppComponent]

@@ -36,7 +36,7 @@ export class ProjetoFormDialogComponent implements OnInit {
   carregarDados(){
     if (this.data.tipo === 'update' || this.data.tipo === 'view'){
       this.rest.getProjeto(this.data.idProjeto).subscribe(res => {
-        console.log('entrou na atualizaćão');
+        console.log('entrou na atualização');
         console.log(res);
 
         this.projetoForm.patchValue({

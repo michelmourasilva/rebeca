@@ -1,0 +1,26 @@
+<mat-toolbar>
+  <span>{{data.noProjeto}}</span>
+</mat-toolbar>
+<div style="padding: 20px">
+  <mat-toolbar>
+    <span>Dados disponíveis</span>
+  </mat-toolbar>
+  <mat-accordion>
+    <mat-expansion-panel hideToggle *ngFor="let item of endPointsLista">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{item.noModulo}}</mat-panel-title>
+        <!--<mat-panel-description>{{item.noObjetoBanco}}</mat-panel-description>-->
+      </mat-expansion-panel-header>
+      <div style="padding-top: 20px">
+      <p>Descrição: {{item.dsModulo}}</p>
+      <p>Requst URL:   <button mat-button mat-dialog-close (click)="openURL(this.localURL  + item.endPoint)">{{this.localURL +  item.endPoint}}</button></p>
+        <p>Curl: curl -X GET "http://localhost:8081/configuracoes" -H "accept: application/json"</p>
+        <p>CSV:  </p>
+        <p>PDF: </p>
+      </div>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+  <mat-paginator #paginator [length]="length" [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions" (page)="pageEvent=this.getData($event)" showFirstLastButtons></mat-paginator>
+</div>

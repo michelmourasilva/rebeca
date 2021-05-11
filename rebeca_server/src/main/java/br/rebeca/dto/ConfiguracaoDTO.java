@@ -33,7 +33,7 @@ public class ConfiguracaoDTO implements Serializable{
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=30, message="O tamanho deve ser até 30 caracteres")
     @ApiModelProperty(notes = "Nome do owner do objeto dentro do banco de dados.")
-	private String noProprietarioBanco;
+	private String noProprietarioBanco = "REBECA";
     
     @NotEmpty(message="Preenchimento obrigatório.")
     @Length(max=30, message="O tamanho deve ser até 30 caracteres")
