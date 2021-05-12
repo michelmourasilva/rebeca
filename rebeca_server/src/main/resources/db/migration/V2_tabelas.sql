@@ -62,7 +62,7 @@ ALTER TABLE REBECA.TB_FILTRO_SERVICO
     ADD CONSTRAINT FK_FILTRO_SERVICO_CONFIGURACAO FOREIGN KEY
         ( ID_CONFIGURACAO_SERVICO )
         REFERENCES REBECA.TB_CONFIGURACAO_SERVICO
-            ( ID_CONFIGURACAO_SERVICO ) ENABLE;
+            ( ID_CONFIGURACAO_SERVICO ) ON DELETE CASCADE ENABLE ;
 
 COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'Cada configuração poderá utilizar mais de uma condição de filtro juntamente com um objecto específico do banco. ';
 comment on column REBECA.TB_FILTRO_SERVICO.ID_FILTRO_SERVICO IS 'Identificador gerado automaticamente pelo Oracle. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST';
@@ -109,7 +109,7 @@ AS
 select sum(nvl(Null, 1)) over (order by origem.END_POINT ROWS UNBOUNDED PRECEDING) ID, origem.*
 from (
          SELECT '/dataset/' || PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' END_POINT,
-                NULL ATRIBUTO_FILTRO,
+                '_NA' ATRIBUTO_FILTRO,
                 PROJETO.NO_PROJETO,
                 SERVICO.NO_MODULO,
                 SERVICO.DS_MODULO

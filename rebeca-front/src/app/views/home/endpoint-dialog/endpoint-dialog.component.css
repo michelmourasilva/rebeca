@@ -1,0 +1,14 @@
+mat-panel-title {
+  flex-basis: 0;
+  padding-top: 12px;
+}
+
+
+mat-panel-description {
+  padding-top: 16px;
+  flex-basis: 100%;
+}
+
+.row {
+  display: flex;
+}

@@ -8,6 +8,8 @@ import {PageEvent} from '@angular/material/paginator';
 import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
 import {ColecaoAtributosService} from '../../../shared/service/colecaoAtributos.service';
 import {MatAccordion} from '@angular/material/expansion';
+import {FiltroService} from '../../../shared/service/filtro.service';
+import {FiltroModel} from '../../../shared/model/filtro.model';
 
 @Component({
   selector: 'app-configuracao-form-dialog',
@@ -16,10 +18,8 @@ import {MatAccordion} from '@angular/material/expansion';
 })
 export class ConfiguracaoFormDialogComponent implements OnInit {
 
-  isLinear = false;
+  isLinear = true;
   firstFormGroup: FormGroup;
-
-  panelOpenState = false;
   colecaoObjetoLista: any = [];
 
   configuracoesLista: any = [];
@@ -32,7 +32,7 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   pageSize = 8;
   pageSizeOptions: number[] = [1, 2, 5, 8];
   pageEvent: PageEvent;
-
+  panelOpenState: boolean[] = [];
   secondFormGroup: FormGroup;
 
   atributos: any = [];
@@ -47,6 +47,7 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
     public colecaoObjetoService: ColecaoObjetoService,
     public configuracaoService: ConfiguracaoService,
     public colecaoAtributoService: ColecaoAtributosService,
+    public filtroService: FiltroService,
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
@@ -103,11 +104,11 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   getConfiguracoesbyProjeto(idProjeto: number){
     this.configuracaoService.getConfiguracaobyProjeto(idProjeto).subscribe(
       data => {
-        console.log('executando getConfiguracoesProjeto');
-        console.log(data);
         this.resultado = data;
         this.length = this.resultado.length;
         this.configuracoesLista = this.resultado.slice(0, this.pageSize);
+        this.secondFormGroup.reset();
+        this.firstFormGroup.reset();
       }
     );
   }
@@ -121,22 +122,40 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
       });
 
       this.configuracaoService.postConfiguracao(this.firstFormGroup.value).subscribe(
-          () => {
-            console.log('Configuração cadastrada')         ;
+        data => {
 
-            // tslint:disable-next-line:no-shadowed-variable
-            let i = this.configuracoesLista.length;
-            // tslint:disable-next-line:forin
-            while (i--){
-              this.configuracoesLista.splice(i, 1);
-            }
-            this.getConfiguracoesbyProjeto(idProjeto);
-            this.cd.detectChanges();
+          // tslint:disable-next-line:no-shadowed-variable
+          let i = this.configuracoesLista.length;
+          // tslint:disable-next-line:forin
+          while (i--) {
+            this.configuracoesLista.splice(i, 1);
           }
-        );
-      this.firstFormGroup.reset();
-      this.secondFormGroup.reset();
+
+          if (this.secondFormGroup.valid) {
+            const filtroArray =  this.secondFormGroup.get('Tags').value;
+            console.log('999999999999999999',this.secondFormGroup.get('Tags').value);
+            for (const i in filtroArray){
+              const nomeColuna = filtroArray[i].noColuna;
+              console.log('0000000000000000000000000', nomeColuna);
+              const novofiltro = new FiltroModel(0, nomeColuna, 'IGUAL', data);
+              console.log('>>>>>>>>>>>>>', novofiltro);
+
+              this.filtroService.postFiltro(novofiltro);
+
+            }
+          }
+
+          this.getConfiguracoesbyProjeto(idProjeto);
+          this.cd.detectChanges();
+
+        }
+
+      );
+
     }
+
+
+
   }
 
   // tslint:disable-next-line:typedef

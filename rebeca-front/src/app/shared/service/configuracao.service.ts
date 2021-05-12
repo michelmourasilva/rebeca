@@ -33,7 +33,7 @@ export class ConfiguracaoService {
     return this.httpClient.get<ConfiguracaoModel>(_url);
   }
 
-  public postConfiguracao(configuracao: any): Observable<ConfiguracaoModel>{
+  public postConfiguracao(configuracao: any): Observable<any>{
     // @ts-ignore
     return this.httpClient.post<any>(this.apiUrl, configuracao, this.httpOptions);
   }

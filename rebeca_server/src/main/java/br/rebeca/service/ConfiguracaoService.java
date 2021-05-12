@@ -36,9 +36,11 @@ public class ConfiguracaoService {
 				"Objeto não encontrado! Id:" + id + ", Tipo: " + Configuracao.class.getName()));
 	}
 
-	public Configuracao insert(Configuracao obj) {
+	public long insert(Configuracao obj) {
 		obj.setIdConfiguracao(0);
-		return configuracaoRepository.save(obj);
+		Configuracao confObjt = configuracaoRepository.save(obj);
+		configuracaoRepository.flush();
+		return confObjt.getIdConfiguracao();
 	}
 
 	public Configuracao update(Configuracao obj) {

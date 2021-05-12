@@ -39,7 +39,7 @@ public class ConfiguracaoResource {
 
     @ApiOperation(value = "Insere uma configuração.")
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ConfiguracaoDTO objDto) {
+	public ResponseEntity<Long> insert(@Valid @RequestBody ConfiguracaoDTO objDto) {
     	
     	Projeto projeto = new Projeto();
     	
@@ -47,11 +47,11 @@ public class ConfiguracaoResource {
     	
     	Configuracao obj = service.fromDTO(objDto);
     	
-    	obj = service.insert(obj);
+    	long idConfiguracao = service.insert(obj);
     	
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdConfiguracao())
-				.toUri();
-		return ResponseEntity.created(uri).build();
+		//URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdConfiguracao())
+		//		.toUri();
+		return  ResponseEntity.ok().body(idConfiguracao);
 	}
 
     @ApiOperation(value = "Atualiza uma configuração. ")

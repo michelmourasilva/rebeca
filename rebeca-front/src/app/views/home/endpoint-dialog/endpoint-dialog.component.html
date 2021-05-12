@@ -9,15 +9,34 @@
     <mat-expansion-panel hideToggle *ngFor="let item of endPointsLista">
       <mat-expansion-panel-header>
         <mat-panel-title>{{item.noModulo}}</mat-panel-title>
-        <!--<mat-panel-description>{{item.noObjetoBanco}}</mat-panel-description>-->
+        <mat-panel-description>{{item.dsModulo}}</mat-panel-description>
       </mat-expansion-panel-header>
-      <div style="padding-top: 20px">
-      <p>Descrição: {{item.dsModulo}}</p>
-      <p>Requst URL:   <button mat-button mat-dialog-close (click)="openURL(this.localURL  + item.endPoint)">{{this.localURL +  item.endPoint}}</button></p>
-        <p>Curl: curl -X GET "http://localhost:8081/configuracoes" -H "accept: application/json"</p>
-        <p>CSV:  </p>
-        <p>PDF: </p>
+
+      <div class="row" style="padding-top: 20px; vertical-align: middle">
+        <div class="column" style="width: 100px; vertical-align: bottom"><b>Request URL: </b></div>
+        <div class="column"><button mat-button mat-dialog-close (click)="openURL(this.localURL  + item.endPoint)">{{this.localURL +  item.endPoint}}</button></div>
       </div>
+
+      <div class="row" style="padding-top: 20px; vertical-align: middle">
+        <div class="column" style="width: 100px"><b>Curl: </b></div>
+        <div class="column">curl -X GET "{{this.localURL +  item.endPoint}}" -H "accept: application/json"</div>
+      </div>
+
+      <div class="row" style="padding-top: 20px; vertical-align: middle" *ngIf="item.atributoFiltro !== '_NA' ">
+        <div class="column" style="width: 100px"><b>Filtro: </b></div>
+        <div class="column">Substituir o sinal de interrogaćão na URL por algum valor do atributo {{item.atributoFiltro.toString().replace("= :1", "")}}</div>
+      </div>
+
+      <div class="row" style="padding-top: 20px; vertical-align: middle">
+        <div class="column" style="width: 100px"><b>CSV: </b></div>
+        <div class="column">-</div>
+      </div>
+
+      <div class="row" style="padding-top: 20px; vertical-align: middle">
+        <div class="column" style="width: 100px"><b>PDF: </b></div>
+        <div class="column">-</div>
+      </div>
+
     </mat-expansion-panel>
 
   </mat-accordion>

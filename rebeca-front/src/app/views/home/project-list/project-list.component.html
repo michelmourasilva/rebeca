@@ -7,7 +7,7 @@
 
           <div class="row">
             <p>
-              <span style="font-size:1.5rem;" fxFlex="70" fxLayoutAlign="start center" style="padding-top: 15px;color: white"> {{item.noProjeto}}</span>
+              <span style="font-size:1.5rem;" fxFlex="70" fxLayoutAlign="start center" style="padding-top: 15px;color: white"> <span style="width: 30px"><mat-icon>description</mat-icon></span>{{item.noProjeto}}</span>
               <span fxFlex></span>
               <span fxLayoutAlign="end center" style="padding-top: 20px;"><button mat-icon-button aria-label="Configurações" (click)="openURL(item.txtURL)"><mat-icon style="color: white">link</mat-icon></button></span>
               <span fxLayoutAlign="end center" style="padding-top: 20px;"><button mat-icon-button aria-label="EndPoints" (click)="openEndpoints(item.idProjeto, item.noProjeto)" ><mat-icon style="color: white">language</mat-icon></button></span>

@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span>{{data.noProjeto}}</span>
+  <span style="width: 30px"><mat-icon style="vertical-align: center; padding-top: 10px">description</mat-icon></span><span style="vertical-align: middle">{{data.noProjeto}}</span>
 </mat-toolbar>
 <mat-dialog-content >
   <div style="width: 50%; height: 555px;float:left">
@@ -52,7 +52,7 @@
             </mat-chip>
           </mat-chip-list>
 
-          <pre>{{secondFormGroup.value | json}}</pre>
+          <!--<pre>{{secondFormGroup.value | json}}</pre>-->
 
           <div>
             <button mat-button matStepperPrevious>Voltar</button>
@@ -70,21 +70,33 @@
       </mat-step>
     </mat-vertical-stepper>
   </div>
-  <div style="width: 47%; float:right; padding-top: 10px">
+  <div style="width: 47%; float:right;">
     <mat-toolbar>
-      <span>Configurações</span>
+      <span style="width: 30px"><mat-icon style="padding-top: 10px">settings</mat-icon></span><span>Configurações</span>
     </mat-toolbar>
     <mat-accordion>
-      <mat-expansion-panel hideToggle *ngFor="let item of configuracoesLista" #configuracoesLista>
+      <mat-expansion-panel hideToggle *ngFor="let item of configuracoesLista" #configuracoesLista >
         <mat-expansion-panel-header style="padding-right: 2px;">
           <button mat-button (click)="atualizar();$event.stopPropagation()"><mat-icon >edit</mat-icon></button>
           <button mat-button (click)="deletar(item.idConfiguracao, item.noModulo, 'delete_configuracao');$event.stopPropagation()" color="warn"><mat-icon >delete</mat-icon></button>
-          <mat-panel-title>{{item.noModulo}}</mat-panel-title>
+
+          <mat-panel-title ><i class="material-icons">{{configuracoesLista.expanded? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i><span style="padding-right:10px"></span><h3 class="mt-0 font-weight-bold">{{item.noModulo}}</h3></mat-panel-title>
           <mat-panel-description>{{item.dsModulo}}</mat-panel-description>
         </mat-expansion-panel-header>
-        <p>Objeto: {{item.noObjetoBanco}}</p>
-      </mat-expansion-panel>
+        <div class="row" style="padding-top: 20px; vertical-align: middle">
+          <div class="column" style="width: 100px"><b>Dataset: </b></div>
+          <div class="column">{{item.noObjetoBanco}}</div>
+        </div>
 
+        <div class="row" style="padding-top: 20px; padding-bottom: 10px; vertical-align: middle" *ngIf="item.filtros.length > 0">
+          <div class="column" style="width: 100px; vertical-align: middle"><b>Subdataset:</b></div>
+          <div class="column">
+            <mat-chip-list aria-label="Filtros"  *ngIf="item.filtros.length > 0">
+              <mat-chip *ngFor="let filtro of item.filtros">{{filtro.noAtributo}}</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </mat-expansion-panel>
     </mat-accordion>
     <mat-paginator #paginator [length]="length" [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions" (page)="pageEvent=this.getData($event)" showFirstLastButtons></mat-paginator>
