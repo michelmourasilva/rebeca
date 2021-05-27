@@ -1,14 +1,26 @@
 mat-panel-title {
   flex-basis: 0;
-  padding-top: 12px;
+  padding-top: 10px;
 }
 
 
 mat-panel-description {
-  padding-top: 16px;
+  padding-top: 8px;
   flex-basis: 100%;
 }
 
 ::ng-deep .mat-expansion-panel-body {
   background-color: #f4f4f4;
+}
+
+.mat-toolbar {
+  background-color: #c5cae9 ;
+}
+
+.right-aligned-header > .mat-content {
+  justify-content: space-between;
+}
+
+.mat-content > mat-panel-title, .mat-content > mat-panel-description {
+  flex: 0 0 auto;
 }

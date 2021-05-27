@@ -61,4 +61,6 @@ export class EndpointDialogComponent implements OnInit {
     window.open(url);
   }
 
+
+
 }

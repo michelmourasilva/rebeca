@@ -25,6 +25,12 @@ public class ColecaoAtributosService {
 	}
 	
 
+	public ColecaoAtributos findByNoObjetoAndNoColuna(String noObjeto, String noColuna) {
+		return repo.findByNoObjetoAndNoColuna(noObjeto, noColuna);
+	}
+	
+	
+	
 	public List<ColecaoAtributos> findAll() {
 		return repo.findAll();
 	}

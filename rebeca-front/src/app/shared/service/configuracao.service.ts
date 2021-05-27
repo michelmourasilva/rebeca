@@ -27,6 +27,12 @@ export class ConfiguracaoService {
     return this.httpClient.get<ConfiguracaoModel>(this.apiUrl);
   }
 
+  public getConfiguracaobyId(idConfiguracao: number): Observable<ConfiguracaoModel> {
+    const _url = `${this.apiUrl}${idConfiguracao}`;
+    return this.httpClient.get<ConfiguracaoModel>(_url);
+  }
+
+
   public getConfiguracaobyProjeto(idProjeto: number): Observable<ConfiguracaoModel>{
     // tslint:disable-next-line:variable-name
     const _url = `${this.apiUrl}projeto/${idProjeto}`;

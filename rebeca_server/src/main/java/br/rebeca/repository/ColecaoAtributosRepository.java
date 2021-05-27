@@ -12,6 +12,8 @@ import br.rebeca.model.ColecaoAtributos;
 public interface ColecaoAtributosRepository extends JpaRepository<ColecaoAtributos, Long> {
 
 	List<ColecaoAtributos> findBynoObjeto(String noObjeto);
+	
+	ColecaoAtributos findByNoObjetoAndNoColuna(String noObjeto, String noColuna);
 
 	@Query("SELECT DISTINCT noObjeto FROM ColecaoAtributos")
 	List<String> listallObjetos();

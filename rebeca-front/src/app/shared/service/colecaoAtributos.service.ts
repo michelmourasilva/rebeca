@@ -25,4 +25,13 @@ export class ColecaoAtributosService {
     const _url = `${this.apiUrl}${noObjeto}`;
     return this.httpClient.get<ColecaoAtributosModel>(_url);
   }
+
+
+  public getAtributo(noObjeto: string, noColuna: string): Observable<ColecaoAtributosModel>{
+
+    // tslint:disable-next-line:variable-name
+    const _url = `${this.apiUrl}${noObjeto}/${noColuna}`;
+    console.log('getAtributo', noObjeto, noColuna, _url);
+    return this.httpClient.get<ColecaoAtributosModel>(_url);
+  }
 }

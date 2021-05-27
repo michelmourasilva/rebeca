@@ -3,13 +3,14 @@ import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import {ColecaoObjetoModel} from '../model/colecaoObjeto.model';
+import {ColecaoAtributosModel} from '../model/colecaoAtributos.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ColecaoObjetoService {
 
-  apiUrl = 'http://localhost:8081/dataset/colecao/objetos';
+  apiUrl = 'http://localhost:8081/dataset/colecao/objetos/';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -24,6 +25,8 @@ export class ColecaoObjetoService {
   public getColecaoObjeto(): Observable<ColecaoObjetoModel> {
     return this.httpClient.get<ColecaoObjetoModel>(this.apiUrl);
   }
+
+
 
   // tslint:disable-next-line:typedef
   httpError(error) {

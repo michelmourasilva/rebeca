@@ -29,11 +29,7 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   @ViewChild('configuracoesLista') public acordion: MatAccordion;
   @ViewChild('stepper') stepper: MatStepper;
   @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
-
-  //@ViewChld('chipsInput') chipsInput: ElementRef;
   @ViewChild('Tags', {static: true}) Tags: ElementRef<HTMLInputElement>;
-
-
 
   resultado: any = [];
 
@@ -49,8 +45,6 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   color: ThemePalette = 'primary';
   checked = false;
   disabled = false;
-
-
 
   // tslint:disable-next-line:typedef
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -73,15 +67,10 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.newReset();
     this.getColecaoObjeto();
     this.getConfiguracoesbyProjeto(this.data.idProjeto);
-
   }
-
-
 
   // tslint:disable-next-line:typedef
   getColecaoAtributo(noObjeto: string){
@@ -103,10 +92,8 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   getData( event?: PageEvent) {
-    console.log(event);
     this.configuracoesLista = this.resultado.slice(event.pageIndex * event.pageSize,
       event.pageIndex * event.pageSize + event.pageSize);
-    console.log(this.configuracoesLista);
     return event;
   }
 
@@ -124,8 +111,10 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   }
   // tslint:disable-next-line:typedef
   mantemConfiguracao(idProjeto: number){
-    if (this.firstFormGroup.valid) {
 
+
+    if (this.firstFormGroup.valid) {
+      console.log('>>> configuracao:', this.firstFormGroup.get('idConfiguracao').value);
       this.firstFormGroup.patchValue({
         idProjeto,
         noProprietarioBanco: 'REBECA'
@@ -171,53 +160,69 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
     }
 
   }
-
-
-
+  
   clearAll(): void {
-
     this.stepper.selectedIndex = 0;
-
     this.formDirective.resetForm();
-
     this.newReset();
-
     this.stepper.reset();
-
     }
 
   // tslint:disable-next-line:typedef
-  atualizar() {
-    console.log('atualizando');
+  atualizar(idConfiguracao: number) {
+
+    this.clearAll();
+    this.configuracaoService.getConfiguracaobyId(idConfiguracao).subscribe(
+      data => {
+        this.firstFormGroup.get('noModulo').setValue(data.noModulo);
+        this.firstFormGroup.get('dsModulo').setValue(data.dsModulo);
+        this.firstFormGroup.get('noObjetoBanco').setValue(data.noObjetoBanco);
+        this.getColecaoAtributo(data.noObjetoBanco);
+
+
+        // tslint:disable-next-line:typedef
+        data.filtros.forEach(function( atributo, index){
+
+          this.colecaoAtributoService.getAtributo(data.noObjetoBanco, atributo.noAtributo).subscribe(
+            (result: any) => {
+              console.log('atributo da edicao', result);
+              this.onSelect(result);
+            }
+          );
+        }.bind(this));
+
+        // console.log('Data da alteracao', data);
+
+
+        // this.onSelect
+
+      }
+    );
   }
 
   // tslint:disable-next-line:typedef
   newReset(){
-
     this.firstFormGroup = this.fb.group({
       noProprietarioBanco: new FormControl('REBECA'),
       noModulo: new FormControl(null, [Validators.required]),
       dsModulo: new FormControl(null, [Validators.required]),
       noObjetoBanco: new FormControl(null, [Validators.required]),
-      idProjeto: new FormControl(this.data.idProjeto)
+      idProjeto: new FormControl(this.data.idProjeto),
+      idConfiguracao: new FormControl(null)
     });
     this.secondFormGroup = this.fb.group({
       Tags: this.fb.array([])
     });
-    //this.getColecaoObjeto();
   }
-
 
   // tslint:disable-next-line:typedef
   deletar(idConfiguracao: number, noConfiguracao: string, tipo: string){
-    console.log(idConfiguracao, noConfiguracao, tipo);
     const dialogRef = this.dialog.open(MensagemDialogComponent, {
       panelClass: 'popup',
       minWidth: '200px',
       minHeight: '200px',
       data: {idConfiguracao, noConfiguracao, tipo}
     });
-    console.log('deletando configuracao', idConfiguracao) ;
 
     dialogRef.afterClosed().subscribe(() => {
 

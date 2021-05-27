@@ -7,9 +7,11 @@
   </mat-toolbar>
   <mat-accordion>
     <mat-expansion-panel hideToggle *ngFor="let item of endPointsLista">
-      <mat-expansion-panel-header>
-        <mat-panel-title><span class="span">{{item.noModulo}}</span><span class="span" *ngIf="item.atributoFiltro !== '_NA' ">Dataset: {{item.atributoFiltro.toString().replace("= :1", "")}}</span></mat-panel-title>
-        <mat-panel-description>{{item.dsModulo}}</mat-panel-description>
+      <mat-expansion-panel-header >
+        <mat-panel-title>{{item.noModulo}}</mat-panel-title>
+
+        <mat-panel-description fxLayoutAlign="end">{{item.dsModulo}}{{ item.atributoFiltro !== '_NA' ?  " - Dataset: Com filtro no atributo " + item.atributoFiltro.toString().replace("= :1", "") : "- Dataset: Sem filtro(s)"}}</mat-panel-description>
+        <!--<mat-panel-description><span class="span">{{item.dsModulo}}</span><span class="span" *ngIf="item.atributoFiltro !== '_NA' ">Dataset: {{item.atributoFiltro.toString().replace("= :1", "")}}</span></mat-panel-description>-->
       </mat-expansion-panel-header>
 
       <div class="row" style="padding-top: 20px; vertical-align: middle">

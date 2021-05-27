@@ -88,7 +88,7 @@
     <mat-accordion>
       <mat-expansion-panel hideToggle *ngFor="let item of configuracoesLista" #configuracoesLista >
         <mat-expansion-panel-header style="padding-right: 2px;">
-          <button mat-button (click)="atualizar();$event.stopPropagation()"><mat-icon >edit</mat-icon></button>
+          <button mat-button (click)="atualizar(item.idConfiguracao);$event.stopPropagation()"><mat-icon >edit</mat-icon></button>
           <button mat-button (click)="deletar(item.idConfiguracao, item.noModulo, 'delete_configuracao');$event.stopPropagation()" color="warn"><mat-icon >delete</mat-icon></button>
 
           <mat-panel-title ><i class="material-icons">{{configuracoesLista.expanded? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</i><span style="padding-right:10px"></span><h3 class="mt-0 font-weight-bold">{{item.noModulo}}</h3></mat-panel-title>

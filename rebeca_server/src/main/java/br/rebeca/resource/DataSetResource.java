@@ -64,5 +64,12 @@ public class DataSetResource {
   		return ResponseEntity.ok().body(list);
   	}
       
+    
+    @ApiOperation(value = "Retorna um atributo de um objeto específico de para utilização na configuração de um projeto")
+  	@RequestMapping(value = "/colecao/atributos/{noObjeto}/{noColuna}", method = RequestMethod.GET)
+  	public ResponseEntity<ColecaoAtributos> findByNoObjetoAndNoColuna(@PathVariable String noObjeto, @PathVariable String noColuna) {
+  		ColecaoAtributos atributo = serviceColecao.findByNoObjetoAndNoColuna(noObjeto, noColuna);
+  		return ResponseEntity.ok().body(atributo);
+  	}
    
 }
