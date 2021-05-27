@@ -1,7 +1,7 @@
 <mat-toolbar>
   <span style="width: 30px"><mat-icon style="vertical-align: center; padding-top: 10px">description</mat-icon></span><span style="vertical-align: middle">{{data.noProjeto}}</span>
 </mat-toolbar>
-<mat-dialog-content >
+<mat-dialog-content style="height: calc(100% - 96px);max-height: unset">
   <div style="width: 50%; height: 590px;float:left">
 
  <!--   <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
@@ -9,7 +9,7 @@
     </button>-->
     <mat-vertical-stepper [linear]="isLinear" #stepper >
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup" >
+        <form [formGroup]="firstFormGroup" #formDirective="ngForm">
           <ng-template matStepLabel>Dados básicos</ng-template>
           <mat-form-field class="example-full-width"  color="primary">
             <mat-label>Nome do módulo</mat-label>
@@ -35,16 +35,14 @@
         <form [formGroup]="secondFormGroup">
           <ng-template matStepLabel>Filtros ou conjunto de dados</ng-template>
 
-          <mat-form-field class="example-full-width" >
-            <mat-chip-list #chipList formArrayName="Tags">
+          <mat-form-field class="example-full-width" #chipsInput>
+            <mat-chip-list #chipList formArrayName="Tags"  >
               <mat-chip *ngFor="let tag of tagsArr.controls; let i = index" [removable]="true" (removed)="onRemove(i, tag)" [formGroupName]="i">
                 {{tag.get('noColuna').value}}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
             </mat-chip-list>
           </mat-form-field>
-
-
           <mat-chip-list>
             <mat-chip *ngFor="let tag of atributos"  (click)="onSelect(tag)">
               {{tag.noColuna}}
@@ -77,7 +75,7 @@
         <ng-template matStepLabel>Finalizar</ng-template>
         <div style="padding-top: 40px; horiz-align: right; width: 100%">
 
-          <button mat-raised-button color="primary" (click)="mantemConfiguracao(data.idProjeto)">Criar configuração</button>
+          <button mat-raised-button color="primary" (click)="mantemConfiguracao(data.idProjeto);">Criar configuração</button>
           <button mat-button matStepperPrevious>Voltar</button>
         </div>
       </mat-step>
@@ -116,5 +114,5 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-button mat-dialog-close (click)="onClose()">Fechar</button>
 </mat-dialog-actions>

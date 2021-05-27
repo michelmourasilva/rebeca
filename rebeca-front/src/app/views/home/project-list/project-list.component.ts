@@ -81,9 +81,10 @@ export class ProjectListComponent implements OnInit {
     height: 'fixed',
     minWidth: '1500px',
     maxWidth: '1500px',
-    minHeight: '780px',
-    maxHeight: '780px',
-    data: {idProjeto, noProjeto}
+    minHeight: '785px',
+    maxHeight: '785px',
+    data: {idProjeto, noProjeto},
+    disableClose: true
   });
 
   dialogRef.afterClosed().subscribe(result => {

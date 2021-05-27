@@ -1,6 +1,6 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ProjetoService} from '../../../shared/service/projeto.service';
 import {ColecaoObjetoService} from '../../../shared/service/colecaoObjeto.service';
 import {ConfiguracaoService} from '../../../shared/service/configuracao.service';
@@ -30,6 +30,11 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   @ViewChild('stepper') stepper: MatStepper;
   @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
 
+  //@ViewChld('chipsInput') chipsInput: ElementRef;
+  @ViewChild('Tags', {static: true}) Tags: ElementRef<HTMLInputElement>;
+
+
+
   resultado: any = [];
 
   length: number;
@@ -45,6 +50,8 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   checked = false;
   disabled = false;
 
+
+
   // tslint:disable-next-line:typedef
   setPageSizeOptions(setPageSizeOptionsInput: string) {
     if (setPageSizeOptionsInput) {
@@ -59,27 +66,22 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
     private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialog: MatDialog,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    public dialogRef: MatDialogRef<ConfiguracaoFormDialogComponent>,
   ) {
 
   }
 
   ngOnInit(): void {
 
-    this.firstFormGroup = this.fb.group({
-      noProprietarioBanco: new FormControl('REBECA'),
-      noModulo: new FormControl(null, [Validators.required]),
-      dsModulo: new FormControl(null, [Validators.required]),
-      noObjetoBanco: new FormControl(null, [Validators.required]),
-      idProjeto: new FormControl(this.data.idProjeto)
-    });
-    this.secondFormGroup = this.fb.group({
-      Tags: this.fb.array([])
-    });
+
+    this.newReset();
     this.getColecaoObjeto();
     this.getConfiguracoesbyProjeto(this.data.idProjeto);
 
   }
+
+
 
   // tslint:disable-next-line:typedef
   getColecaoAtributo(noObjeto: string){
@@ -141,10 +143,12 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
 
           if (this.secondFormGroup.valid) {
             const filtroArray =  this.secondFormGroup.get('Tags').value;
+
             for (const i in filtroArray){
               const nomeColuna = filtroArray[i].noColuna;
               const novofiltro = new FiltroModel(0, nomeColuna, 'IGUAL', data);
               this.filtroService.postFiltro(novofiltro);
+
             }
           }
           this.getConfiguracoesbyProjeto(idProjeto);
@@ -159,17 +163,8 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
             data: {tipo}
           });
 
-          this.firstFormGroup.reset();
-          this.firstFormGroup.get('noModulo').clearValidators();
-          this.firstFormGroup.get('noModulo').updateValueAndValidity();
-          this.firstFormGroup.get('dsModulo').clearValidators();
-          this.firstFormGroup.get('dsModulo').updateValueAndValidity();
-          this.firstFormGroup.get('noObjetoBanco').clearValidators();
-          this.firstFormGroup.get('noObjetoBanco').updateValueAndValidity();
 
-          this.secondFormGroup.reset();
-
-          this.stepper.selectedIndex = 0;
+          this.clearAll();
 
         }
     );
@@ -177,10 +172,41 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
 
   }
 
+
+
+  clearAll(): void {
+
+    this.stepper.selectedIndex = 0;
+
+    this.formDirective.resetForm();
+
+    this.newReset();
+
+    this.stepper.reset();
+
+    }
+
   // tslint:disable-next-line:typedef
   atualizar() {
     console.log('atualizando');
   }
+
+  // tslint:disable-next-line:typedef
+  newReset(){
+
+    this.firstFormGroup = this.fb.group({
+      noProprietarioBanco: new FormControl('REBECA'),
+      noModulo: new FormControl(null, [Validators.required]),
+      dsModulo: new FormControl(null, [Validators.required]),
+      noObjetoBanco: new FormControl(null, [Validators.required]),
+      idProjeto: new FormControl(this.data.idProjeto)
+    });
+    this.secondFormGroup = this.fb.group({
+      Tags: this.fb.array([])
+    });
+    //this.getColecaoObjeto();
+  }
+
 
   // tslint:disable-next-line:typedef
   deletar(idConfiguracao: number, noConfiguracao: string, tipo: string){
@@ -224,6 +250,11 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   onRemove(index, tag): void {
     this.tagsArr.removeAt(index);
     this.atributos.push(tag.value);
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
+    window.location.reload();
   }
 
 }
