@@ -2,16 +2,45 @@
   <span>Exclusão de projeto</span>
 </mat-toolbar>
 <mat-toolbar *ngIf="data.tipo === 'delete_projeto_sucesso'" style="background-color: yellow">
-  <span>Exclusão do projeto {{data.noProjeto}}.</span>
+  <span>Exclusão do projeto {{data.noProjeto}}</span>
 </mat-toolbar>
+<mat-toolbar *ngIf="data.tipo === 'cadastrar_projeto_sucesso'" style="background-color: green">
+  <span>Cadastro do projeto {{data.noProjeto}}</span>
+</mat-toolbar>
+<mat-toolbar *ngIf="data.tipo === 'alterar_projeto_sucesso'" style="background-color: green">
+  <span>Alteração do projeto {{data.noProjeto}}</span>
+</mat-toolbar>
+
+<mat-toolbar *ngIf="data.tipo === 'cadastrar_configuracao_sucesso'" style="background-color: green">
+  <span>Cadastro de configuração</span>
+</mat-toolbar>
+
+<mat-toolbar *ngIf="data.tipo === 'delete_negado'" style="background-color: red">
+  <span>Exclusão negada</span>
+</mat-toolbar>
+
+
+
 <mat-toolbar-row *ngIf="data.tipo === 'delete_projeto_sucesso'" >
   Projeto {{data.noProjeto}} excluído com sucesso.
 </mat-toolbar-row>
 <mat-toolbar-row *ngIf="data.tipo === 'delete_projeto'">
   Deseja excluir o projeto {{data.noProjeto}} ?
 </mat-toolbar-row>
+<mat-toolbar-row *ngIf="data.tipo === 'cadastrar_projeto_sucesso'">
+  Cadastro do projeto {{data.noProjeto}} efetuado com sucesso.
+</mat-toolbar-row>
+<mat-toolbar-row *ngIf="data.tipo === 'alterar_projeto_sucesso'">
+  Alteração do projeto {{data.noProjeto}} efetuado com sucesso.
+</mat-toolbar-row>
 
+<mat-toolbar-row *ngIf="data.tipo === 'cadastrar_configuracao_sucesso'">
+  Configuração cadastrada com sucesso
+</mat-toolbar-row>
 
+<mat-toolbar-row *ngIf="data.tipo === 'delete_negado'">
+  Não é possível excluir o projeto pois existe datasets configurados.
+</mat-toolbar-row>
 
 <mat-toolbar *ngIf="data.tipo === 'delete_configuracao'" style="background-color: #f3453cff; color: white" >
   <span>Exclusão de configuração</span>
@@ -27,12 +56,20 @@
 </mat-toolbar-row>
 
 
+
+
+
+
 <mat-dialog-actions align="end">
   <button mat-raised-button color="warn" mat-dialog-close tabindex="-1" (click)="deletaProjeto(data.idProjeto, data.noProjeto)" *ngIf="data.tipo === 'delete_projeto'">Confirma</button>
 
   <button mat-raised-button color="warn" mat-dialog-close tabindex="-1" (click)="deletaConfiguracao(data.idConfiguracao, data.noConfiguracao)" *ngIf="data.tipo === 'delete_configuracao'">Confirma</button>
-  <button mat-button mat-dialog-close *ngIf="!['delete_projeto_sucesso', 'delete_configuracao_sucesso'].includes(data.tipo)">Cancel</button>
-  <button mat-button mat-dialog-close *ngIf="['delete_projeto_sucesso'].includes(data.tipo)" (click)="fechar()">Fechar</button>
-  <button mat-button mat-dialog-close *ngIf="['delete_configuracao_sucesso'].includes(data.tipo)" >Fechar</button>
+  <button mat-button mat-dialog-close *ngIf="!['delete_projeto_sucesso', 'delete_configuracao_sucesso', 'cadastrar_projeto_sucesso', 'alterar_projeto_sucesso', 'cadastrar_configuracao_sucesso','delete_negado'].includes(data.tipo)">Cancel</button>
+
+  <button mat-button mat-dialog-close *ngIf="['delete_configuracao_sucesso','cadastrar_configuracao_sucesso','delete_negado'].includes(data.tipo)" >Fechar</button>
+  <button mat-button mat-dialog-close *ngIf="['alterar_projeto_sucesso','delete_projeto_sucesso','cadastrar_projeto_sucesso'].includes(data.tipo)" (click)="fechar()">Fechar</button>
+  <!--<button mat-button mat-dialog-close *ngIf="['delete_projeto_sucesso'].includes(data.tipo)" (click)="fechar()">Fechar</button>
+  <button mat-button mat-dialog-close *ngIf="['cadastrar_projeto_sucesso'].includes(data.tipo)" (click)="fechar()">Fechar</button>
+  <button mat-button mat-dialog-close *ngIf="['alterar_projeto_sucesso'].includes(data.tipo)" (click)="fechar()">Fechar</button>-->
 </mat-dialog-actions>
 

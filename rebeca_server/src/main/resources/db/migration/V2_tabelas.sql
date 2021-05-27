@@ -26,6 +26,7 @@ CREATE TABLE REBECA.TB_CONFIGURACAO_SERVICO
     DS_MODULO               VARCHAR2(300 BYTE)                         NOT NULL,
     NO_OBJETO_BANCO         VARCHAR2(30 BYTE)                          NOT NULL,
     NO_PROPRIETARIO_BANCO   VARCHAR2(30 BYTE)                          NOT NULL,
+    TP_APRESENTA_DATASET_COMPLETO NUMBER(1) default 0		  NOT NULL,
     CONSTRAINT PK_CONFIGURACAO_SERVICO PRIMARY KEY ( ID_CONFIGURACAO_SERVICO ) ENABLE
 );
 
@@ -46,6 +47,8 @@ comment on column REBECA.TB_CONFIGURACAO_SERVICO.NO_MODULO IS 'Nome do módulo q
 comment on column REBECA.TB_CONFIGURACAO_SERVICO.DS_MODULO IS 'Breve descrição do módulo que está sendo acessado.';
 comment on column REBECA.TB_CONFIGURACAO_SERVICO.NO_OBJETO_BANCO IS 'Nome físico do objeto dentro do banco de dados.';
 comment on column REBECA.TB_CONFIGURACAO_SERVICO.NO_PROPRIETARIO_BANCO IS 'Nome do owner do objeto dentro do banco de dados';
+
+comment on column REBECA.TB_CONFIGURACAO_SERVICO.TP_APRESENTA_DATASET_COMPLETO IS 'Define se a configuração poderá apresntar o dataset em sua forma completa ou não. Caso seja escolhido não o endpoint principal será escondido. Isso se dá somente no caso da utilização de algum filtro. Valores possíveis. 0 Não, 1 Sim';
 
 GRANT SELECT, INSERT, UPDATE, DELETE ON REBECA.TB_CONFIGURACAO_SERVICO TO REBECA;
 

@@ -1,10 +1,10 @@
 <mat-toolbar >
-  <mat-toolbar-row style="font-size: 1.5rem;  height: 80px; ">
-    <span style="vertical-align: center">Rebeca <!--<div [innerHTML]="logoHtml" style="width:100px; height: 100px"></div>--></span>
+  <mat-toolbar-row >
+    <span style="width: 25px"></span>
+    <span class="span">Rebeca</span> <!--<div [innerHTML]="logoHtml" style="width:100px; height: 100px"></div>-->
     <span class="example-spacer"></span>
-    <button mat-raised-button (click)="addProjeto()"><mat-icon>add</mat-icon> Projeto</button>
+    <span class="span"><button mat-raised-button (click)="addProjeto()"><mat-icon>add</mat-icon> Projeto</button></span>
   </mat-toolbar-row>
-
 </mat-toolbar>
 <app-project-list></app-project-list>
 

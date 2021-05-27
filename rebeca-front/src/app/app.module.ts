@@ -29,6 +29,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { EndpointDialogComponent } from './views/home/endpoint-dialog/endpoint-dialog.component';
 import {MatDividerModule} from '@angular/material/divider';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {MatDividerModule} from '@angular/material/divider';
       MatExpansionModule,
       MatSliderModule,
       MatPaginatorModule,
-      MatDividerModule
+      MatDividerModule,
+      MatSlideToggleModule
     ],
   providers: [],
   bootstrap: [AppComponent]

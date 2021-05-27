@@ -7,6 +7,8 @@ import {any} from 'codelyzer/util/function';
 import {ConfiguracaoFormDialogComponent} from '../configuracao-form-dialog/configuracao-form-dialog.component';
 import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
 import {EndpointDialogComponent} from '../endpoint-dialog/endpoint-dialog.component';
+import {ConfiguracaoService} from '../../../shared/service/configuracao.service';
+import {ConfiguracaoModel} from '../../../shared/model/configuracao.model';
 
 @Component({
   selector: 'app-project-list',
@@ -16,9 +18,12 @@ import {EndpointDialogComponent} from '../endpoint-dialog/endpoint-dialog.compon
 export class ProjectListComponent implements OnInit {
 
   projetoLista: any = [];
+  resultado: any = [];
+  length: number;
 
   constructor(
     public projetoService: ProjetoService,
+    public configuracaoService: ConfiguracaoService,
     public dialog: MatDialog
   ) { }
 
@@ -30,30 +35,54 @@ export class ProjectListComponent implements OnInit {
   getProjetos(){
     this.projetoService.getProjetos().subscribe(
       data => {
-        // console.log(typeof data);
-        // console.log(typeof this.projetoLista.length);
-        // console.log(this.projetoLista.length);
+        for (const i in data){
+          data[i].configuracoes = [];
+          this.configuracaoService.getConfiguracaobyProjeto(data[i].idProjeto).subscribe(
+            (result: any) => {
+
+              if (result){
+                for (const results in result) {
+                  data[i].configuracoes.push(result[results].idConfiguracao);
+                }
+              }
+            });
+        }
         this.projetoLista = data;
+        console.log(data);
       }
     );
   }
 
-  deleteProjeto(idProjeto: number, noProjeto: string, tipo: string): void {
 
-    const dialogRef = this.dialog.open(MensagemDialogComponent, {
-      panelClass: 'popup',
-      minWidth: '200px',
-      minHeight: '200px',
-      data: {idProjeto, noProjeto, tipo}
-    });
-    console.log('deletando projeto', idProjeto) ;
+  deleteProjeto(idProjeto: number, noProjeto: string, tipo: string, qtdConfiguracao: number): void {
+
+    if (qtdConfiguracao > 0) {
+      tipo = 'delete_negado';
+      const dialogRef = this.dialog.open(MensagemDialogComponent, {
+        panelClass: 'popup',
+        minWidth: '200px',
+        minHeight: '200px',
+        data: {idProjeto, noProjeto, tipo}
+      });
+    } else {
+      const dialogRef = this.dialog.open(MensagemDialogComponent, {
+        panelClass: 'popup',
+        minWidth: '200px',
+        minHeight: '200px',
+        data: {idProjeto, noProjeto, tipo}
+      });
+    }
   }
 
   openConfiguracao(idProjeto: number, noProjeto: string): void {
   const dialogRef = this.dialog.open(ConfiguracaoFormDialogComponent, {
     panelClass: 'popup',
+    width: 'fixed',
+    height: 'fixed',
     minWidth: '1500px',
-    minHeight: '600px',
+    maxWidth: '1500px',
+    minHeight: '780px',
+    maxHeight: '780px',
     data: {idProjeto, noProjeto}
   });
 

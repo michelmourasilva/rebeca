@@ -2,14 +2,14 @@
   <span style="width: 30px"><mat-icon style="vertical-align: center; padding-top: 10px">description</mat-icon></span><span style="vertical-align: middle">{{data.noProjeto}}</span>
 </mat-toolbar>
 <mat-dialog-content >
-  <div style="width: 50%; height: 555px;float:left">
+  <div style="width: 50%; height: 590px;float:left">
 
  <!--   <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
       {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
     </button>-->
     <mat-vertical-stepper [linear]="isLinear" #stepper >
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" >
           <ng-template matStepLabel>Dados básicos</ng-template>
           <mat-form-field class="example-full-width"  color="primary">
             <mat-label>Nome do módulo</mat-label>
@@ -25,6 +25,10 @@
               <mat-option *ngFor="let item of colecaoObjetoLista" [value]="item">{{item}}</mat-option>
             </mat-select>
           </mat-form-field>
+          <div style="padding-top: 40px; horiz-align: right; width: 100%">
+            <button mat-raised-button matStepperNext  color="primary">Próximo</button>
+            <button mat-button matStepperPrevious>Voltar</button>
+          </div>
         </form>
       </mat-step>
       <mat-step [stepControl]="secondFormGroup">
@@ -37,11 +41,6 @@
                 {{tag.get('noColuna').value}}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
-              <!-- Use below if only having single formcontrol -->
-              <!-- <mat-chip *ngFor="let tag of tagsArr.controls; let i = index" [removable]="true" (removed)="onRemove(i)">
-                {{tag.value}}
-                <mat-icon matChipRemove>cancel</mat-icon>
-              </mat-chip> -->
             </mat-chip-list>
           </mat-form-field>
 
@@ -52,17 +51,31 @@
             </mat-chip>
           </mat-chip-list>
 
+<!--
+            <div style="padding-top: 20px">
+              <h2 class="example-h2">Apresentar dataset completo?</h2>
+
+              <section class="example-section">
+                <mat-slide-toggle
+                  class="example-margin"
+                  [color]="color"
+                  [checked]="checked"
+                  [disabled]="disabled">
+                  Habilitar
+                </mat-slide-toggle>
+              </section>
+            </div>-->
           <!--<pre>{{secondFormGroup.value | json}}</pre>-->
 
-          <div>
+          <div style="padding-top: 40px; horiz-align: right; width: 100%">
+            <button mat-raised-button matStepperNext  color="primary">Próximo</button>
             <button mat-button matStepperPrevious>Voltar</button>
-            <button mat-button matStepperNext>Próximo</button>
           </div>
         </form>
       </mat-step>
       <mat-step >
         <ng-template matStepLabel>Finalizar</ng-template>
-        <div style="padding-top: 20px; horiz-align: right; width: 100%">
+        <div style="padding-top: 40px; horiz-align: right; width: 100%">
 
           <button mat-raised-button color="primary" (click)="mantemConfiguracao(data.idProjeto)">Criar configuração</button>
           <button mat-button matStepperPrevious>Voltar</button>

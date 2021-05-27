@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProjetoService} from '../../../shared/service/projeto.service';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Inject } from '@angular/core';
+import {MensagemDialogComponent} from '../mensagem-dialog/mensagem-dialog.component';
 
 @Component({
   selector: 'app-projeto-form-dialog',
@@ -18,7 +19,8 @@ export class ProjetoFormDialogComponent implements OnInit {
     private fb: FormBuilder,
     private rest: ProjetoService,
     public dialogRef: MatDialogRef<ProjetoFormDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -36,8 +38,8 @@ export class ProjetoFormDialogComponent implements OnInit {
   carregarDados(){
     if (this.data.tipo === 'update' || this.data.tipo === 'view'){
       this.rest.getProjeto(this.data.idProjeto).subscribe(res => {
-        console.log('entrou na atualização');
-        console.log(res);
+        // console.log('entrou na atualização');
+        // console.log(res);
 
         this.projetoForm.patchValue({
           noProjeto: res.noProjeto,
@@ -52,24 +54,37 @@ export class ProjetoFormDialogComponent implements OnInit {
   // tslint:disable-next-line:typedef
   mantemProjeto(){
    if (this.projetoForm.valid) {
+
+     const objProjeto = this.projetoForm.value;
+     const objConstProjeto = objProjeto.idProjeto;
+     const noProjeto = objProjeto.noProjeto;
+     let tipo = 'cadastrar_projeto_sucesso';
+
      if (this.data.tipo === 'update'){
-       console.log(this.projetoForm.value);
-       this.rest.updateProjeto(this.data.idProjeto, this.projetoForm.value);
-       console.log('Atualizando projeto');
-     } else  if (this.data.tipo === 'new'){
-      this.rest.postProjeto(this.projetoForm.value);
-      console.log('Cadastrando projeto');
+       tipo = 'alterar_projeto_sucesso';
+       this.rest.updateProjeto(this.data.idProjeto, objProjeto);
+       // console.log('Atualizando projeto');
+     } else if (this.data.tipo === 'new'){
+       tipo = 'cadastrar_projeto_sucesso';
+       this.rest.postProjeto(objProjeto);
+       // console.log(this.projetoForm.value, 'Cadastrando projeto');
      }
-     this.dialogRef.close();
-     this.projetoForm.reset();
-     window.location.reload();
+
+     const dialogRef = this.dialog.open(MensagemDialogComponent, {
+       panelClass: 'popup',
+       minWidth: '200px',
+       minHeight: '200px',
+       data: {objConstProjeto, noProjeto, tipo}
+     });
+
+     // this.dialogRef.close();
+     // this.projetoForm.reset();
+     // window.location.reload();
    }
   }
   cancelar(): void {
     this.dialogRef.close();
     this.projetoForm.reset();
   }
-
-
 
 }

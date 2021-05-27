@@ -15,7 +15,6 @@
   padding-top: 0px;
   padding-right: 15px;
   padding-bottom: 0px;
-  min-height: 70px;
 }
 .mat-card {
   display: flex;
@@ -29,9 +28,9 @@
 }
 
 .mat-card-title {
-  padding-top: 0px;
-  padding-bottom: 0px;
-  background-color: #7986cb
+  padding-top: 15px;
+  background-color: #7986cb;
+  color: white;
 }
 
 .mat-card-content {
@@ -47,3 +46,5 @@
   border-top: 1px !important;
   margin-right: 0px;
 }
+
+

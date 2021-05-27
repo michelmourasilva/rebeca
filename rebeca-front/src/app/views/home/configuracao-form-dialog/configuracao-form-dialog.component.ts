@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
 import {MAT_DIALOG_DATA, MatDialog} from '@angular/material/dialog';
 import {ProjetoService} from '../../../shared/service/projeto.service';
 import {ColecaoObjetoService} from '../../../shared/service/colecaoObjeto.service';
@@ -10,6 +10,8 @@ import {ColecaoAtributosService} from '../../../shared/service/colecaoAtributos.
 import {MatAccordion} from '@angular/material/expansion';
 import {FiltroService} from '../../../shared/service/filtro.service';
 import {FiltroModel} from '../../../shared/model/filtro.model';
+import {ThemePalette} from '@angular/material/core';
+import {MatStepper} from '@angular/material/stepper';
 
 @Component({
   selector: 'app-configuracao-form-dialog',
@@ -25,6 +27,8 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   configuracoesLista: any = [];
   configuracoesListaTemp: any = [];
   @ViewChild('configuracoesLista') public acordion: MatAccordion;
+  @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild(FormGroupDirective) formDirective: FormGroupDirective;
 
   resultado: any = [];
 
@@ -36,6 +40,10 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   secondFormGroup: FormGroup;
 
   atributos: any = [];
+
+  color: ThemePalette = 'primary';
+  checked = false;
+  disabled = false;
 
   // tslint:disable-next-line:typedef
   setPageSizeOptions(setPageSizeOptionsInput: string) {
@@ -133,28 +141,39 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
 
           if (this.secondFormGroup.valid) {
             const filtroArray =  this.secondFormGroup.get('Tags').value;
-            console.log('999999999999999999',this.secondFormGroup.get('Tags').value);
             for (const i in filtroArray){
               const nomeColuna = filtroArray[i].noColuna;
-              console.log('0000000000000000000000000', nomeColuna);
               const novofiltro = new FiltroModel(0, nomeColuna, 'IGUAL', data);
-              console.log('>>>>>>>>>>>>>', novofiltro);
-
               this.filtroService.postFiltro(novofiltro);
-
             }
           }
-
           this.getConfiguracoesbyProjeto(idProjeto);
           this.cd.detectChanges();
 
+          const tipo = 'cadastrar_configuracao_sucesso';
+
+          const dialogRef = this.dialog.open(MensagemDialogComponent, {
+            panelClass: 'popup',
+            minWidth: '200px',
+            minHeight: '200px',
+            data: {tipo}
+          });
+
+          this.firstFormGroup.reset();
+          this.firstFormGroup.get('noModulo').clearValidators();
+          this.firstFormGroup.get('noModulo').updateValueAndValidity();
+          this.firstFormGroup.get('dsModulo').clearValidators();
+          this.firstFormGroup.get('dsModulo').updateValueAndValidity();
+          this.firstFormGroup.get('noObjetoBanco').clearValidators();
+          this.firstFormGroup.get('noObjetoBanco').updateValueAndValidity();
+
+          this.secondFormGroup.reset();
+
+          this.stepper.selectedIndex = 0;
+
         }
-
-      );
-
+    );
     }
-
-
 
   }
 
@@ -206,7 +225,5 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
     this.tagsArr.removeAt(index);
     this.atributos.push(tag.value);
   }
-
-
 
 }
