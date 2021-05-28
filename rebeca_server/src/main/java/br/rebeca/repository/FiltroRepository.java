@@ -7,5 +7,6 @@ import br.rebeca.model.Filtro;
 
 @Repository
 public interface FiltroRepository extends JpaRepository<Filtro, Long> {
-
+	
+	
 }

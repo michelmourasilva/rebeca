@@ -104,21 +104,70 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
         this.resultado = data;
         this.length = this.resultado.length;
         this.configuracoesLista = this.resultado.slice(0, this.pageSize);
-        this.secondFormGroup.reset();
-        this.firstFormGroup.reset();
+        // this.secondFormGroup.reset();
+        // this.firstFormGroup.reset();
       }
     );
   }
   // tslint:disable-next-line:typedef
   mantemConfiguracao(idProjeto: number){
 
-
     if (this.firstFormGroup.valid) {
-      console.log('>>> configuracao:', this.firstFormGroup.get('idConfiguracao').value);
+      // console.log('>>> configuracao:', this.firstFormGroup.get('idConfiguracao').value);
       this.firstFormGroup.patchValue({
         idProjeto,
         noProprietarioBanco: 'REBECA'
       });
+
+      // Insert
+      const idConfiguracao = this.firstFormGroup.get('idConfiguracao').value;
+      if (idConfiguracao){
+        // console.log('Alteracao');
+
+        // Realiza update nos dados principais
+        this.configuracaoService.putConfiguracao(idConfiguracao, this.firstFormGroup.value).subscribe();
+
+        // Deleta os filtros dessa configuração
+        this.configuracaoService.getConfiguracaobyId(idConfiguracao).subscribe(
+          data => {
+            data.filtros.forEach(function( filtro, index){
+              this.filtroService.deleteFiltro(filtro.idFiltro);
+            }.bind(this));
+          }
+        );
+
+        // tslint:disable-next-line:no-shadowed-variable
+        let i = this.configuracoesLista.length;
+        // tslint:disable-next-line:forin
+        while (i--) {
+          this.configuracoesLista.splice(i, 1);
+        }
+
+        // Reinsert Filtros
+        if (this.secondFormGroup.valid) {
+          const filtroArray =  this.secondFormGroup.get('Tags').value;
+
+          for (const i in filtroArray){
+            const nomeColuna = filtroArray[i].noColuna;
+            const novofiltro = new FiltroModel(0, nomeColuna, 'IGUAL', idConfiguracao);
+            this.filtroService.postFiltro(novofiltro);
+          }
+        }
+
+        this.getConfiguracoesbyProjeto(idProjeto);
+        console.log('configuracoes>>>>',this.configuracoesLista);
+        this.cd.detectChanges();
+
+        const tipo = 'alterar_configuracao_sucesso';
+
+        const dialogRef = this.dialog.open(MensagemDialogComponent, {
+          panelClass: 'popup',
+          minWidth: '200px',
+          minHeight: '200px',
+          data: {tipo}
+        });
+        this.clearAll();
+      } else {
 
       this.configuracaoService.postConfiguracao(this.firstFormGroup.value).subscribe(
         data => {
@@ -151,16 +200,15 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
             minHeight: '200px',
             data: {tipo}
           });
-
-
           this.clearAll();
-
         }
     );
-    }
+      }
 
+
+    }
   }
-  
+
   clearAll(): void {
     this.stepper.selectedIndex = 0;
     this.formDirective.resetForm();
@@ -172,6 +220,8 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
   atualizar(idConfiguracao: number) {
 
     this.clearAll();
+
+    this.firstFormGroup.get('idConfiguracao').setValue(idConfiguracao);
     this.configuracaoService.getConfiguracaobyId(idConfiguracao).subscribe(
       data => {
         this.firstFormGroup.get('noModulo').setValue(data.noModulo);
@@ -179,23 +229,36 @@ export class ConfiguracaoFormDialogComponent implements OnInit {
         this.firstFormGroup.get('noObjetoBanco').setValue(data.noObjetoBanco);
         this.getColecaoAtributo(data.noObjetoBanco);
 
+        this.colecaoAtributoService.getColecaoAtributos(data.noObjetoBanco).subscribe(
+          (result: any) => {
+            if (result){
+              for (const results in result){
+                console.log('subscribe');
+              }
+            }
+          }
+        );
 
         // tslint:disable-next-line:typedef
         data.filtros.forEach(function( atributo, index){
 
           this.colecaoAtributoService.getAtributo(data.noObjetoBanco, atributo.noAtributo).subscribe(
             (result: any) => {
-              console.log('atributo da edicao', result);
+              // console.log('atributo da edicao', result);
               this.onSelect(result);
+
+              // tslint:disable-next-line:variable-name
+              this.atributos.forEach((value_atributos, index_atributos) => {
+                  if (value_atributos.noColuna === result.noColuna) {
+                    this.atributos.splice(index_atributos, 1);
+                  }
+              } );
+              // console.log('>>>atributos', this.atributos);
             }
           );
         }.bind(this));
-
         // console.log('Data da alteracao', data);
-
-
         // this.onSelect
-
       }
     );
   }

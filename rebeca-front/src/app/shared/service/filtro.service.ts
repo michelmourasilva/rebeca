@@ -27,4 +27,12 @@ export class FiltroService {
     // @ts-ignore
     return this.httpClient.post<any>(this.apiUrl, filtro, this.httpOptions).subscribe(() => console.log('Filtro cadastrado'));
   }
+
+  public deleteFiltro(idFiltro: number): Observable<FiltroModel>{
+    // tslint:disable-next-line:variable-name
+    const _url = `${this.apiUrl}${idFiltro}`;
+    // @ts-ignore
+    return this.httpClient.delete(_url, this.httpOptions).subscribe(() => console.log('FIltro deletado'));
+  }
+
 }

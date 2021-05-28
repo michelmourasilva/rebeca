@@ -44,6 +44,12 @@ export class ConfiguracaoService {
     return this.httpClient.post<any>(this.apiUrl, configuracao, this.httpOptions);
   }
 
+  public putConfiguracao(idConfiguracao: number, configuracao: any): Observable<any>{
+    // @ts-ignore
+    const _url = `${this.apiUrl}/${idConfiguracao}`;
+    return this.httpClient.put<any>(_url, configuracao, this.httpOptions);
+  }
+
   public deleteConfiguracao(idConfiguracao: number): Observable<ConfiguracaoModel>{
     // tslint:disable-next-line:variable-name
     const _url = `${this.apiUrl}${idConfiguracao}`;
