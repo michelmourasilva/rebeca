@@ -51,6 +51,21 @@ Existe dois meios de operacionalizar o sistema Rebeca, via [back-end](#operacion
 
 Porém existe um fluxo que é necessário independente da via que está sendo utilizanda que é a criação do objeto que vai representar o dataset que será apresentado para ser consumido. 
 
+Basicamente o fluxo do Rebeca poderia ser apresentado da seguinte forma:
+
+```mermaid
+	sequenceDiagram
+Analista de dados ->>+Banco de dados: Cria dataset
+Administrador->>+Rebeca: Cadastra projeto
+Administrador->>+Rebeca: Cadastra a configuração de um projeto
+Administrador-->+Rebeca: Cadastra filtros para uma configuração
+Usuário-->+Rebeca: Lista endpoints disponíveis
+Usuário->>+Rebeca: Consulta dataset 
+Rebeca->>+Banco de dados: Recupera dados
+Banco de dados->>+Rebeca: Retorna dataset
+Rebeca->>+Usuário: Apresenta dataset
+```
+
 ### Preparação do dataset
 Rebeca monitora qualquer view criada em seu schema portanto para que um dataset seja apresentado é necessário a criação de uma view apontando para qualquer outro objeto de banco de dados no servidor ou se necessário acessar de outro servidor recomenda a utilização de um dblink. 
 
@@ -297,23 +312,6 @@ Clicando em um módulo poderá ser visto mais detalhes e algumas ações.
 ## Operacionalização via back-end
 
 
-Existe um fluxo que deve ser seguido para que os dados possam ser apresentados de forma correta. Abaixo está o diagrama de sequência que auxilia no entendimento deste fluxo:  
-
-```sequenceDiagram
-
-Administrador->>+Rebeca: Cadastra projeto
-
-Administrador->>+Rebeca: Cadastra a configuração de um projeto
-
-Administrador-->+Rebeca: Cadastra filtros para uma configuração
-
-Usuário-->+Rebeca: Lista endpoints disponíveis
-
-Usuário->>+Rebeca: Consulta dados  
-``` 
-
-----------
-
 Após o sistema e banco de dados disponíveis, para o cadastro de exemplos basta chamar os comandos abaixo. Lembrando que existe o schema com dados disponíveis para teste (CO) que se encontra já carregados no banco Oracle do ambiente de desenvolvimento, porém para saber toda estrutura deste schema será necessário acessá-lo diretamente no banco para visualizar sua estrutura.
 
 ### Cadastrar projeto
@@ -359,9 +357,5 @@ Um dataset pode ser acessado de duas formas:
 
 ## To-Do
 
--	Melhoria do layout
-- 	Corrigir ou melhorar validação de formulários
 -   Segurança
 -   Por para outros bancos relacionais e nosql
-
-Ou visualizar issues do projeto
