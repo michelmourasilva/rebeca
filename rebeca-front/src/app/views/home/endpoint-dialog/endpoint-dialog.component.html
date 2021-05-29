@@ -16,7 +16,7 @@
 
       <div class="row" style="padding-top: 20px; vertical-align: middle">
         <div class="column" style="width: 100px; vertical-align: bottom"><b>Request URL: </b></div>
-        <div class="column"><button mat-button mat-dialog-close (click)="openURL(this.localURL  + item.endPoint)">{{this.localURL +  item.endPoint}}</button></div>
+        <div class="column"><button style="text-align:left" mat-button mat-dialog-close (click)="openURL(this.localURL  + item.endPoint)">{{this.localURL +  item.endPoint}}</button></div>
       </div>
 
       <div class="row" style="padding-top: 20px; vertical-align: middle">
@@ -29,14 +29,12 @@
         <div class="column">Substituir o sinal de interrogaćão na URL por algum valor do atributo {{item.atributoFiltro.toString().replace("= :1", "")}}</div>
       </div>
 
-      <div class="row" style="padding-top: 20px; vertical-align: middle">
-        <div class="column" style="width: 100px"><b>CSV: </b></div>
-        <div class="column">-</div>
+      <div class="row" style="padding-top: 20px; vertical-align: middle" *ngIf="item.atributoFiltro === '_NA' ">
+        <div class="column" style="width: 100%; vertical-align: middle"><b>CSV: </b><button mat-button (click)="getDataset(item.noProjeto, item.noModulo)"> <mat-icon> insert_drive_file</mat-icon></button></div>
       </div>
-
       <div class="row" style="padding-top: 20px; vertical-align: middle">
-        <div class="column" style="width: 100px"><b>PDF: </b></div>
-        <div class="column">-</div>
+        <div class="column" style="width: 100%; vertical-align: middle"  ><b>Referência acadêmica: </b><button  mat-button  [cdkCopyToClipboard]="refBibliografic(item.noProjeto, item.noModulo, this.localURL, item.endPoint)"><mat-icon>file_copy</mat-icon></button></div>
+
       </div>
 
     </mat-expansion-panel>

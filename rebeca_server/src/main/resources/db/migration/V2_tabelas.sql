@@ -3,8 +3,8 @@ CREATE TABLE REBECA.TB_PROJETO
     ID_PROJETO NUMBER(14, 0) GENERATED ALWAYS AS IDENTITY NOT NULL,
     NO_PROJETO VARCHAR2(30 BYTE)                          NOT NULL,
     DS_PROJETO VARCHAR2(4000 BYTE)                         NOT NULL,
-    TX_URL VARCHAR2(4000 BYTE)   				NULL
-    TX_CAMINHO_IMAGEM VARCHAR2(4000 BYTE)    		NULL
+    TX_URL VARCHAR2(4000 BYTE)   				NULL,
+    TX_CAMINHO_IMAGEM VARCHAR2(4000 BYTE)    		NULL,
     CONSTRAINT PK_PROJETO PRIMARY KEY(ID_PROJETO) ENABLE
 );
 
@@ -107,11 +107,14 @@ comment on column REBECA.VW_TIPO_FILTRO.DS_TIPO_FILTRO IS 'Combinação do opera
 
 GRANT SELECT ON REBECA.VW_TIPO_FILTRO TO REBECA;
 
-CREATE OR REPLACE VIEW REBECA.VW_END_POINT
-AS
-select sum(nvl(Null, 1)) over (order by origem.END_POINT ROWS UNBOUNDED PRECEDING) ID, origem.*
+-- REBECA.VW_END_POINT source
+
+-- REBECA.VW_END_POINT source
+
+CREATE OR REPLACE VIEW REBECA.VW_END_POINT AS 
+  select sum(nvl(Null, 1)) over (order by origem.END_POINT ROWS UNBOUNDED PRECEDING) ID, origem."END_POINT",origem."ATRIBUTO_FILTRO",origem."NO_PROJETO",origem."NO_MODULO",origem."DS_MODULO"
 from (
-         SELECT '/dataset/' || PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' END_POINT,
+         SELECT '/dataset/' || upper(PROJETO.NO_PROJETO) || '/' || upper(servico.no_modulo) || '/' END_POINT,
                 '_NA' ATRIBUTO_FILTRO,
                 PROJETO.NO_PROJETO,
                 SERVICO.NO_MODULO,
@@ -119,28 +122,24 @@ from (
          FROM REBECA.TB_CONFIGURACAO_SERVICO SERVICO
                   INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
          UNION ALL
-         SELECT '/dataset/' || PROJETO.NO_PROJETO || '/' || servico.no_modulo || '/' || filtro.id_filtro_servico ||  '/?' END_POINT,
+         SELECT '/dataset/' || upper(PROJETO.NO_PROJETO) || '/' || upper(servico.no_modulo) || '/' || filtro.id_filtro_servico ||  '/?' END_POINT,
                 filtro.NO_ATRIBUTO || ' ' || TIPOFILTRO.DS_TIPO_FILTRO,
-                PROJETO.NO_PROJETO,
-                SERVICO.NO_MODULO,
+                PROJETO.NO_PROJETO NO_PROJETO,
+                SERVICO.NO_MODULO NO_MODULO,
                 SERVICO.DS_MODULO
          FROM REBECA.TB_CONFIGURACAO_SERVICO SERVICO
                   INNER JOIN REBECA.TB_PROJETO PROJETO ON SERVICO.ID_PROJETO = PROJETO.ID_PROJETO
                   INNER JOIN REBECA.TB_FILTRO_SERVICO FILTRO
                              ON SERVICO.ID_CONFIGURACAO_SERVICO = filtro.ID_CONFIGURACAO_SERVICO
                   INNER JOIN REBECA.VW_TIPO_FILTRO TIPOFILTRO ON FILTRO.TP_CONDICAO = TIPOFILTRO.ID_TIPO_FILTRO
-     ) origem
-;
-GRANT SELECT ON REBECA.VW_END_POINT TO REBECA;
+     ) origem;
 
-COMMENT ON TABLE REBECA.TB_FILTRO_SERVICO IS 'End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO';
-
-comment on column REBECA.VW_END_POINT.ID IS 'Identificador gerado automaticamente somente para referência da linha. ';
-comment on column REBECA.VW_END_POINT.END_POINT IS 'Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas.';
-comment on column REBECA.VW_END_POINT.ATRIBUTO_FILTRO IS 'Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo "?" apresentado no campo END_POINT. ';
-comment on column REBECA.VW_END_POINT.NO_PROJETO IS 'Nome do projeto que está disponibilizando os dados. ';
-comment on column REBECA.VW_END_POINT.NO_MODULO IS 'Nome do módulo deste sistema.';
-comment on column REBECA.VW_END_POINT.DS_MODULO IS 'Breve descrição do módulo de um sistema. ';
+COMMENT ON COLUMN "REBECA"."VW_END_POINT"."ID" IS 'Identificador gerado automaticamente somente para referência da linha. ';
+   COMMENT ON COLUMN "REBECA"."VW_END_POINT"."END_POINT" IS 'Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas.';
+   COMMENT ON COLUMN "REBECA"."VW_END_POINT"."ATRIBUTO_FILTRO" IS 'Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo "?" apresentado no campo END_POINT. ';
+   COMMENT ON COLUMN "REBECA"."VW_END_POINT"."NO_PROJETO" IS 'Nome do projeto que está disponibilizando os dados. ';
+   COMMENT ON COLUMN "REBECA"."VW_END_POINT"."NO_MODULO" IS 'Nome do módulo deste sistema.';
+   COMMENT ON COLUMN "REBECA"."VW_END_POINT"."DS_MODULO" IS 'Breve descrição do módulo de um sistema. ';
 
 create or replace view REBECA.VW_OBJETOS_DISPONIVEIS
 as

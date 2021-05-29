@@ -5,7 +5,7 @@ services:
       context: rebeca_server
       dockerfile: Dockerfile
     ports:
-      - '80:80'
+      - '8081:8081'
     restart: always
     depends_on:
       db:
@@ -16,8 +16,8 @@ services:
       DATASOURCE_HOST: db
       PROFILE: prd
     networks:
-      - backend
-      - frontend
+      rebeca:
+        ipv4_address: 172.19.0.2
   db:
     image: truevoly/oracle-12c
     ports:
@@ -28,7 +28,8 @@ services:
       - ORACLE_PWD=Oracle
       - ORACLE_ALLOW_REMOTE=true
     networks:
-      - backend
+      rebeca:
+        ipv4_address: 172.19.0.3
     healthcheck:
       test:
         - CMD-SHELL
@@ -41,16 +42,24 @@ services:
     volumes:
       - './db-data:/var/lib/mysql'
       - './rebeca_server/src/main/resources/db/migration:/docker-entrypoint-initdb.d'
-#  angular:
-#    build:
-#      context: rebeca_front
-#      dockerfile: Dockerfile
-#    ports:
-#      - '8080:8080'
+  angular:
+    build:
+      context: rebeca-front
+      dockerfile: Dockerfile
+    networks:
+      rebeca:
+        ipv4_address: 172.19.0.4
+    ports:
+      - '4200:80'
       
 volumes:
   db-data:
     driver: local
 networks:
-  backend: null
-  frontend: null
+  rebeca:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/24
+          gateway: 172.19.0.1
