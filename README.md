@@ -54,7 +54,7 @@ Porém existe um fluxo que é necessário independente da via que está sendo ut
 ### Preparação do dataset
 Rebeca monitora qualquer view criada em seu schema portanto para que um dataset seja apresentado é necessário a criação de uma view apontando para qualquer outro objeto de banco de dados no servidor ou se necessário acessar de outro servidor recomenda a utilização de um dblink. 
 
-![Criação dataset](/rebeca_server/src/main/resources/imagens/Criação_Dataset.png)
+![Criação dataset](/rebeca_server/src/main/resources/imagens/Criacao_dataset.png)
 
 Para efeitos de teste podemos criar a seguinte view utilizando o banco de dados de exemplo (schema CO) que está sendo criado via migrate do banco de dados.
 
@@ -119,13 +119,27 @@ Acessos ao SGBD e aos seus serviços de gerenciamento e monitoramento:
 
 ##### TB_PROJETO
 
-Projeto que disponibilizará dados em formato Rest para o Rebeca. |Campo | Descrição | | --- | --- | | ID_PROJETO | Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST. | | NO_PROJETO | Nome único do projeto que irá disponibilizar dados para o Rebeca | | DS_PROJETO | Breve descrição do projeto. |
+Projeto que disponibilizará dados em formato Rest para o Rebeca. 
+
+|Campo | Descrição | 
+| --- | --- |
+| ID_PROJETO | Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST. | 
+| NO_PROJETO | Nome único do projeto que irá disponibilizar dados para o Rebeca | 
+| DS_PROJETO | Breve descrição do projeto. |
 
 ----------
 
 ##### TB_CONFIGURACAO_SERVICO
 
-A Representational State Transfer (REST), em português Transferência de Estado Representacional, é uma abstração da arquitetura da World Wide Web, mais precisamente, é um estilo arquitetural que consiste de um conjunto coordenado de restrições arquiteturais aplicadas a componentes, conectores e elementos de dados dentro de um sistema de hipermídia distribuído. O REST ignora os detalhes da implementação de componente e a sintaxe de protocolo com o objetivo de focar nos papéis dos componentes, nas restrições sobre sua interação com outros componentes e na sua interpretação de elementos de dados significantes.Esta entidade irá auxiliar na configuração do serviço rest e a camada de acesso aos dados, fazendo com que o serviço seja acessado dinamicamente tendo como base a configuração definida pela administração de dados. | | Campo | Descrição | | --- | --- | | ID_CONFIGURACAO_SERVICO | Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.| | ID_PROJETO | Código do projeto | | NO_MODULO | Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido. | | DS_MODULO | Breve descrição do módulo que está sendo acessado. | | NO_OBJETO_BANCO | Nome físico do objeto dentro do banco de dados. | | NO_PROPRIETARIO_BANCO | Nome do owner do objeto dentro do banco de dados |
+A Representational State Transfer (REST), em português Transferência de Estado Representacional, é uma abstração da arquitetura da World Wide Web, mais precisamente, é um estilo arquitetural que consiste de um conjunto coordenado de restrições arquiteturais aplicadas a componentes, conectores e elementos de dados dentro de um sistema de hipermídia distribuído. O REST ignora os detalhes da implementação de componente e a sintaxe de protocolo com o objetivo de focar nos papéis dos componentes, nas restrições sobre sua interação com outros componentes e na sua interpretação de elementos de dados significantes.Esta entidade irá auxiliar na configuração do serviço rest e a camada de acesso aos dados, fazendo com que o serviço seja acessado dinamicamente tendo como base a configuração definida pela administração de dados. 
+
+| Campo | Descrição | 
+| --- | --- | 
+| ID_CONFIGURACAO_SERVICO | Identificador gerado automaticamente pelo Oracle. Auxilia na identificação da configuração do serviço REST.| | ID_PROJETO | Código do projeto | 
+| NO_MODULO | Nome do módulo que será passada pela URI do serviço REST (URI - Identificador de Recursos Universal, como diz o próprio nome, é o identificador do recurso. Pode ser uma imagem, uma página, etc, pois tudo o que está disponível na internet precisa de um identificador único para que não seja confundido. | 
+| DS_MODULO | Breve descrição do módulo que está sendo acessado. | 
+| NO_OBJETO_BANCO | Nome físico do objeto dentro do banco de dados. | 
+| NO_PROPRIETARIO_BANCO | Nome do owner do objeto dentro do banco de dados |
 
 ----------
 
@@ -133,7 +147,11 @@ A Representational State Transfer (REST), em português Transferência de Estado
 
 Cada configuração poderá utilizar mais de uma condição de filtro juntamente com um objeto
 
-Campo | Descrição | | --- | --- | ID_FILTRO_SERVICO | Identificador gerado automaticamente pelo Oracle. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST| | NO_ATRIBUTO | Nome do atributo que será utilizado como filtro | TP_CONDICAO | Tipo de operacao que podera ser aplicada em um campo especifico do objeto. Valores possiveis: IGUAL(0, "= :1"), DIFERENTE(1, "!= :1"), MAIOR(2, "> :1"),MENOR(3, "< :1"), MAIOROUIGUAL(4, ">= :1"), MENOROUIGUAL(5, "<= :1"), IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))"); Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle. Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo | | ID_CONFIGURACAO_SERVICO | Auxilia na identificação da configuração do serviço REST. |
+| Campo | Descrição | 
+| --- | --- |
+| ID_FILTRO_SERVICO | Identificador gerado automaticamente pelo Oracle. Identificador que auxilia na identificação de um filtro que poderá ser utilizado dentro de uma configuração do serviço REST| 
+| NO_ATRIBUTO | Nome do atributo que será utilizado como filtro | TP_CONDICAO | Tipo de operacao que podera ser aplicada em um campo especifico do objeto. Valores possiveis: IGUAL(0, "= :1"), DIFERENTE(1, "!= :1"), MAIOR(2, "> :1"),MENOR(3, "< :1"), MAIOROUIGUAL(4, ">= :1"), MENOROUIGUAL(5, "<= :1"), IN(6, "( select * from (TABLE(REBECA.fnc_string_virgula_tabela(:1))))"); Obs: Para operaćões utilizando IN, será utilizado uma funćão que irá quebrar as strings passadas no final do endpoint e transforma-las em uma colećão interável do Oracle. Ex; http://localhost:8080/data-set/all/PROJETO/MODULO/6/35228266,35274100,35442987 <<- Aonde o número 6 é o filtro criado para esse atributo | 
+| ID_CONFIGURACAO_SERVICO | Auxilia na identificação da configuração do serviço REST. |
 
 ----------
 
@@ -141,9 +159,18 @@ Campo | Descrição | | --- | --- | ID_FILTRO_SERVICO | Identificador gerado aut
 
 End points da API gerados a partir das configurações feitas para o projeto. Obs: quando o end point possui um filtro específico ele irá ser apresentado envolto com chaves ({}), porém ao ser usado na API deverá ser informado somente o valor que deseja filtrar. Ex: filtro com ID de número 1 e condição definida como CAMPO = :1 / Como deverá ser passado no endpoint /1/VALORDOCAMPO |
 
-| Campo | Descrição | | --- | --- | | ID | Identificador gerado automaticamente somente para referência da linha | | END_POINT | Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas | | ATRIBUTO_FILTRO | Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo "?" apresentado no campo END_POINT. | | NO_PROJETO | Nome do projeto que está disponibilizando os dados. | | NO_MODULO | Nome do módulo deste sistema.| | DS_MODULO | Breve descrição do módulo de um sistema. | ##### VW_TIPO_FILTRO Visão que auxilia na conversão do enumerador que combina o operador de comparação (=, <, >, <=, >=, !=, IN)
+| Campo | Descrição | 
+| --- | --- |
+ | ID | Identificador gerado automaticamente somente para referência da linha | 
+ | END_POINT | Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas | 
+ | ATRIBUTO_FILTRO | Caso um endpoint possua um filtro em um campo específico, será apresentado a regra correspondente para o símbolo "?" apresentado no campo END_POINT. | 
+ | NO_PROJETO | Nome do projeto que está disponibilizando os dados. | | NO_MODULO | Nome do módulo deste sistema.| 
+ | DS_MODULO | Breve descrição do módulo de um sistema. | ##### VW_TIPO_FILTRO Visão que auxilia na conversão do enumerador que combina o operador de comparação (=, <, >, <=, >=, !=, IN)
 
-| Campo | Descrição | | --- | --- | | ID | Identificador gerado automaticamente somente para referência da linha | | END_POINT | Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas |
+| Campo | Descrição | 
+| --- | --- | 
+| ID | Identificador gerado automaticamente somente para referência da linha  
+| END_POINT | Exemplo de como está sedo gerado um endpoint para disponibilização de dados. Se baseia na união de várias informações das outras tabelas |
 
 ### Scripts da estrutura inicial
 
@@ -195,11 +222,11 @@ Após preencher todos os dados, clicar no botão "CADASTRAR PROJETO"
 
 Se tudo estiver correto será apresentado uma mensagem de sucesso. 
 
-![Criar projeto - mensagem](/rebeca_server/src/main/resources/imagens/Criar_projeto_mensagem.png)
+![Criar projeto - sucesso](/rebeca_server/src/main/resources/imagens/Criar_projeto_sucesso.png)
 
 Primeiro projeto criado. 
 
-![Listar projeto](/rebeca_server/src/main/resources/imagens/Listar_projeto_mensagem.png)
+![Cards dos projetos](/rebeca_server/src/main/resources/imagens/Listar_projeto.png)
 
 ### Lista de projetos
 
@@ -270,7 +297,9 @@ Clicando em um módulo poderá ser visto mais detalhes e algumas ações.
 ## Operacionalização via back-end
 
 
-Existe um fluxo que deve ser seguido para que os dados possam ser apresentados de forma correta. Abaixo está o diagrama de sequência que auxilia no entendimento deste fluxo:  `` ` ``  sequenceDiagram
+Existe um fluxo que deve ser seguido para que os dados possam ser apresentados de forma correta. Abaixo está o diagrama de sequência que auxilia no entendimento deste fluxo:  
+
+```sequenceDiagram
 
 Administrador->>+Rebeca: Cadastra projeto
 
@@ -280,7 +309,8 @@ Administrador-->+Rebeca: Cadastra filtros para uma configuração
 
 Usuário-->+Rebeca: Lista endpoints disponíveis
 
-Usuário->>+Rebeca: Consulta dados  `` ` ``
+Usuário->>+Rebeca: Consulta dados  
+``` 
 
 ----------
 
@@ -329,5 +359,9 @@ Um dataset pode ser acessado de duas formas:
 
 ## To-Do
 
+-	Melhoria do layout
+- 	Corrigir ou melhorar validação de formulários
 -   Segurança
 -   Por para outros bancos relacionais e nosql
+
+Ou visualizar issues do projeto
